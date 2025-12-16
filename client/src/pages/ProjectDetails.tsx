@@ -73,7 +73,7 @@ export default function ProjectDetails() {
           </Link>
         </div>
       </div>
-      <div className="container mx-auto px-4 py-8 -mt-20 relative z-10">
+      <div className="container mx-auto px-4 py-8 -mt-10 relative z-10">
         <div className="bg-background rounded-xl shadow-xl border border-border/50 overflow-hidden">
           <div className="p-6 md:p-10">
             <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-8">
