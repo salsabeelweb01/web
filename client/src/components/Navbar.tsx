@@ -1,6 +1,5 @@
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import logo from "@assets/logo.png";
@@ -12,10 +11,8 @@ export default function Navbar() {
   const links = [
     { href: "/", label: "Home" },
     { href: "/projects", label: "Properties" },
-    { href: "/projects?type=buy", label: "Buy" },
-    { href: "/projects?type=rent", label: "Rent" },
     { href: "/about", label: "About Us" },
-    { href: "/contact", label: "Contact" },
+    { href: "/contact", label: "Contact Us" },
   ];
 
   return (
@@ -41,11 +38,6 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
-          <Link href="/contact">
-            <Button variant="default" size="sm">
-              Contact Agent
-            </Button>
-          </Link>
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -74,9 +66,6 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
-          <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>
-            <Button className="w-full">Contact Agent</Button>
-          </Link>
         </div>
       )}
     </nav>
