@@ -1,58 +1,106 @@
-import { PROJECTS, Project } from "./mock-data";
+export interface Project {
+  id: number;
+  name: string;
+  location: string;
+  status: string;
+  type: string;
+  startingPrice: string;
+  bedrooms: string;
+  sizeSqft: string;
+  description: string;
+  propertyType: string;
+  images: string[];
+  features: string[];
+}
 
-export type { Project } from "./mock-data";
-
-// Type definitions for filters
 export interface ProjectFilters {
   status?: string;
   location?: string;
   type?: "rent" | "buy";
-  minPrice?: number;
-  maxPrice?: number;
 }
 
-// Mock API functions - Phase 2 Ready
+export interface ContactInquiry {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  message: string;
+}
+
+export interface ViewingRequest {
+  projectId: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  preferredDate: string;
+  message?: string;
+}
+
+async function handleResponse<T>(response: Response): Promise<T> {
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ error: 'An error occurred' }));
+    throw new Error(error.error || `HTTP error! status: ${response.status}`);
+  }
+  return response.json();
+}
 
 export async function getProjects(filters?: ProjectFilters): Promise<Project[]> {
-  // Simulate network delay
-  await new Promise((resolve) => setTimeout(resolve, 500));
-
-  let filteredProjects = [...PROJECTS];
-
+  const params = new URLSearchParams();
+  
   if (filters) {
     if (filters.status && filters.status !== "All") {
-      filteredProjects = filteredProjects.filter((p) => p.status === filters.status);
+      params.append('status', filters.status);
     }
     if (filters.location && filters.location !== "All") {
-      filteredProjects = filteredProjects.filter((p) => p.location.includes(filters.location!));
+      params.append('location', filters.location);
     }
     if (filters.type) {
-      filteredProjects = filteredProjects.filter((p) => p.type === filters.type);
+      params.append('type', filters.type);
     }
   }
 
-  return filteredProjects;
+  const url = `/api/projects${params.toString() ? `?${params.toString()}` : ''}`;
+  const response = await fetch(url);
+  return handleResponse<Project[]>(response);
 }
 
 export async function getProjectById(id: number): Promise<Project | undefined> {
-  // Simulate network delay
-  await new Promise((resolve) => setTimeout(resolve, 300));
-  return PROJECTS.find((p) => p.id === id);
+  const response = await fetch(`/api/projects/${id}`);
+  if (response.status === 404) {
+    return undefined;
+  }
+  return handleResponse<Project>(response);
 }
 
 export async function getFeaturedProjects(): Promise<Project[]> {
-  // Simulate network delay
-  await new Promise((resolve) => setTimeout(resolve, 400));
-  return PROJECTS.slice(0, 6);
+  const projects = await getProjects();
+  return projects.slice(0, 6);
 }
 
 export async function getLocations(): Promise<string[]> {
-  const locations = new Set(PROJECTS.map((p) => p.location));
-  return Array.from(locations).sort();
+  const response = await fetch('/api/locations');
+  return handleResponse<string[]>(response);
 }
 
-// TODO: Implement real API calls in Phase 2
-// export const api = {
-//   getProjects: (filters) => fetch('/api/projects', { params: filters }),
-//   getProjectById: (id) => fetch(`/api/projects/${id}`),
-// };
+export async function submitContactInquiry(inquiry: ContactInquiry): Promise<void> {
+  const response = await fetch('/api/contact', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(inquiry),
+  });
+  await handleResponse(response);
+}
+
+export async function submitViewingRequest(request: ViewingRequest): Promise<void> {
+  const response = await fetch('/api/viewing-requests', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(request),
+  });
+  await handleResponse(response);
+}

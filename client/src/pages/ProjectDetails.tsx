@@ -1,5 +1,5 @@
 import Layout from "@/components/Layout";
-import { getProjectById } from "@/lib/api";
+import { getProjectById, submitViewingRequest } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import { useRoute } from "wouter";
 import { Button } from "@/components/ui/button";
@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { MapPin, BedDouble, Maximize, Check, Calendar, ArrowLeft, Shield } from "lucide-react";
 import { Link } from "wouter";
-import { useState, useEffect } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import { useToast } from "@/hooks/use-toast";
 
 export default function ProjectDetails() {
@@ -44,18 +44,38 @@ export default function ProjectDetails() {
     setSelectedImage(project.images[0]);
   }
 
-  const handleScheduleSubmit = (e: React.FormEvent) => {
+  const handleScheduleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    
     setIsSubmitting(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      await submitViewingRequest({
+        projectId: id,
+        firstName: formData.get('firstName') as string,
+        lastName: formData.get('lastName') as string,
+        email: formData.get('email') as string,
+        phone: formData.get('phone') as string,
+        preferredDate: formData.get('preferredDate') as string,
+        message: formData.get('message') as string || undefined,
+      });
+      
       setIsDialogOpen(false);
       toast({
         title: "Request Sent",
         description: "An agent will contact you shortly to confirm your viewing.",
       });
-    }, 1000);
+      
+      e.currentTarget.reset();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to submit request. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (isLoading) {
@@ -130,17 +150,53 @@ export default function ProjectDetails() {
                     </DialogHeader>
                     <form onSubmit={handleScheduleSubmit} className="space-y-4 mt-4">
                       <div className="grid grid-cols-2 gap-4">
-                        <Input placeholder="First Name" required />
-                        <Input placeholder="Last Name" required />
+                        <Input 
+                          name="firstName"
+                          placeholder="First Name" 
+                          required 
+                          data-testid="input-viewing-first-name"
+                        />
+                        <Input 
+                          name="lastName"
+                          placeholder="Last Name" 
+                          required 
+                          data-testid="input-viewing-last-name"
+                        />
                       </div>
-                      <Input type="email" placeholder="Email" required />
-                      <Input type="tel" placeholder="Phone" required />
+                      <Input 
+                        name="email"
+                        type="email" 
+                        placeholder="Email" 
+                        required 
+                        data-testid="input-viewing-email"
+                      />
+                      <Input 
+                        name="phone"
+                        type="tel" 
+                        placeholder="Phone" 
+                        required 
+                        data-testid="input-viewing-phone"
+                      />
                       <div className="space-y-2">
                          <label className="text-sm font-medium">Preferred Date</label>
-                         <Input type="date" required />
+                         <Input 
+                           name="preferredDate"
+                           type="date" 
+                           required 
+                           data-testid="input-viewing-date"
+                         />
                       </div>
-                      <Textarea placeholder="Any specific questions or preferences?" />
-                      <Button type="submit" className="w-full" disabled={isSubmitting}>
+                      <Textarea 
+                        name="message"
+                        placeholder="Any specific questions or preferences?" 
+                        data-testid="input-viewing-message"
+                      />
+                      <Button 
+                        type="submit" 
+                        className="w-full" 
+                        disabled={isSubmitting}
+                        data-testid="button-submit-viewing"
+                      >
                         {isSubmitting ? "Sending..." : "Request Appointment"}
                       </Button>
                     </form>

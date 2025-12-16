@@ -4,8 +4,45 @@ import { Mail, Phone, MapPin, Clock, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
+import { submitContactInquiry } from "@/lib/api";
+import { useState, FormEvent } from "react";
 
 export default function Contact() {
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    
+    setIsSubmitting(true);
+    try {
+      await submitContactInquiry({
+        firstName: formData.get('firstName') as string,
+        lastName: formData.get('lastName') as string,
+        email: formData.get('email') as string,
+        phone: formData.get('phone') as string,
+        message: formData.get('message') as string,
+      });
+      
+      toast({
+        title: "Message Sent",
+        description: "We'll get back to you as soon as possible.",
+      });
+      
+      e.currentTarget.reset();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to send message. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <Layout>
       {/* Header */}
@@ -88,38 +125,73 @@ export default function Contact() {
             {/* Contact Form */}
             <div className="bg-card p-8 md:p-10 rounded-2xl shadow-lg border border-border">
               <h2 className="text-2xl font-heading font-bold mb-6">Send us a Message</h2>
-              <form className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-sm font-medium">First Name</label>
-                    <Input placeholder="John" className="bg-background" />
+                    <Input 
+                      name="firstName"
+                      placeholder="John" 
+                      className="bg-background" 
+                      required 
+                      data-testid="input-first-name"
+                    />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Last Name</label>
-                    <Input placeholder="Doe" className="bg-background" />
+                    <Input 
+                      name="lastName"
+                      placeholder="Doe" 
+                      className="bg-background" 
+                      required 
+                      data-testid="input-last-name"
+                    />
                   </div>
                 </div>
                 
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Email</label>
-                  <Input type="email" placeholder="john@example.com" className="bg-background" />
+                  <Input 
+                    name="email"
+                    type="email" 
+                    placeholder="john@example.com" 
+                    className="bg-background" 
+                    required 
+                    data-testid="input-email"
+                  />
                 </div>
 
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Phone</label>
-                  <Input type="tel" placeholder="+971 50 000 0000" className="bg-background" />
+                  <Input 
+                    name="phone"
+                    type="tel" 
+                    placeholder="+971 50 000 0000" 
+                    className="bg-background" 
+                    required 
+                    data-testid="input-phone"
+                  />
                 </div>
 
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Message</label>
                   <Textarea 
+                    name="message"
                     placeholder="I'm interested in..." 
                     className="min-h-[150px] bg-background resize-none" 
+                    required 
+                    data-testid="input-message"
                   />
                 </div>
 
-                <Button size="lg" className="w-full text-lg">
-                  Send Message
+                <Button 
+                  type="submit" 
+                  size="lg" 
+                  className="w-full text-lg" 
+                  disabled={isSubmitting}
+                  data-testid="button-submit-contact"
+                >
+                  {isSubmitting ? "Sending..." : "Send Message"}
                   <Send className="ml-2 h-4 w-4" />
                 </Button>
               </form>
