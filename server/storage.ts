@@ -22,6 +22,7 @@ export interface IStorage {
     status?: string;
   }): Promise<Project[]>;
   createProject(project: InsertProject): Promise<Project>;
+  deleteProject(id: number): Promise<boolean>;
 
   // Contact Inquiries
   createContactInquiry(inquiry: InsertContactInquiry): Promise<ContactInquiry>;
@@ -70,6 +71,11 @@ export class DatabaseStorage implements IStorage {
   async createProject(project: InsertProject): Promise<Project> {
     const result = await db.insert(projects).values(project).returning();
     return result[0];
+  }
+
+  async deleteProject(id: number): Promise<boolean> {
+    const result = await db.delete(projects).where(eq(projects.id, id)).returning();
+    return result.length > 0;
   }
 
   async createContactInquiry(inquiry: InsertContactInquiry): Promise<ContactInquiry> {

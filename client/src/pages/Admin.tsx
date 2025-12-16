@@ -10,18 +10,39 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-import { useState, FormEvent } from "react";
-import { Plus, Trash2, Upload, Lock } from "lucide-react";
+import { useState, FormEvent, useEffect } from "react";
+import { Plus, Trash2, Upload, Lock, Building } from "lucide-react";
+import { Project, getProjects } from "@/lib/api";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export default function Admin() {
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [images, setImages] = useState<string[]>([""]);
   const [features, setFeatures] = useState<string[]>([""]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
   const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
+
+  const { data: existingProjects, refetch } = useQuery({
+    queryKey: ['adminProjects'],
+    queryFn: () => getProjects(),
+    enabled: isAuthenticated,
+  });
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
@@ -36,7 +57,6 @@ export default function Admin() {
 
       if (response.ok) {
         setIsAuthenticated(true);
-        sessionStorage.setItem('adminAuth', 'true');
       } else {
         toast({
           title: "Access Denied",
@@ -52,6 +72,36 @@ export default function Admin() {
       });
     } finally {
       setIsAuthenticating(false);
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    setDeletingId(id);
+    try {
+      const response = await fetch(`/api/projects/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete');
+      }
+
+      toast({
+        title: "Success",
+        description: "Property has been deleted",
+      });
+      
+      refetch();
+      queryClient.invalidateQueries({ queryKey: ['projects'] });
+      queryClient.invalidateQueries({ queryKey: ['featuredProjects'] });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete property",
+        variant: "destructive",
+      });
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -104,6 +154,9 @@ export default function Admin() {
       e.currentTarget.reset();
       setImages([""]);
       setFeatures([""]);
+      refetch();
+      queryClient.invalidateQueries({ queryKey: ['projects'] });
+      queryClient.invalidateQueries({ queryKey: ['featuredProjects'] });
     } catch (error) {
       toast({
         title: "Error",
@@ -183,197 +236,262 @@ export default function Admin() {
       <section className="bg-secondary/30 py-12">
         <div className="container mx-auto px-4">
           <Badge className="bg-primary/90 text-primary-foreground mb-4">Admin</Badge>
-          <h1 className="text-3xl md:text-4xl font-heading font-bold mb-4">Add New Property</h1>
+          <h1 className="text-3xl md:text-4xl font-heading font-bold mb-4">Property Management</h1>
           <p className="text-muted-foreground">
-            Fill out the form below to add a new property listing to the website.
+            Add new properties or manage existing listings.
           </p>
         </div>
       </section>
 
       <section className="py-12 bg-background">
-        <div className="container mx-auto px-4 max-w-3xl">
-          <form onSubmit={handleSubmit} className="space-y-8">
-            {/* Basic Info */}
-            <div className="bg-card p-6 rounded-xl border border-border space-y-6">
-              <h2 className="text-xl font-bold">Basic Information</h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Property Name *</label>
-                  <Input 
-                    name="name" 
-                    placeholder="e.g., Salsabeel Golf View" 
-                    required 
-                    data-testid="input-property-name"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Location *</label>
-                  <Input 
-                    name="location" 
-                    placeholder="e.g., Al Zorah, Ajman" 
-                    required 
-                    data-testid="input-property-location"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Status *</label>
-                  <Select name="status" required>
-                    <SelectTrigger data-testid="select-status">
-                      <SelectValue placeholder="Select status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Ready to Move">Ready to Move</SelectItem>
-                      <SelectItem value="Under Construction">Under Construction</SelectItem>
-                      <SelectItem value="Coming Soon">Coming Soon</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Type *</label>
-                  <Select name="type" required>
-                    <SelectTrigger data-testid="select-type">
-                      <SelectValue placeholder="Select type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="buy">For Sale</SelectItem>
-                      <SelectItem value="rent">For Rent</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Starting Price *</label>
-                  <Input 
-                    name="startingPrice" 
-                    placeholder="e.g., AED 500,000" 
-                    required 
-                    data-testid="input-price"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Bedrooms *</label>
-                  <Input 
-                    name="bedrooms" 
-                    placeholder="e.g., 1-2" 
-                    required 
-                    data-testid="input-bedrooms"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Size (sqft) *</label>
-                  <Input 
-                    name="sizeSqft" 
-                    placeholder="e.g., 800 - 1200" 
-                    required 
-                    data-testid="input-size"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Property Type *</label>
-                <Input 
-                  name="propertyType" 
-                  placeholder="e.g., Apartments & Townhouses" 
-                  required 
-                  data-testid="input-property-type"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Description *</label>
-                <Textarea 
-                  name="description" 
-                  placeholder="Describe the property..." 
-                  className="min-h-[120px]" 
-                  required 
-                  data-testid="input-description"
-                />
-              </div>
-            </div>
-
-            {/* Images */}
-            <div className="bg-card p-6 rounded-xl border border-border space-y-4">
-              <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold">Images</h2>
-                <Button type="button" variant="outline" size="sm" onClick={addImageField}>
-                  <Plus className="h-4 w-4 mr-2" /> Add Image
-                </Button>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Enter image URLs. The first image will be the main photo.
-              </p>
-              
-              {images.map((img, index) => (
-                <div key={index} className="flex gap-2">
-                  <Input 
-                    value={img}
-                    onChange={(e) => updateImage(index, e.target.value)}
-                    placeholder={`Image URL ${index + 1}`}
-                    data-testid={`input-image-${index}`}
-                  />
-                  {images.length > 1 && (
-                    <Button 
-                      type="button" 
-                      variant="ghost" 
-                      size="icon"
-                      onClick={() => removeImageField(index)}
+        <div className="container mx-auto px-4 max-w-5xl">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            {/* Existing Properties */}
+            <div className="lg:col-span-1">
+              <div className="bg-card p-6 rounded-xl border border-border sticky top-20">
+                <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+                  <Building className="h-5 w-5" />
+                  Existing Properties ({existingProjects?.length || 0})
+                </h2>
+                
+                <div className="space-y-3 max-h-[60vh] overflow-y-auto">
+                  {existingProjects?.map((project) => (
+                    <div 
+                      key={project.id} 
+                      className="flex items-center justify-between p-3 bg-secondary/30 rounded-lg"
                     >
-                      <Trash2 className="h-4 w-4 text-destructive" />
-                    </Button>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-sm truncate">{project.name}</p>
+                        <p className="text-xs text-muted-foreground truncate">{project.location}</p>
+                      </div>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            className="shrink-0 ml-2"
+                            disabled={deletingId === project.id}
+                          >
+                            <Trash2 className="h-4 w-4 text-destructive" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Delete Property</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Are you sure you want to delete "{project.name}"? This action cannot be undone.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction 
+                              onClick={() => handleDelete(project.id)}
+                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                            >
+                              Delete
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </div>
+                  ))}
+                  
+                  {existingProjects?.length === 0 && (
+                    <p className="text-sm text-muted-foreground text-center py-4">
+                      No properties yet
+                    </p>
                   )}
                 </div>
-              ))}
-            </div>
-
-            {/* Features */}
-            <div className="bg-card p-6 rounded-xl border border-border space-y-4">
-              <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold">Features</h2>
-                <Button type="button" variant="outline" size="sm" onClick={addFeatureField}>
-                  <Plus className="h-4 w-4 mr-2" /> Add Feature
-                </Button>
               </div>
-              
-              {features.map((feature, index) => (
-                <div key={index} className="flex gap-2">
-                  <Input 
-                    value={feature}
-                    onChange={(e) => updateFeature(index, e.target.value)}
-                    placeholder={`Feature ${index + 1} (e.g., Swimming Pool)`}
-                    data-testid={`input-feature-${index}`}
-                  />
-                  {features.length > 1 && (
-                    <Button 
-                      type="button" 
-                      variant="ghost" 
-                      size="icon"
-                      onClick={() => removeFeatureField(index)}
-                    >
-                      <Trash2 className="h-4 w-4 text-destructive" />
-                    </Button>
-                  )}
-                </div>
-              ))}
             </div>
 
-            <Button 
-              type="submit" 
-              size="lg" 
-              className="w-full" 
-              disabled={isSubmitting}
-              data-testid="button-submit-property"
-            >
-              {isSubmitting ? "Adding Property..." : "Add Property"}
-              <Upload className="ml-2 h-4 w-4" />
-            </Button>
-          </form>
+            {/* Add New Property Form */}
+            <div className="lg:col-span-2">
+              <form onSubmit={handleSubmit} className="space-y-8">
+                {/* Basic Info */}
+                <div className="bg-card p-6 rounded-xl border border-border space-y-6">
+                  <h2 className="text-xl font-bold">Add New Property</h2>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Property Name *</label>
+                      <Input 
+                        name="name" 
+                        placeholder="e.g., Salsabeel Golf View" 
+                        required 
+                        data-testid="input-property-name"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Location *</label>
+                      <Input 
+                        name="location" 
+                        placeholder="e.g., Al Zorah, Ajman" 
+                        required 
+                        data-testid="input-property-location"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Status *</label>
+                      <Select name="status" required>
+                        <SelectTrigger data-testid="select-status">
+                          <SelectValue placeholder="Select status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Ready to Move">Ready to Move</SelectItem>
+                          <SelectItem value="Under Construction">Under Construction</SelectItem>
+                          <SelectItem value="Coming Soon">Coming Soon</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Type *</label>
+                      <Select name="type" required>
+                        <SelectTrigger data-testid="select-type">
+                          <SelectValue placeholder="Select type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="buy">For Sale</SelectItem>
+                          <SelectItem value="rent">For Rent</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Starting Price *</label>
+                      <Input 
+                        name="startingPrice" 
+                        placeholder="e.g., AED 500,000" 
+                        required 
+                        data-testid="input-price"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Bedrooms *</label>
+                      <Input 
+                        name="bedrooms" 
+                        placeholder="e.g., 1-2" 
+                        required 
+                        data-testid="input-bedrooms"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Size (sqft) *</label>
+                      <Input 
+                        name="sizeSqft" 
+                        placeholder="e.g., 800 - 1200" 
+                        required 
+                        data-testid="input-size"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Property Type *</label>
+                    <Input 
+                      name="propertyType" 
+                      placeholder="e.g., Apartments & Townhouses" 
+                      required 
+                      data-testid="input-property-type"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Description *</label>
+                    <Textarea 
+                      name="description" 
+                      placeholder="Describe the property..." 
+                      className="min-h-[120px]" 
+                      required 
+                      data-testid="input-description"
+                    />
+                  </div>
+                </div>
+
+                {/* Images */}
+                <div className="bg-card p-6 rounded-xl border border-border space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-xl font-bold">Images</h2>
+                    <Button type="button" variant="outline" size="sm" onClick={addImageField}>
+                      <Plus className="h-4 w-4 mr-2" /> Add Image
+                    </Button>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Enter image URLs. The first image will be the main photo.
+                  </p>
+                  
+                  {images.map((img, index) => (
+                    <div key={index} className="flex gap-2">
+                      <Input 
+                        value={img}
+                        onChange={(e) => updateImage(index, e.target.value)}
+                        placeholder={`Image URL ${index + 1}`}
+                        data-testid={`input-image-${index}`}
+                      />
+                      {images.length > 1 && (
+                        <Button 
+                          type="button" 
+                          variant="ghost" 
+                          size="icon"
+                          onClick={() => removeImageField(index)}
+                        >
+                          <Trash2 className="h-4 w-4 text-destructive" />
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                {/* Features */}
+                <div className="bg-card p-6 rounded-xl border border-border space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-xl font-bold">Features</h2>
+                    <Button type="button" variant="outline" size="sm" onClick={addFeatureField}>
+                      <Plus className="h-4 w-4 mr-2" /> Add Feature
+                    </Button>
+                  </div>
+                  
+                  {features.map((feature, index) => (
+                    <div key={index} className="flex gap-2">
+                      <Input 
+                        value={feature}
+                        onChange={(e) => updateFeature(index, e.target.value)}
+                        placeholder={`Feature ${index + 1} (e.g., Swimming Pool)`}
+                        data-testid={`input-feature-${index}`}
+                      />
+                      {features.length > 1 && (
+                        <Button 
+                          type="button" 
+                          variant="ghost" 
+                          size="icon"
+                          onClick={() => removeFeatureField(index)}
+                        >
+                          <Trash2 className="h-4 w-4 text-destructive" />
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                <Button 
+                  type="submit" 
+                  size="lg" 
+                  className="w-full" 
+                  disabled={isSubmitting}
+                  data-testid="button-submit-property"
+                >
+                  {isSubmitting ? "Adding Property..." : "Add Property"}
+                  <Upload className="ml-2 h-4 w-4" />
+                </Button>
+              </form>
+            </div>
+          </div>
         </div>
       </section>
     </Layout>
