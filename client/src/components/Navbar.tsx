@@ -13,7 +13,8 @@ export default function Navbar() {
     { href: "/projects", label: "Properties" },
     { href: "/projects?type=buy", label: "Buy" },
     { href: "/projects?type=rent", label: "Rent" },
-    { href: "/about", label: "About" },
+    { href: "/about", label: "About Us" },
+    { href: "/contact", label: "Contact" },
   ];
 
   return (
@@ -22,7 +23,7 @@ export default function Navbar() {
         <Link href="/">
           <a className="flex items-center gap-2 font-heading font-bold text-xl text-primary">
             <Building2 className="h-6 w-6" />
-            <span>ESTATE</span>
+            <span>SALSABEEL</span>
           </a>
         </Link>
 

@@ -10,10 +10,10 @@ export default function Footer() {
           <div className="space-y-4">
             <div className="flex items-center gap-2 font-heading font-bold text-xl">
               <Building2 className="h-6 w-6" />
-              <span>ESTATE</span>
+              <span>SALSABEEL</span>
             </div>
             <p className="text-primary-foreground/70 text-sm leading-relaxed">
-              Premium real estate services for modern living. Find your dream home with us.
+              Salsabeel envisions a world where every person finds their perfect Home.
             </p>
           </div>
 
@@ -43,10 +43,12 @@ export default function Footer() {
           <div>
             <h3 className="font-heading font-semibold mb-4 text-lg">Contact</h3>
             <div className="space-y-2 text-sm text-primary-foreground/70">
-              <p>123 Luxury Lane</p>
-              <p>Beverly Hills, CA 90210</p>
-              <p>+1 (555) 123-4567</p>
-              <p>hello@estate.com</p>
+              <p>Villa No 8, Salsabeel Real Estate LLC</p>
+              <p>University Street, Al Jurf 1</p>
+              <p>Ajman, UAE</p>
+              <p>+971 52 424 2410</p>
+              <p>marketing@salsabeelre.com</p>
+              <p>info@saslabeel.com</p>
               
               <div className="flex gap-4 mt-4">
                 <a href="#" className="hover:text-white transition-colors"><Facebook className="h-5 w-5" /></a>
@@ -59,7 +61,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-primary-foreground/10 pt-8 text-center text-xs text-primary-foreground/50">
-          <p>&copy; {new Date().getFullYear()} Estate Real Estate. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Salsabeel Real Estate LLC. All rights reserved.</p>
         </div>
       </div>
     </footer>

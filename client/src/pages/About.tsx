@@ -18,13 +18,13 @@ export default function About() {
         
         <div className="relative z-10 container mx-auto px-4 text-center">
           <Badge className="bg-primary/90 text-primary-foreground mb-4 animate-in slide-in-from-bottom-4 duration-500">
-            About Estate
+            About Salsabeel
           </Badge>
           <h1 className="text-4xl md:text-6xl font-heading font-bold text-white mb-6 animate-in slide-in-from-bottom-4 duration-700 delay-100">
-            Redefining Luxury Real Estate <br/> in the UAE
+            Your Bridge to the <br/> Perfect Home
           </h1>
           <p className="text-lg md:text-xl text-white/90 mb-10 max-w-2xl mx-auto animate-in slide-in-from-bottom-6 duration-700 delay-200 font-light">
-            We are the premier real estate agency connecting global investors with exceptional properties across the Emirates.
+            Connecting people with properties that truly reflect their unique preferences and needs.
           </p>
         </div>
       </section>
@@ -34,12 +34,12 @@ export default function About() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-               <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">Our Mission</h2>
+               <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">Our Vision</h2>
                <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                 At Estate, we believe that finding a home is more than just a transaction; it's about finding a sanctuary that reflects your lifestyle and aspirations.
+                 Salsabeel envisions a world where every person finds their perfect Home whether its a cozy apartment, a stylish condominium, or a spacious family house.
                </p>
                <p className="text-lg text-muted-foreground leading-relaxed">
-                 With over 15 years of experience in the UAE market, we specialize in luxury residential and commercial properties. Our team of expert advisors provides bespoke service, ensuring that every client finds their perfect match in this dynamic and fast-growing region.
+                 We strive to be the bridge that connects people with the properties that truly reflect their unique preferences and needs.
                </p>
             </div>
             <div className="relative">
