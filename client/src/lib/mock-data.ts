@@ -14,6 +14,23 @@ export interface Project {
 
 export const PROJECTS: Project[] = [
   {
+    id: 13,
+    name: "Salsabeel Golf View",
+    location: "Al Zorah, Ajman, UAE",
+    status: "Ready to Move",
+    type: "buy",
+    startingPrice: "Contact for Price",
+    bedrooms: 2,
+    sizeSqft: 3364,
+    description: "Premium apartments in Al Zorah, Ajman offering stunning golf course views. Spacious layouts ranging from 493 to 3364 Sq Ft, designed for modern luxury living.",
+    images: [
+      "attached_assets/Untitled-design-15-1-1_1765881960651.png",
+      "attached_assets/stock_images/luxury_living_room_i_09908d3c.jpg",
+      "attached_assets/stock_images/luxury_living_room_i_15d09f92.jpg"
+    ],
+    features: ["Golf Course View", "Nature Reserve Access", "Modern Design", "Spacious Balconies"]
+  },
+  {
     id: 1,
     name: "The Palm Royale",
     location: "Palm Jumeirah, Dubai",
