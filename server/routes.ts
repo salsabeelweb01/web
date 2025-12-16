@@ -91,6 +91,18 @@ export async function registerRoutes(
     }
   });
 
+  // Verify admin password
+  app.post("/api/admin/verify", async (req, res) => {
+    const { password } = req.body;
+    const adminPassword = process.env.ADMIN_PASSWORD || "admin123";
+    
+    if (password === adminPassword) {
+      res.json({ success: true });
+    } else {
+      res.status(401).json({ error: "Invalid password" });
+    }
+  });
+
   // Create new project (admin)
   app.post("/api/projects", async (req, res) => {
     try {

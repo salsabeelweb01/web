@@ -12,13 +12,48 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useState, FormEvent } from "react";
-import { Plus, Trash2, Upload } from "lucide-react";
+import { Plus, Trash2, Upload, Lock } from "lucide-react";
 
 export default function Admin() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [images, setImages] = useState<string[]>([""]);
   const [features, setFeatures] = useState<string[]>([""]);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [password, setPassword] = useState("");
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
+
+  const handleLogin = async (e: FormEvent) => {
+    e.preventDefault();
+    setIsAuthenticating(true);
+    
+    try {
+      const response = await fetch('/api/admin/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+
+      if (response.ok) {
+        setIsAuthenticated(true);
+        sessionStorage.setItem('adminAuth', 'true');
+      } else {
+        toast({
+          title: "Access Denied",
+          description: "Incorrect password",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to verify password",
+        variant: "destructive",
+      });
+    } finally {
+      setIsAuthenticating(false);
+    }
+  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -103,6 +138,45 @@ export default function Admin() {
     newFeatures[index] = value;
     setFeatures(newFeatures);
   };
+
+  if (!isAuthenticated) {
+    return (
+      <Layout>
+        <section className="min-h-[70vh] flex items-center justify-center bg-background">
+          <div className="w-full max-w-md p-8">
+            <div className="bg-card p-8 rounded-2xl shadow-lg border border-border text-center">
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Lock className="h-8 w-8 text-primary" />
+              </div>
+              <h1 className="text-2xl font-heading font-bold mb-2">Admin Access</h1>
+              <p className="text-muted-foreground mb-6">
+                Enter your password to access the admin panel
+              </p>
+              
+              <form onSubmit={handleLogin} className="space-y-4">
+                <Input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter password"
+                  required
+                  data-testid="input-admin-password"
+                />
+                <Button 
+                  type="submit" 
+                  className="w-full" 
+                  disabled={isAuthenticating}
+                  data-testid="button-admin-login"
+                >
+                  {isAuthenticating ? "Verifying..." : "Access Admin Panel"}
+                </Button>
+              </form>
+            </div>
+          </div>
+        </section>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
