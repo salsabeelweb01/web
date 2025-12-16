@@ -54,7 +54,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Maximize className="h-4 w-4 text-primary/70" />
-            <span>{project.sizeSqft.toLocaleString()} sqft</span>
+            <span>{project.sizeSqft} sqft</span>
           </div>
         </div>
       </CardContent>

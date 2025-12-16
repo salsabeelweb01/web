@@ -1,8 +1,9 @@
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Building2, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import logo from "@assets/logo.png";
 
 export default function Navbar() {
   const [location] = useLocation();
@@ -22,8 +23,7 @@ export default function Navbar() {
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/">
           <a className="flex items-center gap-2 font-heading font-bold text-xl text-primary">
-            <Building2 className="h-6 w-6" />
-            <span>SALSABEEL</span>
+            <img src={logo} alt="Salsabeel Real Estate" className="h-12 w-auto" />
           </a>
         </Link>
 

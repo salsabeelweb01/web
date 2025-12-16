@@ -2,6 +2,11 @@ import Layout from "@/components/Layout";
 import { Badge } from "@/components/ui/badge";
 import { Users, Globe, Building, Award } from "lucide-react";
 
+import teamMuna from "@assets/team/muna_jaber.jpeg";
+import teamRomany from "@assets/team/romany_nabil.jpg";
+import teamAhmedF from "@assets/team/ahmed_fawzy.jpeg";
+import teamAhmedH from "@assets/team/ahmed_hammad.jpg";
+
 export default function About() {
   return (
     <Layout>
@@ -21,39 +26,35 @@ export default function About() {
             About Salsabeel
           </Badge>
           <h1 className="text-4xl md:text-6xl font-heading font-bold text-white mb-6 animate-in slide-in-from-bottom-4 duration-700 delay-100">
-            Your Bridge to the <br/> Perfect Home
+            8 Years of <br/> Undefeated Success
           </h1>
           <p className="text-lg md:text-xl text-white/90 mb-10 max-w-2xl mx-auto animate-in slide-in-from-bottom-6 duration-700 delay-200 font-light">
-            Connecting people with properties that truly reflect their unique preferences and needs.
+            Founded in 2016, we are a leader in marketing and developing real estate projects in the Emirate of Ajman.
           </p>
         </div>
       </section>
 
-      {/* Mission */}
+      {/* Mission & Vision */}
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             <div>
                <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">Our Vision</h2>
                <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                 Salsabeel envisions a world where every person finds their perfect Home whether its a cozy apartment, a stylish condominium, or a spacious family house.
+                 To be the leading real estate company in the Emirate of Ajman, delivering innovative projects that reflect excellence and sustainability, while enhancing the quality of life for the communities we serve.
                </p>
                <p className="text-lg text-muted-foreground leading-relaxed">
-                 We strive to be the bridge that connects people with the properties that truly reflect their unique preferences and needs.
+                 Salsabeel envisions a world where every person finds their perfect Home—whether it's a cozy apartment, a stylish condominium, or a spacious family house.
                </p>
             </div>
-            <div className="relative">
-              <div className="aspect-[4/3] rounded-lg overflow-hidden shadow-2xl">
-                <img 
-                  src="attached_assets/stock_images/real_estate_team_mee_edfe8f79.jpg" 
-                  alt="Our Team" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="absolute -bottom-8 -left-8 bg-card p-6 rounded-lg shadow-xl border border-border hidden md:block">
-                <div className="text-4xl font-bold text-primary mb-1">15+</div>
-                <div className="text-sm text-muted-foreground uppercase tracking-wider">Years of Excellence</div>
-              </div>
+            <div>
+               <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">Our Mission</h2>
+               <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+                 Salsabeel Real Estate aims to deliver innovative and high-quality real estate projects that meet the needs of individuals and families. We are committed to sustainability and enhancing the quality of life in the communities we serve.
+               </p>
+               <p className="text-lg text-muted-foreground leading-relaxed">
+                 Our goal is to be a leader in property development and real estate marketing in the Emirate of Ajman, offering apartments for sale, villas for rent, and unique real estate investment opportunities.
+               </p>
             </div>
           </div>
         </div>
@@ -65,51 +66,61 @@ export default function About() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div className="p-4">
               <Building className="h-10 w-10 mx-auto mb-4 opacity-80" />
-              <div className="text-4xl font-bold mb-2">500+</div>
-              <div className="text-sm opacity-70">Properties Sold</div>
-            </div>
-            <div className="p-4">
-              <Users className="h-10 w-10 mx-auto mb-4 opacity-80" />
-              <div className="text-4xl font-bold mb-2">10k+</div>
-              <div className="text-sm opacity-70">Happy Clients</div>
+              <div className="text-4xl font-bold mb-2">7+</div>
+              <div className="text-sm opacity-70">Projects</div>
             </div>
             <div className="p-4">
               <Award className="h-10 w-10 mx-auto mb-4 opacity-80" />
-              <div className="text-4xl font-bold mb-2">25+</div>
-              <div className="text-sm opacity-70">Industry Awards</div>
+              <div className="text-4xl font-bold mb-2">8+</div>
+              <div className="text-sm opacity-70">Years of Experience</div>
+            </div>
+            <div className="p-4">
+              <Users className="h-10 w-10 mx-auto mb-4 opacity-80" />
+              <div className="text-4xl font-bold mb-2">1000+</div>
+              <div className="text-sm opacity-70">Happy Clients</div>
             </div>
             <div className="p-4">
               <Globe className="h-10 w-10 mx-auto mb-4 opacity-80" />
-              <div className="text-4xl font-bold mb-2">50+</div>
-              <div className="text-sm opacity-70">Nationalities Served</div>
+              <div className="text-4xl font-bold mb-2">2016</div>
+              <div className="text-sm opacity-70">Founded</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Team */}
+      {/* Management Team */}
       <section className="py-20 bg-secondary/30">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-12">Meet Our Leadership</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-background rounded-xl overflow-hidden shadow-sm border border-border group hover:shadow-md transition-all">
-                <div className="aspect-[3/4] bg-muted relative overflow-hidden">
-                  <img 
-                    src={`attached_assets/stock_images/real_estate_team_mee_27230845.jpg`} 
-                    alt="Team Member" 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 grayscale group-hover:grayscale-0"
-                  />
-                </div>
-                <div className="p-6">
-                  <h3 className="font-heading font-bold text-xl mb-1">Alex Morgan</h3>
-                  <p className="text-sm text-primary uppercase tracking-wider mb-4">Senior Partner</p>
-                  <p className="text-muted-foreground text-sm">
-                    Specializing in Downtown and Palm Jumeirah luxury investments.
-                  </p>
-                </div>
+          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-12">Management Team</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="bg-background rounded-xl overflow-hidden shadow-sm border border-border group hover:shadow-md transition-all p-6">
+              <div className="w-24 h-24 bg-muted rounded-full mx-auto mb-4 overflow-hidden">
+                 <img src={teamMuna} className="w-full h-full object-cover" alt="Muna jaber" />
               </div>
-            ))}
+              <h3 className="font-heading font-bold text-xl mb-1">Muna Jaber</h3>
+              <p className="text-sm text-primary uppercase tracking-wider">CEO</p>
+            </div>
+            <div className="bg-background rounded-xl overflow-hidden shadow-sm border border-border group hover:shadow-md transition-all p-6">
+              <div className="w-24 h-24 bg-muted rounded-full mx-auto mb-4 overflow-hidden">
+                 <img src={teamRomany} className="w-full h-full object-cover" alt="Romany Nabil" />
+              </div>
+              <h3 className="font-heading font-bold text-xl mb-1">Romany Nabil</h3>
+              <p className="text-sm text-primary uppercase tracking-wider">General Manager</p>
+            </div>
+            <div className="bg-background rounded-xl overflow-hidden shadow-sm border border-border group hover:shadow-md transition-all p-6">
+              <div className="w-24 h-24 bg-muted rounded-full mx-auto mb-4 overflow-hidden">
+                 <img src={teamAhmedF} className="w-full h-full object-cover" alt="Ahmed Fawzy" />
+              </div>
+              <h3 className="font-heading font-bold text-xl mb-1">Ahmed Fawzy</h3>
+              <p className="text-sm text-primary uppercase tracking-wider">Sales Manager</p>
+            </div>
+            <div className="bg-background rounded-xl overflow-hidden shadow-sm border border-border group hover:shadow-md transition-all p-6">
+              <div className="w-24 h-24 bg-muted rounded-full mx-auto mb-4 overflow-hidden">
+                 <img src={teamAhmedH} className="w-full h-full object-cover" alt="Ahmed Hammad" />
+              </div>
+              <h3 className="font-heading font-bold text-xl mb-1">Ahmed Hammad</h3>
+              <p className="text-sm text-primary uppercase tracking-wider">Holding Manager</p>
+            </div>
           </div>
         </div>
       </section>

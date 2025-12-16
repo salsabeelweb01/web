@@ -5,6 +5,14 @@ import salsabeelImg4 from "@assets/Untitled-design-9-768x768_1765882673794.png";
 import salsabeelImg5 from "@assets/Untitled-design-10-768x768_1765882677104.png";
 import salsabeelImg6 from "@assets/Untitled-design-16-768x768_1765882680103.png";
 
+// Project Images from Website
+import pSalsabeelGolfView from "@assets/projects/salsabeel_golf_view.png";
+import pSalsabeel5 from "@assets/projects/salsabeel_5.png";
+import pReemAlSalsabeel from "@assets/projects/reem_al_salsabeel.png";
+import pSalsabeelParks from "@assets/projects/salsabeel_parks.png";
+import pGolfViewRes from "@assets/projects/golf_view_residence.png";
+import pAzora from "@assets/projects/azora_tower.png";
+
 export interface Project {
   id: number;
   name: string;
@@ -12,25 +20,28 @@ export interface Project {
   status: "Rent" | "Under Construction" | "Ready to Move";
   type: "rent" | "buy";
   startingPrice: string;
-  bedrooms: number;
-  sizeSqft: number;
+  bedrooms: number | string;
+  sizeSqft: string;
   description: string;
   images: string[];
   features: string[];
+  propertyType: string;
 }
 
 export const PROJECTS: Project[] = [
   {
-    id: 13,
+    id: 1,
     name: "Salsabeel Golf View",
-    location: "Al Zorah, Ajman, UAE",
+    location: "Al Zorah, Ajman",
     status: "Ready to Move",
     type: "buy",
     startingPrice: "Contact for Price",
-    bedrooms: 2,
-    sizeSqft: 3364,
-    description: "Premium apartments in Al Zorah, Ajman offering stunning golf course views. Spacious layouts ranging from 493 to 3364 Sq Ft, designed for modern luxury living.",
+    bedrooms: "1-2 & Townhouse",
+    sizeSqft: "493 - 3364",
+    description: "Premium apartments in Al Zorah, Ajman offering stunning golf course views. Spacious layouts designed for modern luxury living.",
+    propertyType: "Apartments & Townhouses",
     images: [
+      pSalsabeelGolfView,
       salsabeelImg,
       salsabeelImg2,
       salsabeelImg3,
@@ -41,207 +52,88 @@ export const PROJECTS: Project[] = [
     features: ["Golf Course View", "Nature Reserve Access", "Modern Design", "Spacious Balconies"]
   },
   {
-    id: 1,
-    name: "The Palm Royale",
-    location: "Palm Jumeirah, Dubai",
+    id: 2,
+    name: "Salsabeel 5",
+    location: "Al Alia, Ajman",
     status: "Ready to Move",
     type: "buy",
-    startingPrice: "AED 12,500,000",
-    bedrooms: 5,
-    sizeSqft: 6400,
-    description: "Experience the pinnacle of luxury living on the iconic Palm Jumeirah. Featuring private beach access, infinity pool, and panoramic views of the Dubai skyline.",
+    startingPrice: "Contact for Price",
+    bedrooms: "1-2",
+    sizeSqft: "955 - 1587",
+    description: "Spacious residential apartments and shops in Al Alia. Salsabeel 5 is designed for comfort and convenience.",
+    propertyType: "Shops & Apartments",
     images: [
-      "/attached_assets/stock_images/modern_luxury_home_e_c3d2b0c4.jpg",
-      "/attached_assets/stock_images/luxury_living_room_i_09908d3c.jpg",
-      "/attached_assets/stock_images/luxury_living_room_i_15d09f92.jpg"
+      pSalsabeel5,
+      "attached_assets/stock_images/modern_apartment_bui_c1d03950.jpg",
     ],
-    features: ["Private Beach", "Infinity Pool", "Smart Home System", "Maid's Room"]
-  },
-  {
-    id: 2,
-    name: "Downtown Heights",
-    location: "Downtown Dubai",
-    status: "Rent",
-    type: "rent",
-    startingPrice: "AED 180,000/yr",
-    bedrooms: 2,
-    sizeSqft: 1400,
-    description: "Modern apartments with direct views of the Burj Khalifa. Walking distance to Dubai Mall and Opera District.",
-    images: [
-      "/attached_assets/stock_images/modern_apartment_bui_0a227c55.jpg",
-      "/attached_assets/stock_images/luxury_living_room_i_139e9c46.jpg",
-      "/attached_assets/stock_images/luxury_living_room_i_de3389a8.jpg"
-    ],
-    features: ["Burj Khalifa View", "Rooftop Lounge", "Valet Parking", "Gym"]
+    features: ["Shops Available", "Finished Units", "Modern Design", "Prime Location"]
   },
   {
     id: 3,
-    name: "Saadiyat Beach Villas",
-    location: "Saadiyat Island, Abu Dhabi",
-    status: "Under Construction",
+    name: "Reem Al Salsabeel",
+    location: "Al Alia, Ajman",
+    status: "Ready to Move",
     type: "buy",
-    startingPrice: "AED 6,850,000",
-    bedrooms: 4,
-    sizeSqft: 4200,
-    description: "Exclusive villas nestled in nature near the cultural district. Sustainable design with open-concept living and private gardens.",
+    startingPrice: "Contact for Price",
+    bedrooms: "1",
+    sizeSqft: "1031.6 - 1070.5",
+    description: "Luxury redefined in Al Alia. Reem Al Salsabeel offers high-end finishes and spacious floor plans.",
+    propertyType: "Shops & 1 BHK",
     images: [
-      "/attached_assets/stock_images/modern_luxury_home_e_e035fd25.jpg",
-      "/attached_assets/stock_images/luxury_living_room_i_09908d3c.jpg",
-      "/attached_assets/stock_images/luxury_living_room_i_15d09f92.jpg"
+      pReemAlSalsabeel,
+      "attached_assets/stock_images/modern_apartment_bui_6ce365b6.jpg",
     ],
-    features: ["Beach Access", "Large Garden", "Near Louvre", "Walking Trails"]
+    features: ["Premium Finishes", "Shops Available", "Covered Parking", "Smart Access"]
   },
   {
     id: 4,
-    name: "Marina Gate Penthouses",
-    location: "Dubai Marina",
-    status: "Rent",
-    type: "rent",
-    startingPrice: "AED 350,000/yr",
-    bedrooms: 3,
-    sizeSqft: 2800,
-    description: "Premium waterfront living in the heart of Dubai Marina. High ceilings, panoramic glass walls, and 5-star amenities.",
+    name: "Salsabeel Parks",
+    location: "Al Alia, Ajman",
+    status: "Under Construction",
+    type: "buy",
+    startingPrice: "Contact for Price",
+    bedrooms: "1-2",
+    sizeSqft: "1136.6 - 1727.7",
+    description: "Modern living meets natural tranquility at Salsabeel Parks. Located in the developing Al Alia district.",
+    propertyType: "Shops & Apartments",
     images: [
-      "/attached_assets/stock_images/modern_apartment_bui_fc00fafc.jpg",
-      "/attached_assets/stock_images/luxury_living_room_i_139e9c46.jpg",
-      "/attached_assets/stock_images/luxury_living_room_i_de3389a8.jpg"
+      pSalsabeelParks,
+      "attached_assets/stock_images/modern_apartment_bui_0a227c55.jpg",
     ],
-    features: ["Marina View", "Infinity Pool", "Concierge", "Direct Tram Access"]
+    features: ["Community Parks", "Family Friendly", "Modern Finishes", "Parking"]
   },
   {
     id: 5,
-    name: "Jumeirah Golf Estates",
-    location: "Jumeirah Golf Estates, Dubai",
-    status: "Ready to Move",
+    name: "Salsabeel Golf View Residence Block A-B",
+    location: "Al Zorah, Ajman",
+    status: "Under Construction",
     type: "buy",
-    startingPrice: "AED 9,200,000",
-    bedrooms: 5,
-    sizeSqft: 5800,
-    description: "Mediterranean-inspired villas overlooking world-class golf courses. A serene community perfect for families.",
+    startingPrice: "Contact for Price",
+    bedrooms: "Studio, 1-2",
+    sizeSqft: "406 - 1803",
+    description: "The newest addition to the Golf View community. Block A-B offers refined living spaces with direct access to the Al Zorah Golf Club.",
+    propertyType: "Studio & Apartments",
     images: [
-      "/attached_assets/stock_images/modern_luxury_home_e_e68ceba0.jpg",
-      "/attached_assets/stock_images/luxury_living_room_i_09908d3c.jpg",
-      "/attached_assets/stock_images/luxury_living_room_i_15d09f92.jpg"
+      pGolfViewRes,
+      "attached_assets/stock_images/modern_apartment_bui_fc00fafc.jpg",
     ],
-    features: ["Golf Course View", "Private Pool", "Gated Community", "Clubhouse Access"]
+    features: ["Golf Views", "Swimming Pool", "Gym", "Gated Security"]
   },
   {
     id: 6,
-    name: "Business Bay Lofts",
-    location: "Business Bay, Dubai",
+    name: "Azora Tower",
+    location: "Al Zorah, Ajman",
     status: "Under Construction",
     type: "buy",
-    startingPrice: "AED 2,100,000",
-    bedrooms: 1,
-    sizeSqft: 950,
-    description: "Sleek, modern lofts designed for young professionals. Located along the Dubai Canal with easy access to Downtown.",
+    startingPrice: "Contact for Price",
+    bedrooms: "Studio, 1-3",
+    sizeSqft: "724 - 2468",
+    description: "Luxury tower living in Al Zorah. Azora Tower presents premium studios and apartments with breathtaking views.",
+    propertyType: "Studio & Apartments",
     images: [
-      "/attached_assets/stock_images/modern_apartment_bui_c1d03950.jpg",
-      "/attached_assets/stock_images/luxury_living_room_i_139e9c46.jpg",
-      "/attached_assets/stock_images/luxury_living_room_i_de3389a8.jpg"
+      pAzora,
+      "attached_assets/stock_images/luxury_living_room_i_139e9c46.jpg"
     ],
-    features: ["Canal View", "Smart Home", "Co-working Space", "Retail Podium"]
-  },
-  {
-    id: 7,
-    name: "Al Barari Reserve",
-    location: "Al Barari, Dubai",
-    status: "Rent",
-    type: "rent",
-    startingPrice: "AED 550,000/yr",
-    bedrooms: 6,
-    sizeSqft: 11000,
-    description: "An oasis of tranquility. These massive estates feature lush botanical gardens, freshwater streams, and ultimate privacy.",
-    images: [
-      "/attached_assets/stock_images/modern_luxury_home_e_d408787b.jpg",
-      "/attached_assets/stock_images/luxury_living_room_i_09908d3c.jpg",
-      "/attached_assets/stock_images/luxury_living_room_i_15d09f92.jpg"
-    ],
-    features: ["Botanical Gardens", "Private Cinema", "Staff Quarters", "Spa"]
-  },
-  {
-    id: 8,
-    name: "Yas Acres",
-    location: "Yas Island, Abu Dhabi",
-    status: "Ready to Move",
-    type: "buy",
-    startingPrice: "AED 4,800,000",
-    bedrooms: 4,
-    sizeSqft: 3800,
-    description: "Luxury living near the F1 track and theme parks. Spacious interiors and access to a world-class golf course and country club.",
-    images: [
-      "/attached_assets/stock_images/modern_luxury_home_e_c3d2b0c4.jpg",
-      "/attached_assets/stock_images/luxury_living_room_i_139e9c46.jpg",
-      "/attached_assets/stock_images/luxury_living_room_i_de3389a8.jpg"
-    ],
-    features: ["Golf Course", "Theme Park Access", "Community Pool", "Schools Nearby"]
-  },
-  {
-    id: 9,
-    name: "Bluewaters Residences",
-    location: "Bluewaters Island, Dubai",
-    status: "Rent",
-    type: "rent",
-    startingPrice: "AED 280,000/yr",
-    bedrooms: 2,
-    sizeSqft: 1600,
-    description: "Island living with views of Ain Dubai. Vibrant lifestyle destination with retail, dining, and hospitality at your doorstep.",
-    images: [
-      "/attached_assets/stock_images/modern_apartment_bui_6ce365b6.jpg",
-      "/attached_assets/stock_images/luxury_living_room_i_09908d3c.jpg",
-      "/attached_assets/stock_images/luxury_living_room_i_15d09f92.jpg"
-    ],
-    features: ["Ain Dubai View", "Beach Club", "Pedestrian Bridge to JBR", "Podium Gardens"]
-  },
-  {
-    id: 10,
-    name: "Emirates Hills Mansion",
-    location: "Emirates Hills, Dubai",
-    status: "Ready to Move",
-    type: "buy",
-    startingPrice: "AED 45,000,000",
-    bedrooms: 7,
-    sizeSqft: 18000,
-    description: "The Beverly Hills of Dubai. A palatial mansion overlooking the Montgomerie Golf Course with custom finishes throughout.",
-    images: [
-      "attached_assets/stock_images/modern_luxury_home_e_e035fd25.jpg",
-      "attached_assets/stock_images/luxury_living_room_i_139e9c46.jpg",
-      "attached_assets/stock_images/luxury_living_room_i_de3389a8.jpg"
-    ],
-    features: ["Golf Front", "Private Elevator", "Home Theater", "Basement Parking"]
-  },
-  {
-    id: 11,
-    name: "Creek Harbour Horizon",
-    location: "Dubai Creek Harbour",
-    status: "Under Construction",
-    type: "rent",
-    startingPrice: "AED 110,000/yr",
-    bedrooms: 1,
-    sizeSqft: 850,
-    description: "Future-ready living in the new heart of Dubai. Stunning views of the Creek Tower and wildlife sanctuary.",
-    images: [
-      "attached_assets/stock_images/modern_apartment_bui_0a227c55.jpg",
-      "attached_assets/stock_images/luxury_living_room_i_09908d3c.jpg",
-      "attached_assets/stock_images/luxury_living_room_i_15d09f92.jpg"
-    ],
-    features: ["Creek View", "Park Access", "Marina Promenade", "Smart Home"]
-  },
-  {
-    id: 12,
-    name: "Al Zahia Villas",
-    location: "Al Zahia, Sharjah",
-    status: "Ready to Move",
-    type: "buy",
-    startingPrice: "AED 2,400,000",
-    bedrooms: 4,
-    sizeSqft: 3200,
-    description: "Premier lifestyle destination in Sharjah. Gated community with lush green parks, clubhouse, and family-friendly amenities.",
-    images: [
-      "attached_assets/stock_images/modern_luxury_home_e_e68ceba0.jpg",
-      "attached_assets/stock_images/luxury_living_room_i_139e9c46.jpg",
-      "attached_assets/stock_images/luxury_living_room_i_de3389a8.jpg"
-    ],
-    features: ["Gated Community", "Clubhouse", "Parks", "Retail Center"]
+    features: ["High Rise Living", "Panoramic Views", "Premium Amenities", "Prime Location"]
   }
 ];

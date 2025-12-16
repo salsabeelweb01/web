@@ -4,8 +4,14 @@ import ProjectCard from "@/components/ProjectCard";
 import { Button } from "@/components/ui/button";
 import { getFeaturedProjects, Project } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowRight, Star, Shield, Clock } from "lucide-react";
+import { ArrowRight, Star, Shield, Clock, CheckCircle2, Wallet, Banknote, Building, ChevronDown } from "lucide-react";
 import { Link } from "wouter";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export default function Home() {
   const { data: featuredProjects, isLoading } = useQuery({
@@ -28,10 +34,10 @@ export default function Home() {
         
         <div className="relative z-10 container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold text-white mb-6 animate-in slide-in-from-bottom-4 duration-700">
-            Find Your Dream Home
+            You Will Get Your <br/> Future Home
           </h1>
           <p className="text-lg md:text-xl text-white/90 mb-10 max-w-2xl mx-auto animate-in slide-in-from-bottom-6 duration-700 delay-100 font-light">
-            Discover a curated collection of the most exclusive properties in prime locations.
+            Luxury apartments in Ajman for investment and living. From Salsabeel Real Estate.
           </p>
           
           <div className="animate-in slide-in-from-bottom-8 duration-700 delay-200">
@@ -86,41 +92,87 @@ export default function Home() {
       <section className="py-20 bg-secondary/30">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl font-heading font-bold mb-4">Why Choose Estate</h2>
+            <h2 className="text-3xl font-heading font-bold mb-4">Why Choose Salsabeel</h2>
             <p className="text-muted-foreground">
-              We provide a seamless experience for buyers, sellers, and renters with our top-tier services.
+              We are committed to delivering innovative and exceptional projects that meet our clients' needs.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-background p-8 rounded-xl shadow-sm border border-border/50 text-center">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="bg-background p-8 rounded-xl shadow-sm border border-border/50 text-center hover:shadow-md transition-shadow">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Shield className="h-8 w-8 text-primary" />
+                <CheckCircle2 className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="text-xl font-bold mb-3">Trusted by Thousands</h3>
+              <h3 className="text-xl font-bold mb-3">Direct Developer</h3>
               <p className="text-muted-foreground">
-                Our reputation is built on trust and integrity. We ensure every transaction is transparent and secure.
+                Get the best deals directly from the developer with no third-party markups.
               </p>
             </div>
-            <div className="bg-background p-8 rounded-xl shadow-sm border border-border/50 text-center">
+            <div className="bg-background p-8 rounded-xl shadow-sm border border-border/50 text-center hover:shadow-md transition-shadow">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Star className="h-8 w-8 text-primary" />
+                <Wallet className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="text-xl font-bold mb-3">Premium Listings</h3>
+              <h3 className="text-xl font-bold mb-3">Flexible Payments</h3>
               <p className="text-muted-foreground">
-                Access exclusive off-market listings and the finest properties before they hit the general market.
+                Enjoy flexible 5-Year Payment Plans designed to make ownership easy.
               </p>
             </div>
-            <div className="bg-background p-8 rounded-xl shadow-sm border border-border/50 text-center">
+            <div className="bg-background p-8 rounded-xl shadow-sm border border-border/50 text-center hover:shadow-md transition-shadow">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Clock className="h-8 w-8 text-primary" />
+                <Banknote className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="text-xl font-bold mb-3">24/7 Support</h3>
+              <h3 className="text-xl font-bold mb-3">No Commission</h3>
               <p className="text-muted-foreground">
-                Our dedicated team of agents is available around the clock to answer your questions and schedule viewings.
+                Save money with 0% Commission and No Bank Involvement required.
+              </p>
+            </div>
+            <div className="bg-background p-8 rounded-xl shadow-sm border border-border/50 text-center hover:shadow-md transition-shadow">
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Building className="h-8 w-8 text-primary" />
+              </div>
+              <h3 className="text-xl font-bold mb-3">Freehold</h3>
+              <p className="text-muted-foreground">
+                100% Freehold ownership available for all nationalities.
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-4 max-w-4xl">
+           <div className="text-center mb-12">
+            <h2 className="text-3xl font-heading font-bold mb-4">Frequently Asked Questions</h2>
+            <p className="text-muted-foreground">Common questions about Salsabeel Real Estate properties</p>
+          </div>
+          
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="item-1">
+              <AccordionTrigger className="text-lg font-medium">Why is Salsabeel Real Estate Company the best company in Ajman?</AccordionTrigger>
+              <AccordionContent className="text-muted-foreground leading-relaxed">
+                Salsabeel Company provides rental and sales services and also sells projects that it only owns, distinguished by its after-sales service and maintenance. We are committed to delivering quality and trust.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-2">
+              <AccordionTrigger className="text-lg font-medium">Does Salsabeel Real Estate Company have projects for rent?</AccordionTrigger>
+              <AccordionContent className="text-muted-foreground leading-relaxed">
+                Yes, Salsabeel Real Estate Company has the management of many buildings and also its affiliated buildings. It continuously follows up the rental process while providing the best and most appropriate offer to both parties.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-3">
+              <AccordionTrigger className="text-lg font-medium">I need shops or an apartment for investment!</AccordionTrigger>
+              <AccordionContent className="text-muted-foreground leading-relaxed">
+                Salsabeel Real Estate Company has many projects inside Ajman for sale and rent, and also for real estate investment. Salsabeel Company is a leading developer in the Emirate of Ajman. Contact us to get what you are looking for.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-4">
+              <AccordionTrigger className="text-lg font-medium">What payment plans do you offer?</AccordionTrigger>
+              <AccordionContent className="text-muted-foreground leading-relaxed">
+                We offer flexible payment plans up to 5 years directly from the developer, with no bank involvement required. This makes purchasing your dream home or investment property accessible and hassle-free.
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
       </section>
     </Layout>
