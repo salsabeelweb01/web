@@ -22,7 +22,7 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 font-heading font-bold text-xl text-primary">
-          <img src={logo} alt="Salsabeel Real Estate" className="h-12 w-auto" />
+          <img src={logo} alt="Salsabeel Real Estate" className="h-12 w-auto brightness-0 invert" />
         </Link>
 
         {/* Desktop Menu */}
