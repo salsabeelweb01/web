@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertContactInquirySchema, insertViewingRequestSchema } from "@shared/schema";
+import { insertContactInquirySchema, insertViewingRequestSchema, insertProjectSchema } from "@shared/schema";
 import { fromError } from "zod-validation-error";
 
 export async function registerRoutes(
@@ -88,6 +88,22 @@ export async function registerRoutes(
       }
       console.error("Error creating viewing request:", error);
       res.status(500).json({ error: "Failed to submit viewing request" });
+    }
+  });
+
+  // Create new project (admin)
+  app.post("/api/projects", async (req, res) => {
+    try {
+      const validatedData = insertProjectSchema.parse(req.body);
+      const project = await storage.createProject(validatedData);
+      res.status(201).json({ success: true, project });
+    } catch (error: any) {
+      if (error.name === "ZodError") {
+        const validationError = fromError(error);
+        return res.status(400).json({ error: validationError.toString() });
+      }
+      console.error("Error creating project:", error);
+      res.status(500).json({ error: "Failed to create project" });
     }
   });
 
