@@ -15,206 +15,206 @@ export interface Project {
 export const PROJECTS: Project[] = [
   {
     id: 1,
-    name: "The Highland Residences",
-    location: "Beverly Hills, CA",
+    name: "The Palm Royale",
+    location: "Palm Jumeirah, Dubai",
     status: "Ready to Move",
     type: "buy",
-    startingPrice: "$2,500,000",
-    bedrooms: 3,
-    sizeSqft: 2400,
-    description: "Experience the pinnacle of luxury living in this architectural masterpiece. Featuring floor-to-ceiling windows, a private infinity pool, and panoramic city views.",
+    startingPrice: "AED 12,500,000",
+    bedrooms: 5,
+    sizeSqft: 6400,
+    description: "Experience the pinnacle of luxury living on the iconic Palm Jumeirah. Featuring private beach access, infinity pool, and panoramic views of the Dubai skyline.",
     images: [
       "attached_assets/stock_images/modern_luxury_home_e_c3d2b0c4.jpg",
       "attached_assets/stock_images/luxury_living_room_i_09908d3c.jpg",
       "attached_assets/stock_images/luxury_living_room_i_15d09f92.jpg"
     ],
-    features: ["Infinity Pool", "Smart Home System", "Wine Cellar", "Private Gym"]
+    features: ["Private Beach", "Infinity Pool", "Smart Home System", "Maid's Room"]
   },
   {
     id: 2,
-    name: "Azure Skyline Apartments",
-    location: "Miami, FL",
+    name: "Downtown Heights",
+    location: "Downtown Dubai",
     status: "Rent",
     type: "rent",
-    startingPrice: "$4,500/mo",
+    startingPrice: "AED 180,000/yr",
     bedrooms: 2,
-    sizeSqft: 1200,
-    description: "Modern waterfront apartments with direct beach access. Enjoy resort-style amenities including a rooftop lounge, fitness center, and concierge service.",
+    sizeSqft: 1400,
+    description: "Modern apartments with direct views of the Burj Khalifa. Walking distance to Dubai Mall and Opera District.",
     images: [
       "attached_assets/stock_images/modern_apartment_bui_0a227c55.jpg",
       "attached_assets/stock_images/luxury_living_room_i_139e9c46.jpg",
       "attached_assets/stock_images/luxury_living_room_i_de3389a8.jpg"
     ],
-    features: ["Ocean View", "Rooftop Lounge", "Valet Parking", "Pet Friendly"]
+    features: ["Burj Khalifa View", "Rooftop Lounge", "Valet Parking", "Gym"]
   },
   {
     id: 3,
-    name: "Oakwood Estate",
-    location: "Austin, TX",
+    name: "Saadiyat Beach Villas",
+    location: "Saadiyat Island, Abu Dhabi",
     status: "Under Construction",
     type: "buy",
-    startingPrice: "$850,000",
+    startingPrice: "AED 6,850,000",
     bedrooms: 4,
-    sizeSqft: 3200,
-    description: "A sustainable community nestled in nature. These modern farmhouses offer open-concept living, solar energy integration, and spacious backyards.",
+    sizeSqft: 4200,
+    description: "Exclusive villas nestled in nature near the cultural district. Sustainable design with open-concept living and private gardens.",
     images: [
       "attached_assets/stock_images/modern_luxury_home_e_e035fd25.jpg",
       "attached_assets/stock_images/luxury_living_room_i_09908d3c.jpg",
       "attached_assets/stock_images/luxury_living_room_i_15d09f92.jpg"
     ],
-    features: ["Solar Panels", "Large Backyard", "Community Garden", "Walking Trails"]
+    features: ["Beach Access", "Large Garden", "Near Louvre", "Walking Trails"]
   },
   {
     id: 4,
-    name: "Metropolitan Lofts",
-    location: "New York, NY",
+    name: "Marina Gate Penthouses",
+    location: "Dubai Marina",
     status: "Rent",
     type: "rent",
-    startingPrice: "$6,200/mo",
-    bedrooms: 1,
-    sizeSqft: 950,
-    description: "Industrial-chic lofts in the heart of SoHo. High ceilings, exposed brick walls, and premium finishes make this the ultimate urban retreat.",
+    startingPrice: "AED 350,000/yr",
+    bedrooms: 3,
+    sizeSqft: 2800,
+    description: "Premium waterfront living in the heart of Dubai Marina. High ceilings, panoramic glass walls, and 5-star amenities.",
     images: [
       "attached_assets/stock_images/modern_apartment_bui_fc00fafc.jpg",
       "attached_assets/stock_images/luxury_living_room_i_139e9c46.jpg",
       "attached_assets/stock_images/luxury_living_room_i_de3389a8.jpg"
     ],
-    features: ["Exposed Brick", "High Ceilings", "Doorman", "Roof Deck"]
+    features: ["Marina View", "Infinity Pool", "Concierge", "Direct Tram Access"]
   },
   {
     id: 5,
-    name: "Serenity Heights",
-    location: "Seattle, WA",
+    name: "Jumeirah Golf Estates",
+    location: "Jumeirah Golf Estates, Dubai",
     status: "Ready to Move",
     type: "buy",
-    startingPrice: "$1,200,000",
-    bedrooms: 3,
-    sizeSqft: 1800,
-    description: "Contemporary townhomes with stunning views of the Puget Sound. Steps away from the tech district and vibrant local markets.",
+    startingPrice: "AED 9,200,000",
+    bedrooms: 5,
+    sizeSqft: 5800,
+    description: "Mediterranean-inspired villas overlooking world-class golf courses. A serene community perfect for families.",
     images: [
       "attached_assets/stock_images/modern_luxury_home_e_e68ceba0.jpg",
       "attached_assets/stock_images/luxury_living_room_i_09908d3c.jpg",
       "attached_assets/stock_images/luxury_living_room_i_15d09f92.jpg"
     ],
-    features: ["Water View", "Private Garage", "Smart Locks", "Fireplace"]
+    features: ["Golf Course View", "Private Pool", "Gated Community", "Clubhouse Access"]
   },
   {
     id: 6,
-    name: "The Glass House",
-    location: "Chicago, IL",
+    name: "Business Bay Lofts",
+    location: "Business Bay, Dubai",
     status: "Under Construction",
     type: "buy",
-    startingPrice: "$3,100,000",
-    bedrooms: 4,
-    sizeSqft: 4000,
-    description: "An iconic glass structure redefining the skyline. Exclusive penthouses with 360-degree views and private elevator access.",
+    startingPrice: "AED 2,100,000",
+    bedrooms: 1,
+    sizeSqft: 950,
+    description: "Sleek, modern lofts designed for young professionals. Located along the Dubai Canal with easy access to Downtown.",
     images: [
       "attached_assets/stock_images/modern_apartment_bui_c1d03950.jpg",
       "attached_assets/stock_images/luxury_living_room_i_139e9c46.jpg",
       "attached_assets/stock_images/luxury_living_room_i_de3389a8.jpg"
     ],
-    features: ["360 Views", "Private Elevator", "Indoor Pool", "Concierge"]
+    features: ["Canal View", "Smart Home", "Co-working Space", "Retail Podium"]
   },
   {
     id: 7,
-    name: "Maplewood Cottages",
-    location: "Portland, OR",
+    name: "Al Barari Reserve",
+    location: "Al Barari, Dubai",
     status: "Rent",
     type: "rent",
-    startingPrice: "$2,800/mo",
-    bedrooms: 2,
-    sizeSqft: 1100,
-    description: "Charming cottages in a historic neighborhood. Renovated interiors with vintage character and modern conveniences.",
+    startingPrice: "AED 550,000/yr",
+    bedrooms: 6,
+    sizeSqft: 11000,
+    description: "An oasis of tranquility. These massive estates feature lush botanical gardens, freshwater streams, and ultimate privacy.",
     images: [
       "attached_assets/stock_images/modern_luxury_home_e_d408787b.jpg",
       "attached_assets/stock_images/luxury_living_room_i_09908d3c.jpg",
       "attached_assets/stock_images/luxury_living_room_i_15d09f92.jpg"
     ],
-    features: ["Hardwood Floors", "Garden", "Pet Friendly", "Quiet Street"]
+    features: ["Botanical Gardens", "Private Cinema", "Staff Quarters", "Spa"]
   },
   {
     id: 8,
-    name: "Desert Oasis Villa",
-    location: "Scottsdale, AZ",
+    name: "Yas Acres",
+    location: "Yas Island, Abu Dhabi",
     status: "Ready to Move",
     type: "buy",
-    startingPrice: "$1,800,000",
-    bedrooms: 5,
+    startingPrice: "AED 4,800,000",
+    bedrooms: 4,
     sizeSqft: 3800,
-    description: "Luxury desert living at its finest. This sprawling estate features a resort-style pool, outdoor kitchen, and breathtaking mountain views.",
+    description: "Luxury living near the F1 track and theme parks. Spacious interiors and access to a world-class golf course and country club.",
     images: [
       "attached_assets/stock_images/modern_luxury_home_e_c3d2b0c4.jpg",
       "attached_assets/stock_images/luxury_living_room_i_139e9c46.jpg",
       "attached_assets/stock_images/luxury_living_room_i_de3389a8.jpg"
     ],
-    features: ["Pool", "Outdoor Kitchen", "Mountain View", "Guest Casita"]
+    features: ["Golf Course", "Theme Park Access", "Community Pool", "Schools Nearby"]
   },
   {
     id: 9,
-    name: "Harbor Point",
-    location: "Boston, MA",
+    name: "Bluewaters Residences",
+    location: "Bluewaters Island, Dubai",
     status: "Rent",
     type: "rent",
-    startingPrice: "$3,500/mo",
-    bedrooms: 1,
-    sizeSqft: 800,
-    description: "Waterfront living with easy access to the financial district. Modern amenities and a vibrant community atmosphere.",
+    startingPrice: "AED 280,000/yr",
+    bedrooms: 2,
+    sizeSqft: 1600,
+    description: "Island living with views of Ain Dubai. Vibrant lifestyle destination with retail, dining, and hospitality at your doorstep.",
     images: [
       "attached_assets/stock_images/modern_apartment_bui_6ce365b6.jpg",
       "attached_assets/stock_images/luxury_living_room_i_09908d3c.jpg",
       "attached_assets/stock_images/luxury_living_room_i_15d09f92.jpg"
     ],
-    features: ["Waterfront", "Gym", "Co-working Space", "Parking"]
+    features: ["Ain Dubai View", "Beach Club", "Pedestrian Bridge to JBR", "Podium Gardens"]
   },
   {
     id: 10,
-    name: "Alpine Lodge",
-    location: "Aspen, CO",
+    name: "Emirates Hills Mansion",
+    location: "Emirates Hills, Dubai",
     status: "Ready to Move",
     type: "buy",
-    startingPrice: "$5,500,000",
-    bedrooms: 6,
-    sizeSqft: 5500,
-    description: "The ultimate ski-in/ski-out retreat. Timber frame construction, stone fireplaces, and luxurious finishes throughout.",
+    startingPrice: "AED 45,000,000",
+    bedrooms: 7,
+    sizeSqft: 18000,
+    description: "The Beverly Hills of Dubai. A palatial mansion overlooking the Montgomerie Golf Course with custom finishes throughout.",
     images: [
       "attached_assets/stock_images/modern_luxury_home_e_e035fd25.jpg",
       "attached_assets/stock_images/luxury_living_room_i_139e9c46.jpg",
       "attached_assets/stock_images/luxury_living_room_i_de3389a8.jpg"
     ],
-    features: ["Ski-in/Ski-out", "Hot Tub", "Home Theater", "Wine Cellar"]
+    features: ["Golf Front", "Private Elevator", "Home Theater", "Basement Parking"]
   },
   {
     id: 11,
-    name: "Urban Core Apartments",
-    location: "Atlanta, GA",
+    name: "Creek Harbour Horizon",
+    location: "Dubai Creek Harbour",
     status: "Under Construction",
     type: "rent",
-    startingPrice: "$1,900/mo",
+    startingPrice: "AED 110,000/yr",
     bedrooms: 1,
-    sizeSqft: 700,
-    description: "Smart apartments designed for the modern professional. Integrated technology and flexible living spaces.",
+    sizeSqft: 850,
+    description: "Future-ready living in the new heart of Dubai. Stunning views of the Creek Tower and wildlife sanctuary.",
     images: [
       "attached_assets/stock_images/modern_apartment_bui_0a227c55.jpg",
       "attached_assets/stock_images/luxury_living_room_i_09908d3c.jpg",
       "attached_assets/stock_images/luxury_living_room_i_15d09f92.jpg"
     ],
-    features: ["Smart Home", "Fitness Center", "Pool", "Transit Access"]
+    features: ["Creek View", "Park Access", "Marina Promenade", "Smart Home"]
   },
   {
     id: 12,
-    name: "Coastal Breeze",
-    location: "San Diego, CA",
+    name: "Al Zahia Villas",
+    location: "Al Zahia, Sharjah",
     status: "Ready to Move",
     type: "buy",
-    startingPrice: "$1,400,000",
-    bedrooms: 3,
-    sizeSqft: 1600,
-    description: "Beachside bungalows with laid-back vibes. Updated interiors, private patios, and just steps from the sand.",
+    startingPrice: "AED 2,400,000",
+    bedrooms: 4,
+    sizeSqft: 3200,
+    description: "Premier lifestyle destination in Sharjah. Gated community with lush green parks, clubhouse, and family-friendly amenities.",
     images: [
       "attached_assets/stock_images/modern_luxury_home_e_e68ceba0.jpg",
       "attached_assets/stock_images/luxury_living_room_i_139e9c46.jpg",
       "attached_assets/stock_images/luxury_living_room_i_de3389a8.jpg"
     ],
-    features: ["Beach Access", "Private Patio", "Surfing", "Outdoor Shower"]
+    features: ["Gated Community", "Clubhouse", "Parks", "Retail Center"]
   }
 ];

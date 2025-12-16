@@ -43,11 +43,11 @@
 
 /* LIGHT MODE - Premium Real Estate Theme */
 :root {
-  /* Base */
-  --background: 210 20% 98%; /* Soft off-white */
-  --foreground: 220 15% 10%; /* Deep charcoal */
+  /* Base - Warmer, sandy off-white to reduce harshness */
+  --background: 40 20% 97%; 
+  --foreground: 220 15% 10%; 
 
-  /* Cards */
+  /* Cards - Pure white for contrast against the warm background */
   --card: 0 0% 100%;
   --card-foreground: 220 15% 10%;
 
@@ -55,29 +55,29 @@
   --popover: 0 0% 100%;
   --popover-foreground: 220 15% 10%;
 
-  /* Primary - Trustworthy Deep Blue/Slate */
+  /* Primary - Deep Navy/Slate for luxury contrast */
   --primary: 220 30% 20%; 
   --primary-foreground: 0 0% 100%;
 
-  /* Secondary - Soft Beige/Greige for warmth */
-  --secondary: 30 15% 94%;
+  /* Secondary - Warm Sand/Beige for sections */
+  --secondary: 35 20% 92%;
   --secondary-foreground: 220 30% 20%;
 
-  /* Muted - Subtle text */
+  /* Muted */
   --muted: 220 10% 94%;
   --muted-foreground: 220 10% 45%;
 
-  /* Accent - Gold/Bronze for luxury highlights */
-  --accent: 35 30% 96%;
-  --accent-foreground: 35 40% 30%;
+  /* Accent - Gold */
+  --accent: 35 40% 90%;
+  --accent-foreground: 35 50% 30%;
 
   /* Destructive */
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 98%;
 
   /* Borders & Inputs */
-  --border: 220 13% 90%;
-  --input: 220 13% 90%;
+  --border: 35 15% 85%;
+  --input: 35 15% 85%;
   --ring: 220 30% 20%;
 
   --radius: 0.5rem;
