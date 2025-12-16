@@ -1,6 +1,6 @@
 import { Facebook, Instagram, Linkedin, Twitter, MapPin, Phone, Mail } from "lucide-react";
 import { Link } from "wouter";
-import logo from "@assets/logo.png";
+import logoDark from "@assets/logog_2-removebg-preview-1_1765914929615.png";
 
 export default function Footer() {
   return (
@@ -10,7 +10,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="space-y-4">
             <Link href="/" className="flex items-center gap-2 font-heading font-bold text-xl">
-              <img src={logo} alt="Salsabeel Real Estate" className="h-16 w-auto brightness-0 invert" />
+              <img src={logoDark} alt="Salsabeel Real Estate" className="h-16 w-auto" />
             </Link>
             <p className="text-primary-foreground/70 text-sm leading-relaxed">
               Salsabeel envisions a world where every person finds their perfect Home.
