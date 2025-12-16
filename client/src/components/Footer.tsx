@@ -9,10 +9,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
           <div className="space-y-4">
-            <Link href="/">
-              <a className="flex items-center gap-2 font-heading font-bold text-xl">
-                <img src={logo} alt="Salsabeel Real Estate" className="h-16 w-auto brightness-0 invert" />
-              </a>
+            <Link href="/" className="flex items-center gap-2 font-heading font-bold text-xl">
+              <img src={logo} alt="Salsabeel Real Estate" className="h-16 w-auto brightness-0 invert" />
             </Link>
             <p className="text-primary-foreground/70 text-sm leading-relaxed">
               Salsabeel envisions a world where every person finds their perfect Home.
@@ -23,9 +21,9 @@ export default function Footer() {
           <div>
             <h3 className="font-heading font-semibold mb-4 text-lg">Company</h3>
             <ul className="space-y-2 text-sm text-primary-foreground/70">
-              <li><Link href="/about"><a className="hover:text-white transition-colors">About Us</a></Link></li>
-              <li><Link href="/projects"><a className="hover:text-white transition-colors">Properties</a></Link></li>
-              <li><Link href="/contact"><a className="hover:text-white transition-colors">Contact Us</a></Link></li>
+              <li><Link href="/about" className="hover:text-white transition-colors">About Us</Link></li>
+              <li><Link href="/projects" className="hover:text-white transition-colors">Properties</Link></li>
+              <li><Link href="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
             </ul>
           </div>
 
@@ -33,10 +31,10 @@ export default function Footer() {
           <div>
             <h3 className="font-heading font-semibold mb-4 text-lg">Services</h3>
             <ul className="space-y-2 text-sm text-primary-foreground/70">
-              <li><Link href="/projects?type=buy"><a className="hover:text-white transition-colors">Buy a Home</a></Link></li>
-              <li><Link href="/projects?type=rent"><a className="hover:text-white transition-colors">Rent a Home</a></Link></li>
-              <li><Link href="/projects"><a className="hover:text-white transition-colors">Commercial</a></Link></li>
-              <li><Link href="/contact"><a className="hover:text-white transition-colors">Property Management</a></Link></li>
+              <li><Link href="/projects?type=buy" className="hover:text-white transition-colors">Buy a Home</Link></li>
+              <li><Link href="/projects?type=rent" className="hover:text-white transition-colors">Rent a Home</Link></li>
+              <li><Link href="/projects" className="hover:text-white transition-colors">Commercial</Link></li>
+              <li><Link href="/contact" className="hover:text-white transition-colors">Property Management</Link></li>
             </ul>
           </div>
 

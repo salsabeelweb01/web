@@ -3,16 +3,13 @@ import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
 import path from "path";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const app = express();
 const httpServer = createServer(app);
 
 // Serve static files from attached_assets folder
-app.use("/attached_assets", express.static(path.resolve(__dirname, "..", "attached_assets")));
+// Use process.cwd() which works in both ESM and CommonJS builds
+app.use("/attached_assets", express.static(path.resolve(process.cwd(), "attached_assets")));
 
 declare module "http" {
   interface IncomingMessage {
