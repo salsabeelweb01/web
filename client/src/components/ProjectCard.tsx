@@ -1,4 +1,4 @@
-import { Project } from "@/lib/mock-data";
+import { Project } from "@/lib/api";
 import { Link } from "wouter";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";

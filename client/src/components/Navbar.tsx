@@ -21,31 +21,31 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link href="/">
-          <a className="flex items-center gap-2 font-heading font-bold text-xl text-primary">
-            <img src={logo} alt="Salsabeel Real Estate" className="h-12 w-auto" />
-          </a>
+        <Link href="/" className="flex items-center gap-2 font-heading font-bold text-xl text-primary">
+          <img src={logo} alt="Salsabeel Real Estate" className="h-12 w-auto" />
         </Link>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-8">
           {links.map((link) => (
-            <Link key={link.label} href={link.href}>
-              <a
-                className={cn(
-                  "text-sm font-medium transition-colors hover:text-primary",
-                  location === link.href
-                    ? "text-primary"
-                    : "text-muted-foreground"
-                )}
-              >
-                {link.label}
-              </a>
+            <Link
+              key={link.label}
+              href={link.href}
+              className={cn(
+                "text-sm font-medium transition-colors hover:text-primary",
+                location === link.href
+                  ? "text-primary"
+                  : "text-muted-foreground"
+              )}
+            >
+              {link.label}
             </Link>
           ))}
-          <Button variant="default" size="sm">
-            Contact Agent
-          </Button>
+          <Link href="/contact">
+            <Button variant="default" size="sm">
+              Contact Agent
+            </Button>
+          </Link>
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -65,16 +65,18 @@ export default function Navbar() {
       {isMobileMenuOpen && (
         <div className="md:hidden border-t bg-background p-4 flex flex-col gap-4 absolute w-full shadow-lg animate-in slide-in-from-top-2">
           {links.map((link) => (
-            <Link key={link.label} href={link.href}>
-              <a
-                className="text-sm font-medium p-2 hover:bg-muted rounded-md"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {link.label}
-              </a>
+            <Link
+              key={link.label}
+              href={link.href}
+              className="text-sm font-medium p-2 hover:bg-muted rounded-md"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              {link.label}
             </Link>
           ))}
-          <Button className="w-full">Contact Agent</Button>
+          <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>
+            <Button className="w-full">Contact Agent</Button>
+          </Link>
         </div>
       )}
     </nav>
