@@ -41,8 +41,42 @@
   --font-heading: 'Playfair Display', serif;
 }
 
-/* LIGHT MODE - Premium Real Estate Theme */
+/* DARK MODE - Premium Luxury Theme (Default) */
 :root {
+  /* Dark mode - sleek luxury */
+  --background: 220 30% 10%;
+  --foreground: 210 20% 98%;
+
+  --card: 220 30% 13%;
+  --card-foreground: 210 20% 98%;
+
+  --popover: 220 30% 13%;
+  --popover-foreground: 210 20% 98%;
+
+  --primary: 210 20% 98%;
+  --primary-foreground: 220 30% 10%;
+
+  --secondary: 220 30% 18%;
+  --secondary-foreground: 210 20% 98%;
+
+  --muted: 220 30% 18%;
+  --muted-foreground: 215 20% 65%;
+
+  --accent: 220 30% 18%;
+  --accent-foreground: 210 20% 98%;
+
+  --destructive: 0 62% 30%;
+  --destructive-foreground: 210 20% 98%;
+
+  --border: 220 30% 18%;
+  --input: 220 30% 18%;
+  --ring: 210 20% 98%;
+
+  --radius: 0.5rem;
+}
+
+/* Light mode optional override */
+.light {
   /* Base - Warmer, sandy off-white to reduce harshness */
   --background: 40 20% 97%; 
   --foreground: 220 15% 10%; 
@@ -79,39 +113,6 @@
   --border: 35 15% 85%;
   --input: 35 15% 85%;
   --ring: 220 30% 20%;
-
-  --radius: 0.5rem;
-}
-
-.dark {
-  /* Dark mode - sleek luxury */
-  --background: 220 30% 10%;
-  --foreground: 210 20% 98%;
-
-  --card: 220 30% 13%;
-  --card-foreground: 210 20% 98%;
-
-  --popover: 220 30% 13%;
-  --popover-foreground: 210 20% 98%;
-
-  --primary: 210 20% 98%;
-  --primary-foreground: 220 30% 10%;
-
-  --secondary: 220 30% 18%;
-  --secondary-foreground: 210 20% 98%;
-
-  --muted: 220 30% 18%;
-  --muted-foreground: 215 20% 65%;
-
-  --accent: 220 30% 18%;
-  --accent-foreground: 210 20% 98%;
-
-  --destructive: 0 62% 30%;
-  --destructive-foreground: 210 20% 98%;
-
-  --border: 220 30% 18%;
-  --input: 220 30% 18%;
-  --ring: 210 20% 98%;
 }
 
 @layer base {
