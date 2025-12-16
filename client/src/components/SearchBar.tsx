@@ -65,8 +65,8 @@ export default function SearchBar({ compact = false }: SearchBarProps) {
   return (
     <div className="w-full max-w-4xl mx-auto bg-card/95 backdrop-blur rounded-xl p-4 md:p-6 shadow-2xl border border-border">
       <div className="grid grid-cols-1 md:grid-cols-[1fr_150px_150px] gap-4">
-        <div className="space-y-2">
-          <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Location</label>
+        <div className="space-y-3">
+          <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block pt-1">Location</label>
           <Select value={selectedLocation} onValueChange={setSelectedLocation}>
             <SelectTrigger className="h-12 bg-secondary/50 border-0 focus:ring-1 focus:ring-primary/20">
               <SelectValue placeholder="Select Location" />
@@ -80,8 +80,8 @@ export default function SearchBar({ compact = false }: SearchBarProps) {
           </Select>
         </div>
 
-        <div className="space-y-2">
-          <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Type</label>
+        <div className="space-y-3">
+          <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block pt-1">Type</label>
           <div className="flex bg-secondary/50 rounded-md p-1 h-12">
             <button
               className={`flex-1 rounded-sm text-sm font-medium transition-all ${type === 'buy' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
