@@ -11,9 +11,9 @@ export default function Navbar() {
   const links = [
     { href: "/", label: "Home" },
     { href: "/projects", label: "Properties" },
-    { href: "/about", label: "About" },
     { href: "/projects?type=buy", label: "Buy" },
     { href: "/projects?type=rent", label: "Rent" },
+    { href: "/about", label: "About" },
   ];
 
   return (
