@@ -16,10 +16,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { MapPin, BedDouble, Maximize, Check, Calendar, ArrowLeft, Shield } from "lucide-react";
 import { Link } from "wouter";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
-
-import Untitled_design_15_1_1 from "@assets/Untitled-design-15-1-1.png";
 
 export default function ProjectDetails() {
   const [, params] = useRoute("/projects/:id");
@@ -33,6 +31,18 @@ export default function ProjectDetails() {
     queryFn: () => getProjectById(id),
     enabled: !!id
   });
+
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  // Reset selected image when ID changes
+  useEffect(() => {
+    setSelectedImage(null);
+  }, [id]);
+
+  // Update selected image when project loads or changes
+  if (project && !selectedImage && project.images.length > 0) {
+    setSelectedImage(project.images[0]);
+  }
 
   const handleScheduleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,11 +69,11 @@ export default function ProjectDetails() {
   return (
     <Layout>
       {/* Hero Gallery */}
-      <div className="relative h-[60vh] bg-black">
+      <div className="relative h-[60vh] bg-black group">
         <img
-          src={Untitled_design_15_1_1}
+          src={selectedImage || project.images[0]}
           alt={project.name}
-          className="w-full h-full object-cover opacity-90"
+          className="w-full h-full object-cover opacity-90 transition-all duration-500 ease-in-out"
         />
         <div className="absolute top-4 left-4 z-10">
           <Link href="/projects">
@@ -71,6 +81,21 @@ export default function ProjectDetails() {
               <ArrowLeft className="h-4 w-4" /> Back to Projects
             </Button>
           </Link>
+        </div>
+        
+        {/* Gallery Strip Overlay */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 p-2 bg-black/50 backdrop-blur-md rounded-full overflow-x-auto max-w-[90vw] z-20">
+          {project.images.map((img, idx) => (
+            <button
+              key={idx}
+              onClick={() => setSelectedImage(img)}
+              className={`relative w-16 h-12 rounded-lg overflow-hidden transition-all duration-300 ${
+                selectedImage === img ? "ring-2 ring-primary scale-105" : "opacity-70 hover:opacity-100"
+              }`}
+            >
+              <img src={img} alt={`Gallery ${idx}`} className="w-full h-full object-cover" />
+            </button>
+          ))}
         </div>
       </div>
       <div className="container mx-auto px-4 py-8 -mt-10 relative z-10">
@@ -181,17 +206,20 @@ export default function ProjectDetails() {
               <div className="space-y-6">
                 <h3 className="text-xl font-bold mb-4">Gallery</h3>
                 <div className="grid gap-4">
-                  {project.images.slice(1).map((img, idx) => (
-                    <div key={idx} className="aspect-video rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity">
+                  {project.images.map((img, idx) => (
+                    <div 
+                      key={idx} 
+                      onClick={() => {
+                        setSelectedImage(img);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                      className={`aspect-video rounded-lg overflow-hidden cursor-pointer transition-all duration-300 ${
+                        selectedImage === img ? "ring-2 ring-primary" : "hover:opacity-90"
+                      }`}
+                    >
                       <img src={img} alt={`Gallery ${idx}`} className="w-full h-full object-cover" />
                     </div>
                   ))}
-                  {/* Fallback if only 1 image */}
-                  {project.images.length === 1 && (
-                     <div className="aspect-video bg-muted rounded-lg flex items-center justify-center text-muted-foreground">
-                       No additional images
-                     </div>
-                  )}
                 </div>
               </div>
             </div>

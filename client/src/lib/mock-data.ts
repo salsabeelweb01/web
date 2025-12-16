@@ -1,4 +1,9 @@
 import salsabeelImg from "@assets/Untitled-design-15-1-1_1765881960651.png";
+import salsabeelImg2 from "@assets/Untitled-design-7-768x768_1765882662290.png";
+import salsabeelImg3 from "@assets/Untitled-design-8-768x768_1765882670496.png";
+import salsabeelImg4 from "@assets/Untitled-design-9-768x768_1765882673794.png";
+import salsabeelImg5 from "@assets/Untitled-design-10-768x768_1765882677104.png";
+import salsabeelImg6 from "@assets/Untitled-design-16-768x768_1765882680103.png";
 
 export interface Project {
   id: number;
@@ -27,8 +32,11 @@ export const PROJECTS: Project[] = [
     description: "Premium apartments in Al Zorah, Ajman offering stunning golf course views. Spacious layouts ranging from 493 to 3364 Sq Ft, designed for modern luxury living.",
     images: [
       salsabeelImg,
-      "/attached_assets/stock_images/luxury_living_room_i_09908d3c.jpg",
-      "/attached_assets/stock_images/luxury_living_room_i_15d09f92.jpg"
+      salsabeelImg2,
+      salsabeelImg3,
+      salsabeelImg4,
+      salsabeelImg5,
+      salsabeelImg6
     ],
     features: ["Golf Course View", "Nature Reserve Access", "Modern Design", "Spacious Balconies"]
   },
