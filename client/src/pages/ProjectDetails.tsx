@@ -19,6 +19,8 @@ import { Link } from "wouter";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
+import Untitled_design_15_1_1 from "@assets/Untitled-design-15-1-1.png";
+
 export default function ProjectDetails() {
   const [, params] = useRoute("/projects/:id");
   const id = params ? parseInt(params.id) : 0;
@@ -59,7 +61,7 @@ export default function ProjectDetails() {
       {/* Hero Gallery */}
       <div className="relative h-[60vh] bg-black">
         <img
-          src={project.images[0]}
+          src={Untitled_design_15_1_1}
           alt={project.name}
           className="w-full h-full object-cover opacity-90"
         />
@@ -71,7 +73,6 @@ export default function ProjectDetails() {
           </Link>
         </div>
       </div>
-
       <div className="container mx-auto px-4 py-8 -mt-20 relative z-10">
         <div className="bg-background rounded-xl shadow-xl border border-border/50 overflow-hidden">
           <div className="p-6 md:p-10">
