@@ -1,0 +1,65 @@
+Build a modern real-estate web app in Next.js (App Router) + Tailwind CSS with a clean, premium look (minimal, trustworthy, lots of spacing).
+
+IMPORTANT: Do this in Phase 1 (frontend-only) first using mock data, but structure the code so it’s easy to add a backend later (Phase 2).
+
+Phase 1 — Frontend Only (Do Now)
+
+Pages
+	1.	Home /
+
+	•	Hero section with headline + subheadline
+	•	Search bar UI (Location, Rent/Buy toggle, Budget) — UI only for now
+	•	“Featured Projects” section (show 6 cards)
+
+	2.	Projects /projects
+
+	•	Grid of project cards
+	•	Filters:
+	•	Status dropdown: Rent / Under Construction / Ready to Move
+	•	Location dropdown (use locations from mock data)
+	•	Card fields:
+	•	Image
+	•	Project name
+	•	Location
+	•	Status badge
+	•	Starting price
+	•	CTA button: “View Details”
+
+	3.	Project Details /projects/[id]
+
+	•	Gallery image (or carousel UI)
+	•	Key info (location, status, price, bedrooms, size)
+	•	Description
+	•	“Schedule a Viewing” button (opens a modal form UI only)
+
+Components
+	•	Navbar (sticky): Home, Buy, Rent, Projects, Contact
+	•	Projects dropdown should include: Under Construction, Ready to Move
+	•	Footer with contact info + social links
+
+Mock Data
+	•	Store mock listings in a file like data/projects.ts
+	•	Include at least 12 projects with realistic fields:
+id, name, location, status, type (rent/buy), startingPrice, bedrooms, sizeSqft, images[], description
+
+UX / Design Rules
+	•	Mobile-first, fully responsive
+	•	Strong typography hierarchy
+	•	Soft shadows, rounded cards, modern spacing
+	•	Subtle hover effects and smooth transitions
+	•	Keep it premium: neutral palette (white/gray/beige) with one accent color
+
+Phase 2 — Backend-Ready Hooks (Set Up, Don’t Fully Build)
+	•	Create a lib/api.ts with functions like:
+	•	getProjects(filters)
+	•	getProjectById(id)
+	•	For now these functions should read from the mock data.
+	•	Add comments or TODOs showing how these would later call a real API:
+	•	GET /api/projects
+	•	GET /api/projects/:id
+	•	POST /api/contact
+
+Output Requirements
+	•	Generate the full project with files/folders created
+	•	Ensure it runs immediately with npm install + npm run dev
+	•	Don’t over-engineer. Focus on clean UI + realistic layout.
