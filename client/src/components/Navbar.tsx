@@ -1,5 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import logo from "@assets/logo.png";
@@ -12,7 +13,6 @@ export default function Navbar() {
     { href: "/", label: "Home" },
     { href: "/projects", label: "Properties" },
     { href: "/about", label: "About Us" },
-    { href: "/contact", label: "Contact Us" },
   ];
 
   return (
@@ -38,6 +38,11 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
+          <Link href="/contact">
+            <Button variant="outline" size="sm" className="bg-white text-black hover:bg-gray-100 border-white">
+              Contact Us
+            </Button>
+          </Link>
         </div>
 
         {/* Mobile Menu Toggle */}
