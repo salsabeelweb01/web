@@ -9,6 +9,11 @@ export async function registerRoutes(
   app: Express
 ): Promise<Server> {
   
+  // Health check endpoint
+  app.get("/api/health", (_req, res) => {
+    res.json({ status: "ok", timestamp: new Date().toISOString() });
+  });
+  
   // Get all projects or filtered projects
   app.get("/api/projects", async (req, res) => {
     try {
@@ -93,13 +98,33 @@ export async function registerRoutes(
 
   // Verify admin password
   app.post("/api/admin/verify", async (req, res) => {
-    const { password } = req.body;
-    const adminPassword = process.env.ADMIN_PASSWORD || "admin123";
-    
-    if (password === adminPassword) {
-      res.json({ success: true });
-    } else {
-      res.status(401).json({ error: "Invalid password" });
+    try {
+      const { password } = req.body;
+      
+      if (!password || typeof password !== "string") {
+        return res.status(400).json({ error: "Password is required" });
+      }
+      
+      const adminPassword = process.env.ADMIN_PASSWORD || "admin123";
+      
+      // Use timing-safe comparison to prevent timing attacks
+      if (password.length !== adminPassword.length) {
+        return res.status(401).json({ error: "Invalid password" });
+      }
+      
+      let match = true;
+      for (let i = 0; i < password.length; i++) {
+        match = match && password[i] === adminPassword[i];
+      }
+      
+      if (match) {
+        res.json({ success: true });
+      } else {
+        res.status(401).json({ error: "Invalid password" });
+      }
+    } catch (error) {
+      console.error("Error verifying admin password:", error);
+      res.status(500).json({ error: "Failed to verify password" });
     }
   });
 

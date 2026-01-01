@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: salsabeel-real-estate
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      # ADMIN_PASSWORD must be set manually in Render dashboard
+      # Go to Environment Variables and add: ADMIN_PASSWORD = your-secure-password
+      - key: CUSTOM_DOMAIN
+        value: https://salsabeel-re.ae
+    healthCheckPath: /api/health
+
+databases:
+  - name: salsabeel-db
+    plan: free
+    databaseName: photoshare
+    user: photoshare
+

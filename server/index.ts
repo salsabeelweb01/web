@@ -7,6 +7,23 @@ import path from "path";
 const app = express();
 const httpServer = createServer(app);
 
+// CORS middleware for production
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  // Allow requests from same origin or any origin in production (adjust as needed)
+  if (process.env.NODE_ENV === "production") {
+    res.setHeader("Access-Control-Allow-Origin", origin || "*");
+  } else {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+  }
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 // Serve static files from attached_assets folder
 // Use process.cwd() which works in both ESM and CommonJS builds
 app.use("/attached_assets", express.static(path.resolve(process.cwd(), "attached_assets")));
@@ -71,8 +88,22 @@ app.use((req, res, next) => {
     const status = err.status || err.statusCode || 500;
     const message = err.message || "Internal Server Error";
 
-    res.status(status).json({ message });
-    throw err;
+    // Don't expose internal errors in production
+    const errorMessage = process.env.NODE_ENV === "production" && status === 500
+      ? "Internal Server Error"
+      : message;
+
+    res.status(status).json({ 
+      error: errorMessage,
+      ...(process.env.NODE_ENV !== "production" && { stack: err.stack })
+    });
+    
+    // Log error but don't throw in production
+    if (process.env.NODE_ENV !== "production") {
+      throw err;
+    } else {
+      console.error("Error:", err);
+    }
   });
 
   // importantly only setup vite in development and after

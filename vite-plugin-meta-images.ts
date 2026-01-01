@@ -56,6 +56,23 @@ export function metaImagesPlugin(): Plugin {
 }
 
 function getDeploymentUrl(): string | null {
+  // Check for custom domain first (production)
+  if (process.env.CUSTOM_DOMAIN) {
+    const url = process.env.CUSTOM_DOMAIN.startsWith('http') 
+      ? process.env.CUSTOM_DOMAIN 
+      : `https://${process.env.CUSTOM_DOMAIN}`;
+    log('[meta-images] using custom domain:', url);
+    return url;
+  }
+
+  // Check for Render domain
+  if (process.env.RENDER_EXTERNAL_URL) {
+    const url = process.env.RENDER_EXTERNAL_URL;
+    log('[meta-images] using Render domain:', url);
+    return url;
+  }
+
+  // Check for Replit domains (for backward compatibility)
   if (process.env.REPLIT_INTERNAL_APP_DOMAIN) {
     const url = `https://${process.env.REPLIT_INTERNAL_APP_DOMAIN}`;
     log('[meta-images] using internal app domain:', url);

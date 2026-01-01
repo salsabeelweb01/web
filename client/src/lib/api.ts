@@ -1,3 +1,5 @@
+import { PROJECTS } from './mock-data';
+
 export interface Project {
   id: number;
   name: string;
@@ -5,7 +7,7 @@ export interface Project {
   status: string;
   type: string;
   startingPrice: string;
-  bedrooms: string;
+  bedrooms: string | number;
   sizeSqft: string;
   description: string;
   propertyType: string;
@@ -45,32 +47,63 @@ async function handleResponse<T>(response: Response): Promise<T> {
   return response.json();
 }
 
-export async function getProjects(filters?: ProjectFilters): Promise<Project[]> {
-  const params = new URLSearchParams();
+// Helper function to filter mock data
+function filterMockProjects(filters?: ProjectFilters): Project[] {
+  let projects = [...PROJECTS] as Project[];
   
   if (filters) {
     if (filters.status && filters.status !== "All") {
-      params.append('status', filters.status);
+      projects = projects.filter(p => p.status === filters.status);
     }
     if (filters.location && filters.location !== "All") {
-      params.append('location', filters.location);
+      projects = projects.filter(p => p.location.includes(filters.location!));
     }
     if (filters.type) {
-      params.append('type', filters.type);
+      projects = projects.filter(p => p.type === filters.type);
     }
   }
+  
+  return projects;
+}
 
-  const url = `/api/projects${params.toString() ? `?${params.toString()}` : ''}`;
-  const response = await fetch(url);
-  return handleResponse<Project[]>(response);
+export async function getProjects(filters?: ProjectFilters): Promise<Project[]> {
+  try {
+    const params = new URLSearchParams();
+    
+    if (filters) {
+      if (filters.status && filters.status !== "All") {
+        params.append('status', filters.status);
+      }
+      if (filters.location && filters.location !== "All") {
+        params.append('location', filters.location);
+      }
+      if (filters.type) {
+        params.append('type', filters.type);
+      }
+    }
+
+    const url = `/api/projects${params.toString() ? `?${params.toString()}` : ''}`;
+    const response = await fetch(url);
+    return handleResponse<Project[]>(response);
+  } catch (error) {
+    // Fallback to mock data if API is unavailable
+    console.log('API unavailable, using mock data');
+    return filterMockProjects(filters);
+  }
 }
 
 export async function getProjectById(id: number): Promise<Project | undefined> {
-  const response = await fetch(`/api/projects/${id}`);
-  if (response.status === 404) {
-    return undefined;
+  try {
+    const response = await fetch(`/api/projects/${id}`);
+    if (response.status === 404) {
+      return undefined;
+    }
+    return handleResponse<Project>(response);
+  } catch (error) {
+    // Fallback to mock data if API is unavailable
+    console.log('API unavailable, using mock data');
+    return PROJECTS.find(p => p.id === id) as Project | undefined;
   }
-  return handleResponse<Project>(response);
 }
 
 export async function getFeaturedProjects(): Promise<Project[]> {
@@ -79,8 +112,14 @@ export async function getFeaturedProjects(): Promise<Project[]> {
 }
 
 export async function getLocations(): Promise<string[]> {
-  const response = await fetch('/api/locations');
-  return handleResponse<string[]>(response);
+  try {
+    const response = await fetch('/api/locations');
+    return handleResponse<string[]>(response);
+  } catch (error) {
+    // Fallback to mock data if API is unavailable
+    const locations = [...new Set(PROJECTS.map(p => p.location))];
+    return locations;
+  }
 }
 
 export async function submitContactInquiry(inquiry: ContactInquiry): Promise<void> {
