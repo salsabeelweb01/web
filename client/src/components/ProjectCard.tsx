@@ -30,7 +30,13 @@ export default function ProjectCard({ project }: ProjectCardProps) {
               variant={project.status === "Ready to Move" ? "default" : "secondary"}
               className="shadow-sm backdrop-blur-sm bg-background/90 text-foreground font-medium"
             >
-              {project.status}
+              {project.status === "Ready to Move" 
+                ? t.projectDetails.statusValues.readyToMove 
+                : project.status === "Under Construction"
+                ? t.projectDetails.statusValues.underConstruction
+                : project.status === "Coming Soon"
+                ? t.projectDetails.statusValues.comingSoon
+                : project.status}
             </Badge>
             <Badge className="bg-primary/90 text-primary-foreground shadow-sm backdrop-blur-sm">
               {project.type === "rent" ? t.projects.forRent : t.projects.forSale}

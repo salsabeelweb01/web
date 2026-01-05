@@ -297,7 +297,15 @@ export default function ProjectDetails() {
             <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-8">
               <div>
                 <div className={cn("flex gap-2 mb-4", isRTL && "flex-row-reverse")}>
-                   <Badge variant="secondary">{project.status}</Badge>
+                   <Badge variant="secondary">
+                     {project.status === "Ready to Move" 
+                       ? t.projectDetails.statusValues.readyToMove 
+                       : project.status === "Under Construction"
+                       ? t.projectDetails.statusValues.underConstruction
+                       : project.status === "Coming Soon"
+                       ? t.projectDetails.statusValues.comingSoon
+                       : project.status}
+                   </Badge>
                    <Badge className="bg-primary text-primary-foreground">{project.type === "rent" ? t.projectDetails.forRent : t.projectDetails.forSale}</Badge>
                 </div>
                 <h1 className="text-3xl md:text-5xl font-heading font-bold mb-2">{project.name}</h1>

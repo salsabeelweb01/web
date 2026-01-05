@@ -110,6 +110,11 @@ export interface Translations {
     notFound: string;
     forRent: string;
     forSale: string;
+    statusValues: {
+      readyToMove: string;
+      underConstruction: string;
+      comingSoon: string;
+    };
   };
   // About
   about: {
@@ -333,6 +338,11 @@ export const translations: Record<Language, Translations> = {
       forRent: 'For Rent',
       forSale: 'For Sale',
       descriptionText: 'Experience the epitome of luxury living with Salsabeel Real Estate. This project offers a perfect blend of comfort, style, and convenience, designed to meet the highest standards of modern living in Ajman.',
+      statusValues: {
+        readyToMove: 'Ready to Move',
+        underConstruction: 'Under Construction',
+        comingSoon: 'Coming Soon',
+      },
     },
     about: {
       title: 'About Us',
@@ -548,6 +558,11 @@ export const translations: Record<Language, Translations> = {
       forRent: 'للإيجار',
       forSale: 'للبيع',
       descriptionText: 'اختبر قمة العيش الفاخر مع سلسبيل العقارية. يقدم هذا المشروع مزيجاً مثالياً من الراحة والأناقة والراحة، مصمم ليلبي أعلى معايير العيش الحديث في عجمان.',
+      statusValues: {
+        readyToMove: 'جاهز للسكن',
+        underConstruction: 'قيد الإنشاء',
+        comingSoon: 'قريباً',
+      },
     },
     about: {
       title: 'من نحن',
