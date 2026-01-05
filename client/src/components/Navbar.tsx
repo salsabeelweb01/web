@@ -4,13 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import logo from "@assets/logo.png";
-import { useLanguage } from "@/contexts/LanguageContext";
-import LanguageSwitcher from "./LanguageSwitcher";
+import { t } from "@/lib/translations";
 
 export default function Navbar() {
   const [location] = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { t, isRTL } = useLanguage();
 
   const links = [
     { href: "/", label: t.nav.home },
@@ -46,12 +44,10 @@ export default function Navbar() {
               {t.nav.contact}
             </Button>
           </Link>
-          <LanguageSwitcher />
         </div>
 
         {/* Mobile Menu Toggle */}
         <div className="md:hidden flex items-center gap-2">
-          <LanguageSwitcher />
           <button
             className="p-2"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

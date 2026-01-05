@@ -18,14 +18,13 @@ import { MapPin, BedDouble, Maximize, Check, Calendar, ArrowLeft, Shield, Chevro
 import { Link } from "wouter";
 import { useState, useEffect, FormEvent, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { t } from "@/lib/translations";
 import { cn } from "@/lib/utils";
 
 export default function ProjectDetails() {
   const [, params] = useRoute("/projects/:id");
   const id = params ? parseInt(params.id) : 0;
   const { toast } = useToast();
-  const { t, isRTL } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -167,11 +166,11 @@ export default function ProjectDetails() {
   };
 
   if (isLoading) {
-    return <Layout><div className={cn("min-h-screen flex items-center justify-center", isRTL && "text-right")}>{t.projectDetails.loading}</div></Layout>;
+    return <Layout><div className="min-h-screen flex items-center justify-center">{t.projectDetails.loading}</div></Layout>;
   }
 
   if (!project) {
-    return <Layout><div className={cn("min-h-screen flex items-center justify-center", isRTL && "text-right")}>{t.projectDetails.notFound}</div></Layout>;
+    return <Layout><div className="min-h-screen flex items-center justify-center">{t.projectDetails.notFound}</div></Layout>;
   }
 
   return (
@@ -183,10 +182,10 @@ export default function ProjectDetails() {
           alt={project.name}
           className="w-full h-full object-cover opacity-90 transition-all duration-500 ease-in-out"
         />
-        <div className={cn("absolute top-4 z-10", isRTL ? "right-4" : "left-4")}>
+        <div className="absolute top-4 left-4 z-10">
           <Link href="/projects">
-            <Button variant="secondary" size="sm" className={cn("gap-2", isRTL && "flex-row-reverse")}>
-              <ArrowLeft className={cn("h-4 w-4", isRTL && "rotate-180")} /> {t.projectDetails.backToProjects}
+            <Button variant="secondary" size="sm" className="gap-2">
+              <ArrowLeft className="h-4 w-4" /> {t.projectDetails.backToProjects}
             </Button>
           </Link>
         </div>
@@ -296,7 +295,7 @@ export default function ProjectDetails() {
           <div className="p-6 md:p-10">
             <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-8">
               <div>
-                <div className={cn("flex gap-2 mb-4", isRTL && "flex-row-reverse")}>
+                <div className="flex gap-2 mb-4">
                    <Badge variant="secondary">
                      {project.status === "Ready to Move" 
                        ? t.projectDetails.statusValues.readyToMove 
@@ -309,12 +308,12 @@ export default function ProjectDetails() {
                    <Badge className="bg-primary text-primary-foreground">{project.type === "rent" ? t.projectDetails.forRent : t.projectDetails.forSale}</Badge>
                 </div>
                 <h1 className="text-3xl md:text-5xl font-heading font-bold mb-2">{project.name}</h1>
-                <div className={cn("flex items-center text-muted-foreground text-lg", isRTL && "flex-row-reverse")}>
-                  <MapPin className={cn("h-5 w-5", isRTL ? "ml-2" : "mr-2")} />
+                <div className="flex items-center text-muted-foreground text-lg">
+                  <MapPin className="h-5 w-5 mr-2" />
                   {project.location}
                 </div>
               </div>
-              <div className={cn("text-right", isRTL && "text-left")}>
+              <div className="text-right">
                 <div className="text-3xl font-bold text-primary mb-2">{project.startingPrice}</div>
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                   <DialogTrigger asChild>
@@ -322,7 +321,7 @@ export default function ProjectDetails() {
                       {t.projectDetails.scheduleViewing}
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className={cn("sm:max-w-[425px]", isRTL && "text-right")}>
+                  <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
                       <DialogTitle>{t.projectDetails.scheduleViewingTitle}</DialogTitle>
                       <DialogDescription>
@@ -389,17 +388,17 @@ export default function ProjectDetails() {
             <div className="space-y-10">
               {/* Key Specs */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-secondary/30 rounded-lg">
-                <div className={cn("text-center border-r border-border last:border-0", isRTL && "border-l border-r-0 first:border-l-0 last:border-l")}>
+                <div className="text-center border-r border-border last:border-0">
                   <BedDouble className="h-6 w-6 mx-auto mb-2 text-primary" />
                   <div className="text-xl font-bold">{project.bedrooms}</div>
                   <div className="text-xs uppercase text-muted-foreground">{t.projectDetails.bedrooms}</div>
                 </div>
-                <div className={cn("text-center border-r border-border last:border-0", isRTL && "border-l border-r-0 first:border-l-0 last:border-l")}>
+                <div className="text-center border-r border-border last:border-0">
                   <Maximize className="h-6 w-6 mx-auto mb-2 text-primary" />
                   <div className="text-xl font-bold">{project.sizeSqft}</div>
                   <div className="text-xs uppercase text-muted-foreground">{t.projectDetails.sqft}</div>
                 </div>
-                <div className={cn("text-center border-r border-border last:border-0", isRTL && "border-l border-r-0 first:border-l-0 last:border-l")}>
+                <div className="text-center border-r border-border last:border-0">
                   <Calendar className="h-6 w-6 mx-auto mb-2 text-primary" />
                   <div className="text-xl font-bold">2024</div>
                   <div className="text-xs uppercase text-muted-foreground">{t.projectDetails.built}</div>
@@ -412,7 +411,7 @@ export default function ProjectDetails() {
               </div>
 
               {/* Description */}
-              <div className={cn(isRTL && "text-right")}>
+              <div>
                 <h3 className="text-2xl font-heading font-bold mb-4">{t.projectDetails.aboutProperty}</h3>
                 <p className="text-lg leading-relaxed text-muted-foreground">
                   {project.description}
@@ -423,7 +422,7 @@ export default function ProjectDetails() {
               </div>
 
               {/* Gallery with Auto-loop */}
-              <div className={cn(isRTL && "text-right")}>
+              <div>
                 <h3 className="text-2xl font-heading font-bold mb-6">{t.projectDetails.gallery}</h3>
                 
                 {/* Main Gallery Image with Auto-loop */}
@@ -499,7 +498,7 @@ export default function ProjectDetails() {
               </div>
 
               {/* Features */}
-              <div className={cn(isRTL && "text-right")}>
+              <div>
                 <h3 className="text-2xl font-heading font-bold mb-6">{t.projectDetails.features}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {project.features.map((feature, idx) => {
@@ -538,7 +537,7 @@ export default function ProjectDetails() {
               </div>
 
               {/* Location Map */}
-              <div className={cn(isRTL && "text-right")}>
+              <div>
                 <h3 className="text-2xl font-heading font-bold mb-6">{t.projectDetails.location}</h3>
                 <div className="aspect-video rounded-lg overflow-hidden border border-border bg-muted">
                   <iframe

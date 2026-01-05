@@ -1,14 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* RTL Support */
-[dir="rtl"] {
-  direction: rtl;
-}
-
-[dir="ltr"] {
-  direction: ltr;
-}
 
 @custom-variant dark (&:is(.dark *));
 
@@ -139,10 +131,6 @@
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading tracking-tight;
-  }
-  /* Arabic font support */
-  [dir="rtl"] {
-    font-family: 'Cairo', 'Noto Sans Arabic', 'Inter', sans-serif;
   }
 }
 

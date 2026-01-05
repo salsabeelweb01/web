@@ -7,12 +7,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { submitContactInquiry } from "@/lib/api";
 import { useState, FormEvent } from "react";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { t } from "@/lib/translations";
 import { cn } from "@/lib/utils";
 
 export default function Contact() {
   const { toast } = useToast();
-  const { t, isRTL } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -50,7 +49,7 @@ export default function Contact() {
     <Layout>
       {/* Header */}
       <section className="bg-secondary/30 py-20">
-        <div className={cn("container mx-auto px-4 text-center", isRTL && "text-right")}>
+        <div className="container mx-auto px-4 text-center">
           <Badge className="bg-primary/90 text-primary-foreground mb-4">{t.contact.badge}</Badge>
           <h1 className="text-4xl md:text-6xl font-heading font-bold mb-6">{t.contact.heroTitle}</h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -65,10 +64,10 @@ export default function Contact() {
             
             {/* Contact Info */}
             <div className="space-y-12">
-              <div className={cn(isRTL && "text-right")}>
+              <div>
                 <h2 className="text-3xl font-heading font-bold mb-8">{t.contact.info.title}</h2>
                 <div className="space-y-8">
-                  <div className={cn("flex items-start gap-4", isRTL && "flex-row-reverse")}>
+                  <div className="flex items-start gap-4">
                     <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
                       <Phone className="h-6 w-6" />
                     </div>
@@ -78,7 +77,7 @@ export default function Contact() {
                     </div>
                   </div>
 
-                  <div className={cn("flex items-start gap-4", isRTL && "flex-row-reverse")}>
+                  <div className="flex items-start gap-4">
                     <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
                       <Mail className="h-6 w-6" />
                     </div>
@@ -89,7 +88,7 @@ export default function Contact() {
                     </div>
                   </div>
 
-                  <div className={cn("flex items-start gap-4", isRTL && "flex-row-reverse")}>
+                  <div className="flex items-start gap-4">
                     <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
                       <MapPin className="h-6 w-6" />
                     </div>
@@ -103,7 +102,7 @@ export default function Contact() {
                     </div>
                   </div>
 
-                  <div className={cn("flex items-start gap-4", isRTL && "flex-row-reverse")}>
+                  <div className="flex items-start gap-4">
                     <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
                       <Clock className="h-6 w-6" />
                     </div>
@@ -126,7 +125,7 @@ export default function Contact() {
             </div>
 
             {/* Contact Form */}
-            <div className={cn("bg-card p-8 md:p-10 rounded-2xl shadow-lg border border-border", isRTL && "text-right")}>
+            <div className="bg-card p-8 md:p-10 rounded-2xl shadow-lg border border-border">
               <h2 className="text-2xl font-heading font-bold mb-6">{t.contact.form.title}</h2>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -190,12 +189,12 @@ export default function Contact() {
                 <Button 
                   type="submit" 
                   size="lg" 
-                  className={cn("w-full text-lg", isRTL && "flex-row-reverse")} 
+                  className="w-full text-lg" 
                   disabled={isSubmitting}
                   data-testid="button-submit-contact"
                 >
                   {isSubmitting ? t.contact.form.sending : t.contact.form.send}
-                  <Send className={cn("h-4 w-4", isRTL ? "mr-2" : "ml-2")} />
+                  <Send className="h-4 w-4 ml-2" />
                 </Button>
               </form>
             </div>

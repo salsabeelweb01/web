@@ -1,7 +1,7 @@
 import Layout from "@/components/Layout";
 import { Badge } from "@/components/ui/badge";
 import { Users, Globe, Building, Award } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { t } from "@/lib/translations";
 import { cn } from "@/lib/utils";
 
 import teamMuna from "@assets/team/muna_jaber.jpeg";
@@ -10,7 +10,6 @@ import teamAhmedF from "@assets/team/ahmed_fawzy.jpeg";
 import teamAhmedH from "@assets/team/ahmed_hammad.jpg";
 
 export default function About() {
-  const { t, isRTL } = useLanguage();
   return (
     <Layout>
       {/* Hero */}
@@ -24,7 +23,7 @@ export default function About() {
           <div className="absolute inset-0 bg-black/50" />
         </div>
         
-        <div className={cn("relative z-10 container mx-auto px-4 text-center", isRTL && "text-right")}>
+        <div className="relative z-10 container mx-auto px-4 text-center">
           <Badge className="bg-primary/90 text-primary-foreground mb-4 animate-in slide-in-from-bottom-4 duration-500">
             {t.about.badge}
           </Badge>
@@ -41,7 +40,7 @@ export default function About() {
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-            <div className={cn(isRTL && "text-right")}>
+            <div>
                <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">{t.about.vision.title}</h2>
                <p className="text-lg text-muted-foreground leading-relaxed mb-6">
                  {t.about.vision.paragraph1}
@@ -50,7 +49,7 @@ export default function About() {
                  {t.about.vision.paragraph2}
                </p>
             </div>
-            <div className={cn(isRTL && "text-right")}>
+            <div>
                <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">{t.about.mission.title}</h2>
                <p className="text-lg text-muted-foreground leading-relaxed mb-6">
                  {t.about.mission.paragraph1}

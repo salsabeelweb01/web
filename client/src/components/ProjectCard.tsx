@@ -4,7 +4,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { BedDouble, Maximize, MapPin, ArrowRight } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { t } from "@/lib/translations";
 import { cn } from "@/lib/utils";
 
 interface ProjectCardProps {
@@ -12,7 +12,6 @@ interface ProjectCardProps {
 }
 
 export default function ProjectCard({ project }: ProjectCardProps) {
-  const { t, isRTL } = useLanguage();
   return (
     <Link 
       href={`/projects/${project.id}`} 
@@ -60,21 +59,12 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             </div>
           </div>
 
-          <div className={cn(
-            "grid grid-cols-2 gap-4 mt-6 py-4 border-t border-border/50",
-            isRTL && "text-right"
-          )}>
-            <div className={cn(
-              "flex items-center gap-2 text-sm text-muted-foreground",
-              isRTL && "flex-row-reverse"
-            )}>
+          <div className="grid grid-cols-2 gap-4 mt-6 py-4 border-t border-border/50">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <BedDouble className="h-4 w-4 text-primary/70" />
               <span>{project.bedrooms} {t.projects.beds}</span>
             </div>
-            <div className={cn(
-              "flex items-center gap-2 text-sm text-muted-foreground",
-              isRTL && "flex-row-reverse"
-            )}>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Maximize className="h-4 w-4 text-primary/70" />
               <span>{project.sizeSqft} {t.projects.sqft}</span>
             </div>
@@ -82,15 +72,9 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         </CardContent>
 
         <CardFooter className="p-6 pt-0">
-          <Button className={cn(
-            "w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors pointer-events-none",
-            isRTL && "flex-row-reverse"
-          )} variant="outline">
+          <Button className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors pointer-events-none" variant="outline">
             {t.projects.viewDetails}
-            <ArrowRight className={cn(
-              "h-4 w-4 group-hover:translate-x-1 transition-transform",
-              isRTL ? "mr-2 group-hover:-translate-x-1" : "ml-2"
-            )} />
+            <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
           </Button>
         </CardFooter>
       </Card>

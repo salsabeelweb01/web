@@ -6,7 +6,7 @@ import { getFeaturedProjects, Project } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, Star, Shield, Clock, CheckCircle2, Wallet, Banknote, Building, ChevronDown } from "lucide-react";
 import { Link } from "wouter";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { t } from "@/lib/translations";
 import { cn } from "@/lib/utils";
 import {
   Accordion,
@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/accordion";
 
 export default function Home() {
-  const { t, isRTL } = useLanguage();
   const { data: featuredProjects, isLoading } = useQuery({
     queryKey: ['featuredProjects'],
     queryFn: getFeaturedProjects
@@ -35,7 +34,7 @@ export default function Home() {
           <div className="absolute inset-0 bg-black/40" />
         </div>
         
-        <div className={cn("relative z-10 container mx-auto px-4 text-center", isRTL && "text-right")}>
+        <div className="relative z-10 container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold text-white mb-6 animate-in slide-in-from-bottom-4 duration-700">
             {t.home.hero.title}
           </h1>
@@ -52,26 +51,17 @@ export default function Home() {
       {/* Featured Properties */}
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
-          <div className={cn(
-            "flex flex-col md:flex-row justify-between items-end mb-12",
-            isRTL && "flex-row-reverse"
-          )}>
-            <div className={cn(isRTL && "text-right")}>
+          <div className="flex flex-col md:flex-row justify-between items-end mb-12">
+            <div>
               <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground mb-4">{t.home.featured.title}</h2>
               <p className="text-muted-foreground max-w-xl">
                 {t.home.featured.subtitle}
               </p>
             </div>
             <Link href="/projects">
-              <Button variant="ghost" className={cn(
-                "hidden md:flex group mt-4 md:mt-0",
-                isRTL && "flex-row-reverse"
-              )}>
+              <Button variant="ghost" className="hidden md:flex group mt-4 md:mt-0">
                 {t.home.featured.viewAll}
-                <ArrowRight className={cn(
-                  "h-4 w-4 group-hover:translate-x-1 transition-transform",
-                  isRTL ? "mr-2 group-hover:-translate-x-1" : "ml-2"
-                )} />
+                <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
           </div>
@@ -103,7 +93,7 @@ export default function Home() {
       {/* Why Choose Us */}
       <section className="py-20 bg-secondary/30">
         <div className="container mx-auto px-4">
-          <div className={cn("text-center max-w-2xl mx-auto mb-16", isRTL && "text-right")}>
+          <div className="text-center max-w-2xl mx-auto mb-16">
             <h2 className="text-3xl font-heading font-bold mb-4">{t.home.whyChoose.title}</h2>
             <p className="text-muted-foreground">
               {t.home.whyChoose.subtitle}
@@ -111,7 +101,7 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className={cn("bg-background p-8 rounded-xl shadow-sm border border-border/50 text-center hover:shadow-md transition-shadow", isRTL && "text-right")}>
+            <div className="bg-background p-8 rounded-xl shadow-sm border border-border/50 text-center hover:shadow-md transition-shadow">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <CheckCircle2 className="h-8 w-8 text-primary" />
               </div>
@@ -120,7 +110,7 @@ export default function Home() {
                 {t.home.whyChoose.directDeveloper.description}
               </p>
             </div>
-            <div className={cn("bg-background p-8 rounded-xl shadow-sm border border-border/50 text-center hover:shadow-md transition-shadow", isRTL && "text-right")}>
+            <div className="bg-background p-8 rounded-xl shadow-sm border border-border/50 text-center hover:shadow-md transition-shadow">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Wallet className="h-8 w-8 text-primary" />
               </div>
@@ -129,7 +119,7 @@ export default function Home() {
                 {t.home.whyChoose.flexiblePayments.description}
               </p>
             </div>
-            <div className={cn("bg-background p-8 rounded-xl shadow-sm border border-border/50 text-center hover:shadow-md transition-shadow", isRTL && "text-right")}>
+            <div className="bg-background p-8 rounded-xl shadow-sm border border-border/50 text-center hover:shadow-md transition-shadow">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Banknote className="h-8 w-8 text-primary" />
               </div>
@@ -138,7 +128,7 @@ export default function Home() {
                 {t.home.whyChoose.noCommission.description}
               </p>
             </div>
-            <div className={cn("bg-background p-8 rounded-xl shadow-sm border border-border/50 text-center hover:shadow-md transition-shadow", isRTL && "text-right")}>
+            <div className="bg-background p-8 rounded-xl shadow-sm border border-border/50 text-center hover:shadow-md transition-shadow">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Building className="h-8 w-8 text-primary" />
               </div>
@@ -154,33 +144,33 @@ export default function Home() {
       {/* FAQ Section */}
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4 max-w-4xl">
-           <div className={cn("text-center mb-12", isRTL && "text-right")}>
+           <div className="text-center mb-12">
             <h2 className="text-3xl font-heading font-bold mb-4">{t.home.faq.title}</h2>
             <p className="text-muted-foreground">{t.home.faq.subtitle}</p>
           </div>
           
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="item-1">
-              <AccordionTrigger className={cn("text-lg font-medium", isRTL && "text-right")}>{t.home.faq.q1.question}</AccordionTrigger>
-              <AccordionContent className={cn("text-muted-foreground leading-relaxed", isRTL && "text-right")}>
+              <AccordionTrigger className="text-lg font-medium">{t.home.faq.q1.question}</AccordionTrigger>
+              <AccordionContent className="text-muted-foreground leading-relaxed">
                 {t.home.faq.q1.answer}
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-2">
-              <AccordionTrigger className={cn("text-lg font-medium", isRTL && "text-right")}>{t.home.faq.q2.question}</AccordionTrigger>
-              <AccordionContent className={cn("text-muted-foreground leading-relaxed", isRTL && "text-right")}>
+              <AccordionTrigger className="text-lg font-medium">{t.home.faq.q2.question}</AccordionTrigger>
+              <AccordionContent className="text-muted-foreground leading-relaxed">
                 {t.home.faq.q2.answer}
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-3">
-              <AccordionTrigger className={cn("text-lg font-medium", isRTL && "text-right")}>{t.home.faq.q3.question}</AccordionTrigger>
-              <AccordionContent className={cn("text-muted-foreground leading-relaxed", isRTL && "text-right")}>
+              <AccordionTrigger className="text-lg font-medium">{t.home.faq.q3.question}</AccordionTrigger>
+              <AccordionContent className="text-muted-foreground leading-relaxed">
                 {t.home.faq.q3.answer}
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-4">
-              <AccordionTrigger className={cn("text-lg font-medium", isRTL && "text-right")}>{t.home.faq.q4.question}</AccordionTrigger>
-              <AccordionContent className={cn("text-muted-foreground leading-relaxed", isRTL && "text-right")}>
+              <AccordionTrigger className="text-lg font-medium">{t.home.faq.q4.question}</AccordionTrigger>
+              <AccordionContent className="text-muted-foreground leading-relaxed">
                 {t.home.faq.q4.answer}
               </AccordionContent>
             </AccordionItem>
