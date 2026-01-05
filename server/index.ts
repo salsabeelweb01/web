@@ -29,6 +29,12 @@ app.use((req, res, next) => {
 // Use process.cwd() which works in both ESM and CommonJS builds
 app.use("/attached_assets", express.static(path.resolve(process.cwd(), "attached_assets")));
 
+// Ensure uploads directory exists
+const uploadsDir = path.resolve(process.cwd(), "attached_assets", "uploads");
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
 declare module "http" {
   interface IncomingMessage {
     rawBody: unknown;

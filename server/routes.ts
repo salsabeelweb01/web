@@ -3,6 +3,8 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertContactInquirySchema, insertViewingRequestSchema, insertProjectSchema } from "@shared/schema";
 import { fromError } from "zod-validation-error";
+import { uploadMultiple } from "./upload";
+import path from "path";
 
 export async function registerRoutes(
   httpServer: Server,
@@ -128,19 +130,99 @@ export async function registerRoutes(
     }
   });
 
+  // Upload images endpoint
+  app.post("/api/upload/images", (req, res) => {
+    uploadMultiple(req, res, (err: any) => {
+      if (err) {
+        console.error("Upload error:", err);
+        return res.status(400).json({ error: err.message || "Failed to upload images" });
+      }
+
+      if (!req.files || (Array.isArray(req.files) && req.files.length === 0)) {
+        return res.status(400).json({ error: "No files uploaded" });
+      }
+
+      const files = Array.isArray(req.files) ? req.files : Object.values(req.files).flat();
+      const imageUrls = files.map((file: Express.Multer.File) => 
+        `/attached_assets/uploads/${file.filename}`
+      );
+
+      res.json({ success: true, images: imageUrls });
+    });
+  });
+
   // Create new project (admin)
   app.post("/api/projects", async (req, res) => {
     try {
-      const validatedData = insertProjectSchema.parse(req.body);
-      const project = await storage.createProject(validatedData);
+      console.log("Creating project with data:", JSON.stringify(req.body, null, 2));
+      
+      // Validate the data
+      let validatedData;
+      try {
+        validatedData = insertProjectSchema.parse(req.body);
+      } catch (validationError: any) {
+        if (validationError.name === "ZodError") {
+          const errorMessage = fromError(validationError);
+          console.error("Validation error:", errorMessage.toString());
+          // Return user-friendly validation errors
+          const fieldErrors = validationError.errors.map((err: any) => ({
+            field: err.path.join("."),
+            message: err.message,
+          }));
+          return res.status(400).json({ 
+            error: "Validation failed",
+            details: fieldErrors,
+            message: errorMessage.toString()
+          });
+        }
+        throw validationError;
+      }
+      
+      console.log("Validated data:", JSON.stringify(validatedData, null, 2));
+      
+      // Try to create the project
+      let project;
+      try {
+        project = await storage.createProject(validatedData);
+      } catch (dbError: any) {
+        console.error("Database error:", dbError);
+        // Check for common database errors
+        if (dbError.code === "23505") {
+          return res.status(400).json({ 
+            error: "A project with this name already exists" 
+          });
+        }
+        if (dbError.code === "42P01") {
+          return res.status(500).json({ 
+            error: "Database table not found. Please run migrations." 
+          });
+        }
+        if (dbError.message?.includes("connection")) {
+          return res.status(500).json({ 
+            error: "Database connection failed. Please check your database configuration." 
+          });
+        }
+        throw dbError;
+      }
+      
+      console.log("Project created successfully:", project.id);
       res.status(201).json({ success: true, project });
     } catch (error: any) {
-      if (error.name === "ZodError") {
-        const validationError = fromError(error);
-        return res.status(400).json({ error: validationError.toString() });
-      }
-      console.error("Error creating project:", error);
-      res.status(500).json({ error: "Failed to create project" });
+      console.error("Unexpected error creating project:", error);
+      console.error("Error name:", error?.name);
+      console.error("Error message:", error?.message);
+      console.error("Error stack:", error?.stack);
+      
+      // Return a more helpful error message
+      const errorMessage = error?.message || "An unexpected error occurred";
+      res.status(500).json({ 
+        error: "Failed to create project",
+        message: errorMessage,
+        // Include details in production for debugging (but not sensitive info)
+        ...(process.env.NODE_ENV === "production" && {
+          hint: "Check server logs for more details. Common issues: missing required fields, database connection problems, or validation errors."
+        })
+      });
     }
   });
 

@@ -22,21 +22,33 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-import { useState, FormEvent, useEffect } from "react";
-import { Plus, Trash2, Upload, Lock, Building } from "lucide-react";
+import { useState, FormEvent, useEffect, useRef, useCallback } from "react";
+import { Plus, Trash2, Upload, Lock, Building, X, Image as ImageIcon } from "lucide-react";
 import { Project, getProjects } from "@/lib/api";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+
+interface ImageFile {
+  file?: File;
+  url: string;
+  preview?: string;
+  isUploaded: boolean;
+}
 
 export default function Admin() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [images, setImages] = useState<string[]>([""]);
+  const [images, setImages] = useState<ImageFile[]>([{ url: "", isUploaded: false }]);
   const [features, setFeatures] = useState<string[]>([""]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const dropZoneRef = useRef<HTMLDivElement>(null);
+  const [formStatus, setFormStatus] = useState<string>("");
+  const [formType, setFormType] = useState<string>("");
 
   const { data: existingProjects, refetch } = useQuery({
     queryKey: ['adminProjects'],
@@ -105,17 +117,139 @@ export default function Admin() {
     }
   };
 
+  // Handle file upload
+  const handleFileUpload = async (files: FileList) => {
+    setIsUploading(true);
+    const fileArray = Array.from(files);
+    const previewUrls: string[] = [];
+    
+    try {
+      // Create preview URLs for immediate display
+      const previewImages: ImageFile[] = fileArray.map((file) => {
+        const preview = URL.createObjectURL(file);
+        previewUrls.push(preview);
+        return {
+          file,
+          url: "",
+          preview,
+          isUploaded: false,
+        };
+      });
+
+      // Add preview images immediately
+      setImages((prev) => {
+        const filtered = prev.filter((img) => img.url.trim() !== "");
+        return [...filtered, ...previewImages];
+      });
+
+      const formData = new FormData();
+      fileArray.forEach((file) => {
+        formData.append("images", file);
+      });
+
+      const response = await fetch("/api/upload/images", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        // Clean up preview URLs and remove preview images on error
+        previewUrls.forEach(url => URL.revokeObjectURL(url));
+        setImages((prev) => prev.filter((img) => !previewUrls.includes(img.preview || "")));
+        throw new Error(error.error || "Failed to upload images");
+      }
+
+      const data = await response.json();
+      
+      // Update preview images with actual URLs
+      setImages((prev) => {
+        return prev.map((img, idx) => {
+          const previewIndex = previewUrls.indexOf(img.preview || "");
+          if (previewIndex !== -1 && data.images[previewIndex]) {
+            // Clean up preview URL
+            if (img.preview) {
+              URL.revokeObjectURL(img.preview);
+            }
+            return {
+              url: data.images[previewIndex],
+              isUploaded: true,
+            };
+          }
+          return img;
+        });
+      });
+
+      toast({
+        title: "Success",
+        description: `${data.images.length} image(s) uploaded successfully!`,
+      });
+    } catch (error) {
+      // Clean up any remaining preview URLs
+      previewUrls.forEach(url => URL.revokeObjectURL(url));
+      toast({
+        title: "Upload Error",
+        description: error instanceof Error ? error.message : "Failed to upload images",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  // Handle drag and drop
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      handleFileUpload(files);
+    }
+  }, []);
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  }, []);
+
+  // Handle file input change
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      handleFileUpload(e.target.files);
+    }
+  };
+
+  // Handle URL input (for manual URL entry)
+  const updateImageUrl = (index: number, value: string) => {
+    const newImages = [...images];
+    newImages[index] = { url: value, isUploaded: false };
+    setImages(newImages);
+  };
+
+  const addImageField = () => {
+    setImages([...images, { url: "", isUploaded: false }]);
+  };
+
+  const removeImageField = (index: number) => {
+    if (images.length > 1) {
+      setImages(images.filter((_, i) => i !== index));
+    }
+  };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     
-    const filteredImages = images.filter(img => img.trim() !== "");
+    const filteredImages = images
+      .filter(img => img.url.trim() !== "")
+      .map(img => img.url);
     const filteredFeatures = features.filter(f => f.trim() !== "");
 
     if (filteredImages.length === 0) {
       toast({
         title: "Error",
-        description: "Please add at least one image URL",
+        description: "Please add at least one image",
         variant: "destructive",
       });
       return;
@@ -123,27 +257,63 @@ export default function Admin() {
 
     setIsSubmitting(true);
     try {
+      // Get all form values - Select components are controlled, so use state
+      const formValues = {
+        name: formData.get('name') as string,
+        location: formData.get('location') as string,
+        status: formStatus || formData.get('status') as string,
+        type: formType || formData.get('type') as string,
+        startingPrice: formData.get('startingPrice') as string,
+        bedrooms: formData.get('bedrooms') as string,
+        sizeSqft: formData.get('sizeSqft') as string,
+        description: formData.get('description') as string,
+        propertyType: formData.get('propertyType') as string,
+        images: filteredImages,
+        features: filteredFeatures,
+      };
+
+      // Validate required fields
+      const missingFields: string[] = [];
+      if (!formValues.name?.trim()) missingFields.push('Property Name');
+      if (!formValues.location?.trim()) missingFields.push('Location');
+      if (!formValues.status?.trim()) missingFields.push('Status');
+      if (!formValues.type?.trim()) missingFields.push('Type');
+      if (!formValues.startingPrice?.trim()) missingFields.push('Starting Price');
+      if (!formValues.bedrooms?.trim()) missingFields.push('Bedrooms');
+      if (!formValues.sizeSqft?.trim()) missingFields.push('Size (sqft)');
+      if (!formValues.description?.trim()) missingFields.push('Description');
+      if (!formValues.propertyType?.trim()) missingFields.push('Property Type');
+
+      if (missingFields.length > 0) {
+        toast({
+          title: "Validation Error",
+          description: `Please fill in: ${missingFields.join(', ')}`,
+          variant: "destructive",
+        });
+        setIsSubmitting(false);
+        return;
+      }
+
+      console.log('Submitting project:', formValues);
+
       const response = await fetch('/api/projects', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.get('name'),
-          location: formData.get('location'),
-          status: formData.get('status'),
-          type: formData.get('type'),
-          startingPrice: formData.get('startingPrice'),
-          bedrooms: formData.get('bedrooms'),
-          sizeSqft: formData.get('sizeSqft'),
-          description: formData.get('description'),
-          propertyType: formData.get('propertyType'),
-          images: filteredImages,
-          features: filteredFeatures,
-        }),
+        body: JSON.stringify(formValues),
       });
 
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Failed to create property');
+        const errorData = await response.json();
+        // Provide more detailed error message
+        let errorMessage = errorData.error || 'Failed to create property';
+        if (errorData.message) {
+          errorMessage += `: ${errorData.message}`;
+        }
+        if (errorData.details && Array.isArray(errorData.details)) {
+          const fieldErrors = errorData.details.map((d: any) => `${d.field}: ${d.message}`).join(', ');
+          errorMessage += ` (${fieldErrors})`;
+        }
+        throw new Error(errorMessage);
       }
 
       toast({
@@ -152,8 +322,10 @@ export default function Admin() {
       });
       
       e.currentTarget.reset();
-      setImages([""]);
+      setImages([{ url: "", isUploaded: false }]);
       setFeatures([""]);
+      setFormStatus("");
+      setFormType("");
       refetch();
       queryClient.invalidateQueries({ queryKey: ['projects'] });
       queryClient.invalidateQueries({ queryKey: ['featuredProjects'] });
@@ -166,18 +338,6 @@ export default function Admin() {
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const addImageField = () => setImages([...images, ""]);
-  const removeImageField = (index: number) => {
-    if (images.length > 1) {
-      setImages(images.filter((_, i) => i !== index));
-    }
-  };
-  const updateImage = (index: number, value: string) => {
-    const newImages = [...images];
-    newImages[index] = value;
-    setImages(newImages);
   };
 
   const addFeatureField = () => setFeatures([...features, ""]);
@@ -337,7 +497,7 @@ export default function Admin() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Status *</label>
-                      <Select name="status" required>
+                      <Select name="status" required value={formStatus} onValueChange={setFormStatus}>
                         <SelectTrigger data-testid="select-status">
                           <SelectValue placeholder="Select status" />
                         </SelectTrigger>
@@ -350,7 +510,7 @@ export default function Admin() {
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Type *</label>
-                      <Select name="type" required>
+                      <Select name="type" required value={formType} onValueChange={setFormType}>
                         <SelectTrigger data-testid="select-type">
                           <SelectValue placeholder="Select type" />
                         </SelectTrigger>
@@ -418,20 +578,98 @@ export default function Admin() {
                 <div className="bg-card p-6 rounded-xl border border-border space-y-4">
                   <div className="flex items-center justify-between">
                     <h2 className="text-xl font-bold">Images</h2>
-                    <Button type="button" variant="outline" size="sm" onClick={addImageField}>
-                      <Plus className="h-4 w-4 mr-2" /> Add Image
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        size="sm" 
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={isUploading}
+                      >
+                        <Upload className="h-4 w-4 mr-2" /> 
+                        {isUploading ? "Uploading..." : "Upload Files"}
+                      </Button>
+                      <Button type="button" variant="outline" size="sm" onClick={addImageField}>
+                        <Plus className="h-4 w-4 mr-2" /> Add URL
+                      </Button>
+                    </div>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    Enter image URLs. The first image will be the main photo.
-                  </p>
                   
+                  {/* Drag and Drop Zone */}
+                  <div
+                    ref={dropZoneRef}
+                    onDrop={handleDrop}
+                    onDragOver={handleDragOver}
+                    className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary transition-colors cursor-pointer"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    <ImageIcon className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                    <p className="text-sm font-medium mb-2">
+                      Drag & drop images here, or click to browse
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Supports: JPG, PNG, GIF, WEBP (Max 10MB per image)
+                    </p>
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      multiple
+                      accept="image/*"
+                      onChange={handleFileInputChange}
+                      className="hidden"
+                    />
+                  </div>
+
+                  {/* Image Preview Grid */}
+                  {images.some(img => img.url.trim() !== "") && (
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                      {images.map((img, index) => {
+                        if (!img.url.trim()) return null;
+                        return (
+                          <div key={index} className="relative group">
+                            <div className="aspect-square rounded-lg overflow-hidden border border-border bg-secondary">
+                              {img.preview || img.url ? (
+                                <img
+                                  src={img.preview || img.url}
+                                  alt={`Preview ${index + 1}`}
+                                  className="w-full h-full object-cover"
+                                  onError={(e) => {
+                                    (e.target as HTMLImageElement).src = "/placeholder-image.png";
+                                  }}
+                                />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center">
+                                  <ImageIcon className="h-8 w-8 text-muted-foreground" />
+                                </div>
+                              )}
+                            </div>
+                            <Button
+                              type="button"
+                              variant="destructive"
+                              size="icon"
+                              className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                              onClick={() => removeImageField(index)}
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                            {img.isUploaded && (
+                              <Badge className="absolute top-2 left-2" variant="secondary">
+                                Uploaded
+                              </Badge>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {/* URL Input Fields (for manual URL entry) */}
                   {images.map((img, index) => (
-                    <div key={index} className="flex gap-2">
+                    <div key={`url-${index}`} className="flex gap-2">
                       <Input 
-                        value={img}
-                        onChange={(e) => updateImage(index, e.target.value)}
-                        placeholder={`Image URL ${index + 1}`}
+                        value={img.url}
+                        onChange={(e) => updateImageUrl(index, e.target.value)}
+                        placeholder={`Image URL ${index + 1} (or upload above)`}
                         data-testid={`input-image-${index}`}
                       />
                       {images.length > 1 && (
@@ -446,6 +684,10 @@ export default function Admin() {
                       )}
                     </div>
                   ))}
+                  
+                  <p className="text-xs text-muted-foreground">
+                    💡 Tip: Drag & drop images or upload files. You can also enter image URLs manually. The first image will be the main photo.
+                  </p>
                 </div>
 
                 {/* Features */}
