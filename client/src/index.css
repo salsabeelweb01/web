@@ -46,8 +46,8 @@
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
   
-  --font-sans: 'Inter', sans-serif;
-  --font-heading: 'Playfair Display', serif;
+  --font-sans: 'Inter', 'Cairo', 'Noto Sans Arabic', sans-serif;
+  --font-heading: 'Playfair Display', 'Cairo', serif;
 }
 
 /* DARK MODE - Premium Luxury Theme (Default) */
@@ -133,6 +133,10 @@
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading tracking-tight;
+  }
+  /* Arabic font support */
+  [dir="rtl"] {
+    font-family: 'Cairo', 'Noto Sans Arabic', 'Inter', sans-serif;
   }
 }
 
