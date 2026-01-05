@@ -222,10 +222,6 @@ export interface Translations {
     propertyManagement: string;
     copyright: string;
   };
-  // Project Details
-  projectDetails: {
-    descriptionText: string;
-  };
 }
 
 export const translations: Record<Language, Translations> = {
@@ -445,9 +441,6 @@ export const translations: Record<Language, Translations> = {
       propertyManagement: 'Property Management',
       copyright: 'Salsabeel Real Estate LLC. All rights reserved.',
     },
-    projectDetails: {
-      descriptionText: 'Experience the epitome of luxury living with Salsabeel Real Estate. This project offers a perfect blend of comfort, style, and convenience, designed to meet the highest standards of modern living in Ajman.',
-    },
   },
   ar: {
     nav: {
@@ -664,9 +657,6 @@ export const translations: Record<Language, Translations> = {
       commercial: 'تجاري',
       propertyManagement: 'إدارة العقارات',
       copyright: 'سلسبيل العقارية ذ.م.م. جميع الحقوق محفوظة.',
-    },
-    projectDetails: {
-      descriptionText: 'اختبر قمة العيش الفاخر مع سلسبيل العقارية. يقدم هذا المشروع مزيجاً مثالياً من الراحة والأناقة والراحة، مصمم ليلبي أعلى معايير العيش الحديث في عجمان.',
     },
   },
 };
