@@ -442,7 +442,7 @@ export default function ProjectDetails() {
                       loading="lazy"
                       allowFullScreen
                       referrerPolicy="no-referrer-when-downgrade"
-                      src={`https://www.google.com/maps/embed/v1/search?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dS6FG4Q0uL0iE8&q=${encodeURIComponent(project.location)}&maptype=satellite&zoom=17`}
+                      src={`https://www.google.com/maps?q=${encodeURIComponent(project.location)}&output=embed&t=k&z=17`}
                       title={`Satellite view of ${project.location}`}
                     />
                   </div>
