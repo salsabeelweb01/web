@@ -394,15 +394,62 @@ export default function ProjectDetails() {
                 <div>
                   <h3 className="text-2xl font-heading font-bold mb-6">Features & Amenities</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {project.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-center gap-3 p-3 bg-secondary/20 rounded-lg">
-                        <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                          <Check className="h-4 w-4" />
+                    {project.features.map((feature, idx) => {
+                      // Check if feature is a URL (image)
+                      const isImageUrl = /^https?:\/\/.+\.(jpg|jpeg|png|gif|webp|svg)/i.test(feature) || 
+                                        feature.startsWith('/') || 
+                                        feature.startsWith('attached_assets/');
+                      
+                      if (isImageUrl) {
+                        // Find image index or use first image
+                        const imageIndex = project.images.findIndex(img => img === feature);
+                        return (
+                          <div 
+                            key={idx} 
+                            className="relative aspect-video rounded-lg overflow-hidden bg-secondary/20 group cursor-pointer"
+                            onClick={() => openLightbox(imageIndex >= 0 ? imageIndex : 0)}
+                          >
+                            <img 
+                              src={feature} 
+                              alt={`Feature ${idx + 1}`}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+                          </div>
+                        );
+                      }
+                      
+                      return (
+                        <div key={idx} className="flex items-center gap-3 p-3 bg-secondary/20 rounded-lg">
+                          <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                            <Check className="h-4 w-4" />
+                          </div>
+                          <span className="font-medium">{feature}</span>
                         </div>
-                        <span className="font-medium">{feature}</span>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
+                </div>
+
+                {/* Location Map */}
+                <div>
+                  <h3 className="text-2xl font-heading font-bold mb-6">Location</h3>
+                  <div className="aspect-video rounded-lg overflow-hidden border border-border bg-muted">
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      loading="lazy"
+                      allowFullScreen
+                      referrerPolicy="no-referrer-when-downgrade"
+                      src={`https://www.google.com/maps/embed/v1/search?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dS6FG4Q0uL0iE8&q=${encodeURIComponent(project.location)}&maptype=satellite&zoom=17`}
+                      title={`Satellite view of ${project.location}`}
+                    />
+                  </div>
+                  <p className="mt-4 text-muted-foreground flex items-center gap-2">
+                    <MapPin className="h-4 w-4" />
+                    {project.location}
+                  </p>
                 </div>
               </div>
 
