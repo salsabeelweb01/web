@@ -47,6 +47,7 @@ export default function Admin() {
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dropZoneRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
   const [formStatus, setFormStatus] = useState<string>("");
   const [formType, setFormType] = useState<string>("");
 
@@ -321,9 +322,9 @@ export default function Admin() {
         description: "Property has been added successfully!",
       });
       
-      // Reset form if it still exists
-      if (e.currentTarget) {
-        e.currentTarget.reset();
+      // Reset form using ref
+      if (formRef.current) {
+        formRef.current.reset();
       }
       setImages([{ url: "", isUploaded: false }]);
       setFeatures([""]);
@@ -471,7 +472,7 @@ export default function Admin() {
 
             {/* Add New Property Form */}
             <div className="lg:col-span-2">
-              <form onSubmit={handleSubmit} className="space-y-8">
+              <form ref={formRef} onSubmit={handleSubmit} className="space-y-8">
                 {/* Basic Info */}
                 <div className="bg-card p-6 rounded-xl border border-border space-y-6">
                   <h2 className="text-xl font-bold">Add New Property</h2>
