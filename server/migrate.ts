@@ -1,5 +1,5 @@
 import { db } from "./db";
-import { sql } from "drizzle-orm/node-postgres";
+import { sql } from "drizzle-orm";
 
 /**
  * Check if database tables exist and create them if needed
