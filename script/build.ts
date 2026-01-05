@@ -32,6 +32,16 @@ const allowlist = [
   "zod-validation-error",
 ];
 
+// Always external (never bundle these)
+const alwaysExternal = [
+  "drizzle-kit",
+  "tsx",
+  "vite",
+  "@vitejs/plugin-react",
+  "@tailwindcss/vite",
+  "@replit/vite-plugin-runtime-error-modal",
+];
+
 async function buildAll() {
   await rm("dist", { recursive: true, force: true });
 
@@ -44,7 +54,10 @@ async function buildAll() {
     ...Object.keys(pkg.dependencies || {}),
     ...Object.keys(pkg.devDependencies || {}),
   ];
-  const externals = allDeps.filter((dep) => !allowlist.includes(dep));
+  // Packages to externalize: those not in allowlist OR those in alwaysExternal
+  const externals = allDeps.filter((dep) => 
+    alwaysExternal.includes(dep) || !allowlist.includes(dep)
+  );
 
   await esbuild({
     entryPoints: ["server/index.ts"],
