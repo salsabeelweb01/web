@@ -321,7 +321,10 @@ export default function Admin() {
         description: "Property has been added successfully!",
       });
       
-      e.currentTarget.reset();
+      // Reset form if it still exists
+      if (e.currentTarget) {
+        e.currentTarget.reset();
+      }
       setImages([{ url: "", isUploaded: false }]);
       setFeatures([""]);
       setFormStatus("");
