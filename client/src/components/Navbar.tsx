@@ -20,22 +20,13 @@ export default function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
-      <div className={cn(
-        "container mx-auto px-4 h-16 flex items-center",
-        isRTL ? "flex-row-reverse" : "justify-between"
-      )}>
-        <Link href="/" className={cn(
-          "flex items-center gap-2 font-heading font-bold text-xl text-primary",
-          isRTL && "flex-row-reverse"
-        )}>
+      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+        <Link href="/" className="flex items-center gap-2 font-heading font-bold text-xl text-primary">
           <img src={logo} alt="Salsabeel Real Estate" className="h-12 w-auto brightness-0 invert" />
         </Link>
 
         {/* Desktop Menu */}
-        <div className={cn(
-          "hidden md:flex items-center gap-8",
-          isRTL && "flex-row-reverse"
-        )}>
+        <div className="hidden md:flex items-center gap-8">
           {links.map((link) => (
             <Link
               key={link.href}
@@ -59,10 +50,7 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Menu Toggle */}
-        <div className={cn(
-          "md:hidden flex items-center gap-2",
-          isRTL && "flex-row-reverse"
-        )}>
+        <div className="md:hidden flex items-center gap-2">
           <LanguageSwitcher />
           <button
             className="p-2"
@@ -79,10 +67,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className={cn(
-          "md:hidden border-t bg-background p-4 flex flex-col gap-4 absolute w-full shadow-lg animate-in slide-in-from-top-2",
-          isRTL && "text-right"
-        )}>
+        <div className="md:hidden border-t bg-background p-4 flex flex-col gap-4 absolute w-full shadow-lg animate-in slide-in-from-top-2">
           {links.map((link) => (
             <Link
               key={link.href}

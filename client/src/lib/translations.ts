@@ -39,13 +39,36 @@ export interface Translations {
   };
   // Project Details
   projectDetails: {
+    backToProjects: string;
+    scheduleViewing: string;
+    scheduleViewingTitle: string;
+    scheduleViewingDescription: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    preferredDate: string;
+    message: string;
+    questionsPlaceholder: string;
+    sending: string;
+    requestAppointment: string;
+    requestSent: string;
+    requestSentDescription: string;
     keySpecs: string;
+    bedrooms: string;
+    sqft: string;
+    built: string;
+    verified: string;
+    status: string;
+    aboutProperty: string;
     description: string;
     gallery: string;
     features: string;
     location: string;
-    contactAgent: string;
-    requestViewing: string;
+    loading: string;
+    notFound: string;
+    forRent: string;
+    forSale: string;
   };
   // About
   about: {
@@ -138,13 +161,38 @@ export const translations: Record<Language, Translations> = {
       sqft: 'sqft',
     },
     projectDetails: {
+      backToProjects: 'Back to Projects',
+      scheduleViewing: 'Schedule Viewing',
+      scheduleViewingTitle: 'Schedule a Viewing',
+      scheduleViewingDescription: 'Fill out the form below to request a tour of',
+      firstName: 'First Name',
+      lastName: 'Last Name',
+      email: 'Email',
+      phone: 'Phone',
+      preferredDate: 'Preferred Date',
+      message: 'Message',
+      questionsPlaceholder: 'Any specific questions or preferences?',
+      sending: 'Sending...',
+      requestAppointment: 'Request Appointment',
+      requestSent: 'Request Sent',
+      requestSentDescription: 'An agent will contact you shortly to confirm your viewing.',
       keySpecs: 'Key Specifications',
+      bedrooms: 'Bedrooms',
+      sqft: 'Sq Ft',
+      built: 'Built',
+      verified: 'Verified',
+      status: 'Status',
+      aboutProperty: 'About this Property',
       description: 'Description',
       gallery: 'Gallery',
       features: 'Features & Amenities',
       location: 'Location',
       contactAgent: 'Contact Agent',
       requestViewing: 'Request Viewing',
+      loading: 'Loading...',
+      notFound: 'Project not found',
+      forRent: 'For Rent',
+      forSale: 'For Sale',
     },
     about: {
       title: 'About Us',
@@ -231,13 +279,38 @@ export const translations: Record<Language, Translations> = {
       sqft: 'قدم مربع',
     },
     projectDetails: {
+      backToProjects: 'العودة إلى العقارات',
+      scheduleViewing: 'جدولة معاينة',
+      scheduleViewingTitle: 'جدولة معاينة',
+      scheduleViewingDescription: 'املأ النموذج أدناه لطلب جولة في',
+      firstName: 'الاسم الأول',
+      lastName: 'اسم العائلة',
+      email: 'البريد الإلكتروني',
+      phone: 'الهاتف',
+      preferredDate: 'التاريخ المفضل',
+      message: 'الرسالة',
+      questionsPlaceholder: 'أي أسئلة أو تفضيلات محددة؟',
+      sending: 'جاري الإرسال...',
+      requestAppointment: 'طلب موعد',
+      requestSent: 'تم إرسال الطلب',
+      requestSentDescription: 'سيتصل بك وكيل قريباً لتأكيد المعاينة.',
       keySpecs: 'المواصفات الرئيسية',
+      bedrooms: 'غرف النوم',
+      sqft: 'قدم مربع',
+      built: 'سنة البناء',
+      verified: 'متحقق',
+      status: 'الحالة',
+      aboutProperty: 'حول هذا العقار',
       description: 'الوصف',
       gallery: 'المعرض',
       features: 'المميزات والمرافق',
       location: 'الموقع',
       contactAgent: 'اتصل بالوكيل',
       requestViewing: 'طلب معاينة',
+      loading: 'جاري التحميل...',
+      notFound: 'العقار غير موجود',
+      forRent: 'للإيجار',
+      forSale: 'للبيع',
     },
     about: {
       title: 'من نحن',
