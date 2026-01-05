@@ -11,8 +11,11 @@ interface ProjectCardProps {
 
 export default function ProjectCard({ project }: ProjectCardProps) {
   return (
-    <Link href={`/projects/${project.id}`} className="block h-full">
-      <Card className="group overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col h-full bg-card cursor-pointer hover:border-primary/50">
+    <Link 
+      href={`/projects/${project.id}`} 
+      className="block h-full no-underline"
+    >
+      <Card className="group overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col h-full bg-card cursor-pointer hover:border-primary/50 hover:scale-[1.02]">
         <div className="relative aspect-[4/3] overflow-hidden">
           <img
             src={project.images[0]}
