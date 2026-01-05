@@ -353,109 +353,45 @@ export default function ProjectDetails() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-              <div className="lg:col-span-2 space-y-10">
-                {/* Key Specs */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-secondary/30 rounded-lg">
-                  <div className="text-center border-r border-border last:border-0">
-                    <BedDouble className="h-6 w-6 mx-auto mb-2 text-primary" />
-                    <div className="text-xl font-bold">{project.bedrooms}</div>
-                    <div className="text-xs uppercase text-muted-foreground">Bedrooms</div>
-                  </div>
-                  <div className="text-center border-r border-border last:border-0">
-                    <Maximize className="h-6 w-6 mx-auto mb-2 text-primary" />
-                    <div className="text-xl font-bold">{project.sizeSqft}</div>
-                    <div className="text-xs uppercase text-muted-foreground">Sq Ft</div>
-                  </div>
-                  <div className="text-center border-r border-border last:border-0">
-                    <Calendar className="h-6 w-6 mx-auto mb-2 text-primary" />
-                    <div className="text-xl font-bold">2024</div>
-                    <div className="text-xs uppercase text-muted-foreground">Built</div>
-                  </div>
-                  <div className="text-center">
-                    <Shield className="h-6 w-6 mx-auto mb-2 text-primary" />
-                    <div className="text-xl font-bold">Verified</div>
-                    <div className="text-xs uppercase text-muted-foreground">Status</div>
-                  </div>
+            <div className="space-y-10">
+              {/* Key Specs */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-secondary/30 rounded-lg">
+                <div className="text-center border-r border-border last:border-0">
+                  <BedDouble className="h-6 w-6 mx-auto mb-2 text-primary" />
+                  <div className="text-xl font-bold">{project.bedrooms}</div>
+                  <div className="text-xs uppercase text-muted-foreground">Bedrooms</div>
                 </div>
-
-                {/* Description */}
-                <div>
-                  <h3 className="text-2xl font-heading font-bold mb-4">About this Property</h3>
-                  <p className="text-lg leading-relaxed text-muted-foreground">
-                    {project.description}
-                  </p>
-                  <p className="mt-4 text-muted-foreground leading-relaxed">
-                    Experience the epitome of luxury living with Salsabeel Real Estate. This project offers a perfect blend of comfort, style, and convenience, designed to meet the highest standards of modern living in Ajman.
-                  </p>
+                <div className="text-center border-r border-border last:border-0">
+                  <Maximize className="h-6 w-6 mx-auto mb-2 text-primary" />
+                  <div className="text-xl font-bold">{project.sizeSqft}</div>
+                  <div className="text-xs uppercase text-muted-foreground">Sq Ft</div>
                 </div>
-
-                {/* Features */}
-                <div>
-                  <h3 className="text-2xl font-heading font-bold mb-6">Features & Amenities</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {project.features.map((feature, idx) => {
-                      // Check if feature is a URL (image)
-                      const isImageUrl = /^https?:\/\/.+\.(jpg|jpeg|png|gif|webp|svg)/i.test(feature) || 
-                                        feature.startsWith('/') || 
-                                        feature.startsWith('attached_assets/');
-                      
-                      if (isImageUrl) {
-                        // Find image index or use first image
-                        const imageIndex = project.images.findIndex(img => img === feature);
-                        return (
-                          <div 
-                            key={idx} 
-                            className="relative aspect-video rounded-lg overflow-hidden bg-secondary/20 group cursor-pointer"
-                            onClick={() => openLightbox(imageIndex >= 0 ? imageIndex : 0)}
-                          >
-                            <img 
-                              src={feature} 
-                              alt={`Feature ${idx + 1}`}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                            />
-                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
-                          </div>
-                        );
-                      }
-                      
-                      return (
-                        <div key={idx} className="flex items-center gap-3 p-3 bg-secondary/20 rounded-lg">
-                          <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
-                            <Check className="h-4 w-4" />
-                          </div>
-                          <span className="font-medium">{feature}</span>
-                        </div>
-                      );
-                    })}
-                  </div>
+                <div className="text-center border-r border-border last:border-0">
+                  <Calendar className="h-6 w-6 mx-auto mb-2 text-primary" />
+                  <div className="text-xl font-bold">2024</div>
+                  <div className="text-xs uppercase text-muted-foreground">Built</div>
                 </div>
-
-                {/* Location Map */}
-                <div>
-                  <h3 className="text-2xl font-heading font-bold mb-6">Location</h3>
-                  <div className="aspect-video rounded-lg overflow-hidden border border-border bg-muted">
-                    <iframe
-                      width="100%"
-                      height="100%"
-                      style={{ border: 0 }}
-                      loading="lazy"
-                      allowFullScreen
-                      referrerPolicy="no-referrer-when-downgrade"
-                      src={`https://www.google.com/maps?q=${encodeURIComponent(project.location)}&output=embed&t=k&z=17`}
-                      title={`Satellite view of ${project.location}`}
-                    />
-                  </div>
-                  <p className="mt-4 text-muted-foreground flex items-center gap-2">
-                    <MapPin className="h-4 w-4" />
-                    {project.location}
-                  </p>
+                <div className="text-center">
+                  <Shield className="h-6 w-6 mx-auto mb-2 text-primary" />
+                  <div className="text-xl font-bold">Verified</div>
+                  <div className="text-xs uppercase text-muted-foreground">Status</div>
                 </div>
               </div>
 
-              {/* Sidebar / Horizontal Gallery with Auto-loop */}
-              <div className="space-y-6">
-                <h3 className="text-xl font-bold mb-4">Gallery</h3>
+              {/* Description */}
+              <div>
+                <h3 className="text-2xl font-heading font-bold mb-4">About this Property</h3>
+                <p className="text-lg leading-relaxed text-muted-foreground">
+                  {project.description}
+                </p>
+                <p className="mt-4 text-muted-foreground leading-relaxed">
+                  Experience the epitome of luxury living with Salsabeel Real Estate. This project offers a perfect blend of comfort, style, and convenience, designed to meet the highest standards of modern living in Ajman.
+                </p>
+              </div>
+
+              {/* Gallery with Auto-loop */}
+              <div>
+                <h3 className="text-2xl font-heading font-bold mb-6">Gallery</h3>
                 
                 {/* Main Gallery Image with Auto-loop */}
                 <div className="relative aspect-video rounded-lg overflow-hidden mb-4 bg-black group">
@@ -527,6 +463,68 @@ export default function ProjectDetails() {
                     </button>
                   ))}
                 </div>
+              </div>
+
+              {/* Features */}
+              <div>
+                <h3 className="text-2xl font-heading font-bold mb-6">Features & Amenities</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {project.features.map((feature, idx) => {
+                    // Check if feature is a URL (image)
+                    const isImageUrl = /^https?:\/\/.+\.(jpg|jpeg|png|gif|webp|svg)/i.test(feature) || 
+                                      feature.startsWith('/') || 
+                                      feature.startsWith('attached_assets/');
+                    
+                    if (isImageUrl) {
+                      // Find image index or use first image
+                      const imageIndex = project.images.findIndex(img => img === feature);
+                      return (
+                        <div 
+                          key={idx} 
+                          className="relative aspect-video rounded-lg overflow-hidden bg-secondary/20 group cursor-pointer"
+                          onClick={() => openLightbox(imageIndex >= 0 ? imageIndex : 0)}
+                        >
+                          <img 
+                            src={feature} 
+                            alt={`Feature ${idx + 1}`}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+                        </div>
+                      );
+                    }
+                    
+                    return (
+                      <div key={idx} className="flex items-center gap-3 p-3 bg-secondary/20 rounded-lg">
+                        <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                          <Check className="h-4 w-4" />
+                        </div>
+                        <span className="font-medium">{feature}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Location Map */}
+              <div>
+                <h3 className="text-2xl font-heading font-bold mb-6">Location</h3>
+                <div className="aspect-video rounded-lg overflow-hidden border border-border bg-muted">
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    loading="lazy"
+                    allowFullScreen
+                    referrerPolicy="no-referrer-when-downgrade"
+                    src={`https://www.google.com/maps?q=${encodeURIComponent(project.location)}&output=embed&t=k&z=17`}
+                    title={`Satellite view of ${project.location}`}
+                  />
+                </div>
+                <p className="mt-4 text-muted-foreground flex items-center gap-2">
+                  <MapPin className="h-4 w-4" />
+                  {project.location}
+                </p>
               </div>
             </div>
           </div>
