@@ -1,5 +1,4 @@
-import { db } from "./db";
-import { sql } from "drizzle-orm";
+import { pool } from "./db";
 
 /**
  * Check if database tables exist and create them if needed
@@ -7,16 +6,16 @@ import { sql } from "drizzle-orm";
  */
 export async function ensureMigrations() {
   try {
-    // Check if projects table exists
-    const result = await db.execute(
-      sql`SELECT EXISTS (
+    // Check if projects table exists using raw query
+    const checkResult = await pool.query(`
+      SELECT EXISTS (
         SELECT FROM information_schema.tables 
         WHERE table_schema = 'public' 
         AND table_name = 'projects'
-      )`
-    );
+      )
+    `);
 
-    const tableExists = result.rows[0]?.exists === true;
+    const tableExists = checkResult.rows[0]?.exists === true;
 
     if (!tableExists) {
       console.log("⚠️  Database tables not found. Creating tables...");
@@ -45,7 +44,7 @@ export async function ensureMigrations() {
  */
 async function createTablesManually() {
   // Create projects table
-  await db.execute(sql`
+  await pool.query(`
     CREATE TABLE IF NOT EXISTS projects (
       id SERIAL PRIMARY KEY,
       name TEXT NOT NULL,
@@ -63,7 +62,7 @@ async function createTablesManually() {
   `);
 
   // Create contact_inquiries table
-  await db.execute(sql`
+  await pool.query(`
     CREATE TABLE IF NOT EXISTS contact_inquiries (
       id SERIAL PRIMARY KEY,
       first_name TEXT NOT NULL,
@@ -76,7 +75,7 @@ async function createTablesManually() {
   `);
 
   // Create viewing_requests table
-  await db.execute(sql`
+  await pool.query(`
     CREATE TABLE IF NOT EXISTS viewing_requests (
       id SERIAL PRIMARY KEY,
       project_id INTEGER NOT NULL REFERENCES projects(id),
