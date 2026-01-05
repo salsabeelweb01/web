@@ -69,7 +69,16 @@ async function buildAll() {
       "process.env.NODE_ENV": '"production"',
     },
     minify: true,
-    external: externals,
+    external: [
+      ...externals,
+      // Explicitly exclude drizzle-kit and all its subpaths
+      "drizzle-kit",
+      "drizzle-kit/*",
+      // Exclude config files that might import drizzle-kit
+      "./drizzle.config",
+      "../drizzle.config",
+      "../../drizzle.config",
+    ],
     logLevel: "info",
   });
 }
