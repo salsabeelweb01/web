@@ -93,7 +93,7 @@ export default function Home() {
           <div className="mt-12 text-center md:hidden">
             <Link href="/projects">
               <Button variant="outline" size="lg" className="w-full">
-                View All Properties
+                {t.home.featured.viewAll}
               </Button>
             </Link>
           </div>
@@ -103,48 +103,48 @@ export default function Home() {
       {/* Why Choose Us */}
       <section className="py-20 bg-secondary/30">
         <div className="container mx-auto px-4">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl font-heading font-bold mb-4">Why Choose Salsabeel</h2>
+          <div className={cn("text-center max-w-2xl mx-auto mb-16", isRTL && "text-right")}>
+            <h2 className="text-3xl font-heading font-bold mb-4">{t.home.whyChoose.title}</h2>
             <p className="text-muted-foreground">
-              We are committed to delivering innovative and exceptional projects that meet our clients' needs.
+              {t.home.whyChoose.subtitle}
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="bg-background p-8 rounded-xl shadow-sm border border-border/50 text-center hover:shadow-md transition-shadow">
+            <div className={cn("bg-background p-8 rounded-xl shadow-sm border border-border/50 text-center hover:shadow-md transition-shadow", isRTL && "text-right")}>
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <CheckCircle2 className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="text-xl font-bold mb-3">Direct Developer</h3>
+              <h3 className="text-xl font-bold mb-3">{t.home.whyChoose.directDeveloper.title}</h3>
               <p className="text-muted-foreground">
-                Get the best deals directly from the developer with no third-party markups.
+                {t.home.whyChoose.directDeveloper.description}
               </p>
             </div>
-            <div className="bg-background p-8 rounded-xl shadow-sm border border-border/50 text-center hover:shadow-md transition-shadow">
+            <div className={cn("bg-background p-8 rounded-xl shadow-sm border border-border/50 text-center hover:shadow-md transition-shadow", isRTL && "text-right")}>
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Wallet className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="text-xl font-bold mb-3">Flexible Payments</h3>
+              <h3 className="text-xl font-bold mb-3">{t.home.whyChoose.flexiblePayments.title}</h3>
               <p className="text-muted-foreground">
-                Enjoy flexible 5-Year Payment Plans designed to make ownership easy.
+                {t.home.whyChoose.flexiblePayments.description}
               </p>
             </div>
-            <div className="bg-background p-8 rounded-xl shadow-sm border border-border/50 text-center hover:shadow-md transition-shadow">
+            <div className={cn("bg-background p-8 rounded-xl shadow-sm border border-border/50 text-center hover:shadow-md transition-shadow", isRTL && "text-right")}>
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Banknote className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="text-xl font-bold mb-3">No Commission</h3>
+              <h3 className="text-xl font-bold mb-3">{t.home.whyChoose.noCommission.title}</h3>
               <p className="text-muted-foreground">
-                Save money with 0% Commission and No Bank Involvement required.
+                {t.home.whyChoose.noCommission.description}
               </p>
             </div>
-            <div className="bg-background p-8 rounded-xl shadow-sm border border-border/50 text-center hover:shadow-md transition-shadow">
+            <div className={cn("bg-background p-8 rounded-xl shadow-sm border border-border/50 text-center hover:shadow-md transition-shadow", isRTL && "text-right")}>
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Building className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="text-xl font-bold mb-3">Freehold</h3>
+              <h3 className="text-xl font-bold mb-3">{t.home.whyChoose.freehold.title}</h3>
               <p className="text-muted-foreground">
-                100% Freehold ownership available for all nationalities.
+                {t.home.whyChoose.freehold.description}
               </p>
             </div>
           </div>
@@ -154,34 +154,34 @@ export default function Home() {
       {/* FAQ Section */}
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4 max-w-4xl">
-           <div className="text-center mb-12">
-            <h2 className="text-3xl font-heading font-bold mb-4">Frequently Asked Questions</h2>
-            <p className="text-muted-foreground">Common questions about Salsabeel Real Estate properties</p>
+           <div className={cn("text-center mb-12", isRTL && "text-right")}>
+            <h2 className="text-3xl font-heading font-bold mb-4">{t.home.faq.title}</h2>
+            <p className="text-muted-foreground">{t.home.faq.subtitle}</p>
           </div>
           
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="item-1">
-              <AccordionTrigger className="text-lg font-medium">Why is Salsabeel Real Estate Company the best company in Ajman?</AccordionTrigger>
-              <AccordionContent className="text-muted-foreground leading-relaxed">
-                Salsabeel Company provides rental and sales services and also sells projects that it only owns, distinguished by its after-sales service and maintenance. We are committed to delivering quality and trust.
+              <AccordionTrigger className={cn("text-lg font-medium", isRTL && "text-right")}>{t.home.faq.q1.question}</AccordionTrigger>
+              <AccordionContent className={cn("text-muted-foreground leading-relaxed", isRTL && "text-right")}>
+                {t.home.faq.q1.answer}
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-2">
-              <AccordionTrigger className="text-lg font-medium">Does Salsabeel Real Estate Company have projects for rent?</AccordionTrigger>
-              <AccordionContent className="text-muted-foreground leading-relaxed">
-                Yes, Salsabeel Real Estate Company has the management of many buildings and also its affiliated buildings. It continuously follows up the rental process while providing the best and most appropriate offer to both parties.
+              <AccordionTrigger className={cn("text-lg font-medium", isRTL && "text-right")}>{t.home.faq.q2.question}</AccordionTrigger>
+              <AccordionContent className={cn("text-muted-foreground leading-relaxed", isRTL && "text-right")}>
+                {t.home.faq.q2.answer}
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-3">
-              <AccordionTrigger className="text-lg font-medium">I need shops or an apartment for investment!</AccordionTrigger>
-              <AccordionContent className="text-muted-foreground leading-relaxed">
-                Salsabeel Real Estate Company has many projects inside Ajman for sale and rent, and also for real estate investment. Salsabeel Company is a leading developer in the Emirate of Ajman. Contact us to get what you are looking for.
+              <AccordionTrigger className={cn("text-lg font-medium", isRTL && "text-right")}>{t.home.faq.q3.question}</AccordionTrigger>
+              <AccordionContent className={cn("text-muted-foreground leading-relaxed", isRTL && "text-right")}>
+                {t.home.faq.q3.answer}
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-4">
-              <AccordionTrigger className="text-lg font-medium">What payment plans do you offer?</AccordionTrigger>
-              <AccordionContent className="text-muted-foreground leading-relaxed">
-                We offer flexible payment plans up to 5 years directly from the developer, with no bank involvement required. This makes purchasing your dream home or investment property accessible and hassle-free.
+              <AccordionTrigger className={cn("text-lg font-medium", isRTL && "text-right")}>{t.home.faq.q4.question}</AccordionTrigger>
+              <AccordionContent className={cn("text-muted-foreground leading-relaxed", isRTL && "text-right")}>
+                {t.home.faq.q4.answer}
               </AccordionContent>
             </AccordionItem>
           </Accordion>

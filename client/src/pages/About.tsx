@@ -1,6 +1,8 @@
 import Layout from "@/components/Layout";
 import { Badge } from "@/components/ui/badge";
 import { Users, Globe, Building, Award } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { cn } from "@/lib/utils";
 
 import teamMuna from "@assets/team/muna_jaber.jpeg";
 import teamRomany from "@assets/team/romany_nabil.jpg";
@@ -8,6 +10,7 @@ import teamAhmedF from "@assets/team/ahmed_fawzy.jpeg";
 import teamAhmedH from "@assets/team/ahmed_hammad.jpg";
 
 export default function About() {
+  const { t, isRTL } = useLanguage();
   return (
     <Layout>
       {/* Hero */}
@@ -21,15 +24,15 @@ export default function About() {
           <div className="absolute inset-0 bg-black/50" />
         </div>
         
-        <div className="relative z-10 container mx-auto px-4 text-center">
+        <div className={cn("relative z-10 container mx-auto px-4 text-center", isRTL && "text-right")}>
           <Badge className="bg-primary/90 text-primary-foreground mb-4 animate-in slide-in-from-bottom-4 duration-500">
-            About Salsabeel
+            {t.about.badge}
           </Badge>
           <h1 className="text-4xl md:text-6xl font-heading font-bold text-white mb-6 animate-in slide-in-from-bottom-4 duration-700 delay-100">
-            8 Years of <br/> Undefeated Success
+            {t.about.heroTitle}
           </h1>
           <p className="text-lg md:text-xl text-white/90 mb-10 max-w-2xl mx-auto animate-in slide-in-from-bottom-6 duration-700 delay-200 font-light">
-            Founded in 2016, we are a leader in marketing and developing real estate projects in the Emirate of Ajman.
+            {t.about.heroSubtitle}
           </p>
         </div>
       </section>
@@ -38,22 +41,22 @@ export default function About() {
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-            <div>
-               <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">Our Vision</h2>
+            <div className={cn(isRTL && "text-right")}>
+               <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">{t.about.vision.title}</h2>
                <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                 To be the leading real estate company in the Emirate of Ajman, delivering innovative projects that reflect excellence and sustainability, while enhancing the quality of life for the communities we serve.
+                 {t.about.vision.paragraph1}
                </p>
                <p className="text-lg text-muted-foreground leading-relaxed">
-                 Salsabeel envisions a world where every person finds their perfect Home—whether it's a cozy apartment, a stylish condominium, or a spacious family house.
+                 {t.about.vision.paragraph2}
                </p>
             </div>
-            <div>
-               <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">Our Mission</h2>
+            <div className={cn(isRTL && "text-right")}>
+               <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">{t.about.mission.title}</h2>
                <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                 Salsabeel Real Estate aims to deliver innovative and high-quality real estate projects that meet the needs of individuals and families. We are committed to sustainability and enhancing the quality of life in the communities we serve.
+                 {t.about.mission.paragraph1}
                </p>
                <p className="text-lg text-muted-foreground leading-relaxed">
-                 Our goal is to be a leader in property development and real estate marketing in the Emirate of Ajman, offering apartments for sale, villas for rent, and unique real estate investment opportunities.
+                 {t.about.mission.paragraph2}
                </p>
             </div>
           </div>
@@ -67,22 +70,22 @@ export default function About() {
             <div className="p-4">
               <Building className="h-10 w-10 mx-auto mb-4 opacity-80" />
               <div className="text-4xl font-bold mb-2">7+</div>
-              <div className="text-sm opacity-70">Projects</div>
+              <div className="text-sm opacity-70">{t.about.stats.projects}</div>
             </div>
             <div className="p-4">
               <Award className="h-10 w-10 mx-auto mb-4 opacity-80" />
               <div className="text-4xl font-bold mb-2">8+</div>
-              <div className="text-sm opacity-70">Years of Experience</div>
+              <div className="text-sm opacity-70">{t.about.stats.years}</div>
             </div>
             <div className="p-4">
               <Users className="h-10 w-10 mx-auto mb-4 opacity-80" />
               <div className="text-4xl font-bold mb-2">1000+</div>
-              <div className="text-sm opacity-70">Happy Clients</div>
+              <div className="text-sm opacity-70">{t.about.stats.clients}</div>
             </div>
             <div className="p-4">
               <Globe className="h-10 w-10 mx-auto mb-4 opacity-80" />
               <div className="text-4xl font-bold mb-2">2016</div>
-              <div className="text-sm opacity-70">Founded</div>
+              <div className="text-sm opacity-70">{t.about.stats.founded}</div>
             </div>
           </div>
         </div>
@@ -91,7 +94,7 @@ export default function About() {
       {/* Management Team */}
       <section className="py-20 bg-secondary/30">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-12">Management Team</h2>
+          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-12">{t.about.team.title}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="bg-background rounded-xl overflow-hidden shadow-sm border border-border group hover:shadow-md transition-all p-6">
               <div className="w-24 h-24 bg-muted rounded-full mx-auto mb-4 overflow-hidden">

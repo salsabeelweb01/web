@@ -410,7 +410,7 @@ export default function ProjectDetails() {
                   {project.description}
                 </p>
                 <p className="mt-4 text-muted-foreground leading-relaxed">
-                  Experience the epitome of luxury living with Salsabeel Real Estate. This project offers a perfect blend of comfort, style, and convenience, designed to meet the highest standards of modern living in Ajman.
+                  {t.projectDetails.descriptionText}
                 </p>
               </div>
 
