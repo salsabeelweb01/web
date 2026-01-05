@@ -226,6 +226,69 @@ export async function registerRoutes(
     }
   });
 
+  // Update project (admin)
+  app.put("/api/projects/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid project ID" });
+      }
+
+      console.log("Updating project", id, "with data:", JSON.stringify(req.body, null, 2));
+      
+      // Validate the data (partial validation for updates)
+      let validatedData;
+      try {
+        // For updates, we allow partial data, so we'll validate each field if present
+        validatedData = insertProjectSchema.partial().parse(req.body);
+      } catch (validationError: any) {
+        if (validationError.name === "ZodError") {
+          const errorMessage = fromError(validationError);
+          console.error("Validation error:", errorMessage.toString());
+          const fieldErrors = validationError.errors.map((err: any) => ({
+            field: err.path.join("."),
+            message: err.message,
+          }));
+          return res.status(400).json({ 
+            error: "Validation failed",
+            details: fieldErrors,
+            message: errorMessage.toString()
+          });
+        }
+        throw validationError;
+      }
+      
+      console.log("Validated update data:", JSON.stringify(validatedData, null, 2));
+      
+      // Try to update the project
+      let project;
+      try {
+        project = await storage.updateProject(id, validatedData);
+      } catch (dbError: any) {
+        console.error("Database error:", dbError);
+        if (dbError.message === "Project not found") {
+          return res.status(404).json({ error: "Project not found" });
+        }
+        if (dbError.code === "23505") {
+          return res.status(400).json({ 
+            error: "A project with this name already exists" 
+          });
+        }
+        throw dbError;
+      }
+      
+      console.log("Project updated successfully:", project.id);
+      res.json({ success: true, project });
+    } catch (error: any) {
+      console.error("Unexpected error updating project:", error);
+      const errorMessage = error?.message || "An unexpected error occurred";
+      res.status(500).json({ 
+        error: "Failed to update project",
+        message: errorMessage,
+      });
+    }
+  });
+
   // Delete project (admin)
   app.delete("/api/projects/:id", async (req, res) => {
     try {

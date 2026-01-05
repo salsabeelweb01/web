@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { useState, FormEvent, useEffect, useRef, useCallback } from "react";
-import { Plus, Trash2, Upload, Lock, Building, X, Image as ImageIcon } from "lucide-react";
+import { Plus, Trash2, Upload, Lock, Building, X, Image as ImageIcon, Edit2 } from "lucide-react";
 import { Project, getProjects } from "@/lib/api";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -50,6 +50,7 @@ export default function Admin() {
   const formRef = useRef<HTMLFormElement>(null);
   const [formStatus, setFormStatus] = useState<string>("");
   const [formType, setFormType] = useState<string>("");
+  const [editingId, setEditingId] = useState<number | null>(null);
 
   const { data: existingProjects, refetch } = useQuery({
     queryKey: ['adminProjects'],
@@ -238,6 +239,40 @@ export default function Admin() {
     }
   };
 
+  const loadProjectForEdit = (project: Project) => {
+    setEditingId(project.id);
+    setFormStatus(project.status);
+    setFormType(project.type);
+    setImages(project.images.map(url => ({ url, isUploaded: true })));
+    setFeatures(project.features.length > 0 ? project.features : [""]);
+    
+    // Fill form fields
+    if (formRef.current) {
+      const form = formRef.current;
+      (form.querySelector('[name="name"]') as HTMLInputElement).value = project.name;
+      (form.querySelector('[name="location"]') as HTMLInputElement).value = project.location;
+      (form.querySelector('[name="startingPrice"]') as HTMLInputElement).value = project.startingPrice;
+      (form.querySelector('[name="bedrooms"]') as HTMLInputElement).value = project.bedrooms;
+      (form.querySelector('[name="sizeSqft"]') as HTMLInputElement).value = project.sizeSqft;
+      (form.querySelector('[name="propertyType"]') as HTMLInputElement).value = project.propertyType;
+      (form.querySelector('[name="description"]') as HTMLTextAreaElement).value = project.description;
+    }
+    
+    // Scroll to form
+    formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const cancelEdit = () => {
+    setEditingId(null);
+    setFormStatus("");
+    setFormType("");
+    setImages([{ url: "", isUploaded: false }]);
+    setFeatures([""]);
+    if (formRef.current) {
+      formRef.current.reset();
+    }
+  };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -295,10 +330,14 @@ export default function Admin() {
         return;
       }
 
-      console.log('Submitting project:', formValues);
+      const isEditing = editingId !== null;
+      const url = isEditing ? `/api/projects/${editingId}` : '/api/projects';
+      const method = isEditing ? 'PUT' : 'POST';
 
-      const response = await fetch('/api/projects', {
-        method: 'POST',
+      console.log(`${isEditing ? 'Updating' : 'Creating'} project:`, formValues);
+
+      const response = await fetch(url, {
+        method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formValues),
       });
@@ -306,7 +345,7 @@ export default function Admin() {
       if (!response.ok) {
         const errorData = await response.json();
         // Provide more detailed error message
-        let errorMessage = errorData.error || 'Failed to create property';
+        let errorMessage = errorData.error || `Failed to ${isEditing ? 'update' : 'create'} property`;
         if (errorData.message) {
           errorMessage += `: ${errorData.message}`;
         }
@@ -319,7 +358,7 @@ export default function Admin() {
 
       toast({
         title: "Success",
-        description: "Property has been added successfully!",
+        description: `Property has been ${isEditing ? 'updated' : 'added'} successfully!`,
       });
       
       // Reset form using ref
@@ -330,13 +369,14 @@ export default function Admin() {
       setFeatures([""]);
       setFormStatus("");
       setFormType("");
+      setEditingId(null);
       refetch();
       queryClient.invalidateQueries({ queryKey: ['projects'] });
       queryClient.invalidateQueries({ queryKey: ['featuredProjects'] });
     } catch (error) {
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "Failed to add property",
+        description: error instanceof Error ? error.message : `Failed to ${editingId ? 'update' : 'add'} property`,
         variant: "destructive",
       });
     } finally {
@@ -429,35 +469,47 @@ export default function Admin() {
                         <p className="font-medium text-sm truncate">{project.name}</p>
                         <p className="text-xs text-muted-foreground truncate">{project.location}</p>
                       </div>
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button 
-                            variant="ghost" 
-                            size="icon" 
-                            className="shrink-0 ml-2"
-                            disabled={deletingId === project.id}
-                          >
-                            <Trash2 className="h-4 w-4 text-destructive" />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Delete Property</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              Are you sure you want to delete "{project.name}"? This action cannot be undone.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction 
-                              onClick={() => handleDelete(project.id)}
-                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                      <div className="flex gap-1 shrink-0 ml-2">
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className="h-8 w-8"
+                          onClick={() => loadProjectForEdit(project)}
+                          title="Edit property"
+                        >
+                          <Edit2 className="h-4 w-4 text-primary" />
+                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              className="h-8 w-8"
+                              disabled={deletingId === project.id}
+                              title="Delete property"
                             >
-                              Delete
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
+                              <Trash2 className="h-4 w-4 text-destructive" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Delete Property</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Are you sure you want to delete "{project.name}"? This action cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction 
+                                onClick={() => handleDelete(project.id)}
+                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                              >
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
                     </div>
                   ))}
                   
@@ -470,12 +522,25 @@ export default function Admin() {
               </div>
             </div>
 
-            {/* Add New Property Form */}
+            {/* Add/Edit Property Form */}
             <div className="lg:col-span-2">
               <form ref={formRef} onSubmit={handleSubmit} className="space-y-8">
                 {/* Basic Info */}
                 <div className="bg-card p-6 rounded-xl border border-border space-y-6">
-                  <h2 className="text-xl font-bold">Add New Property</h2>
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-xl font-bold">
+                      {editingId ? "Edit Property" : "Add New Property"}
+                    </h2>
+                    {editingId && (
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        onClick={cancelEdit}
+                      >
+                        Cancel Edit
+                      </Button>
+                    )}
+                  </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
@@ -725,16 +790,32 @@ export default function Admin() {
                   ))}
                 </div>
 
-                <Button 
-                  type="submit" 
-                  size="lg" 
-                  className="w-full" 
-                  disabled={isSubmitting}
-                  data-testid="button-submit-property"
-                >
-                  {isSubmitting ? "Adding Property..." : "Add Property"}
-                  <Upload className="ml-2 h-4 w-4" />
-                </Button>
+                <div className="flex gap-4">
+                  {editingId && (
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      size="lg" 
+                      className="flex-1"
+                      onClick={cancelEdit}
+                      disabled={isSubmitting}
+                    >
+                      Cancel
+                    </Button>
+                  )}
+                  <Button 
+                    type="submit" 
+                    size="lg" 
+                    className={editingId ? "flex-1" : "w-full"} 
+                    disabled={isSubmitting}
+                    data-testid="button-submit-property"
+                  >
+                    {isSubmitting 
+                      ? (editingId ? "Updating Property..." : "Adding Property...") 
+                      : (editingId ? "Update Property" : "Add Property")}
+                    <Upload className="ml-2 h-4 w-4" />
+                  </Button>
+                </div>
               </form>
             </div>
           </div>
