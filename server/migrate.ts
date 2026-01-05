@@ -1,10 +1,9 @@
 import { db } from "./db";
 import { sql } from "drizzle-orm/node-postgres";
-import * as schema from "@shared/schema";
 
 /**
  * Check if database tables exist and create them if needed
- * This creates tables directly using Drizzle's push functionality
+ * This creates tables directly using SQL
  */
 export async function ensureMigrations() {
   try {
@@ -23,29 +22,13 @@ export async function ensureMigrations() {
       console.log("⚠️  Database tables not found. Creating tables...");
       
       try {
-        // Import drizzle-kit push functionality
-        const { push } = await import("drizzle-kit");
-        const drizzleConfig = await import("../../drizzle.config.ts");
-        
-        console.log("📝 Pushing schema to database...");
-        await push({
-          schema: schema,
-          db: db,
-        });
-        
+        await createTablesManually();
         console.log("✅ Database tables created successfully!");
-      } catch (error: any) {
-        // If drizzle-kit import fails, try creating tables manually
-        console.log("⚠️  drizzle-kit not available, creating tables manually...");
-        
-        try {
-          await createTablesManually();
-          console.log("✅ Database tables created manually!");
-        } catch (manualError) {
-          console.error("❌ Failed to create tables automatically.");
-          console.error("💡 Please run 'npm run db:push' manually in the Render Shell.");
-          console.error("   Error:", error instanceof Error ? error.message : String(error));
-        }
+      } catch (error) {
+        console.error("❌ Failed to create tables automatically.");
+        console.error("💡 Please run 'npm run db:push' manually in the Render Shell.");
+        console.error("   Error:", error instanceof Error ? error.message : String(error));
+        // Don't throw - let the app start and show a helpful error message
       }
     } else {
       console.log("✅ Database tables found. Migrations up to date.");
@@ -58,9 +41,10 @@ export async function ensureMigrations() {
 
 /**
  * Create tables manually using raw SQL
- * This is a fallback if drizzle-kit is not available
+ * This matches the schema defined in shared/schema.ts
  */
 async function createTablesManually() {
+  // Create projects table
   await db.execute(sql`
     CREATE TABLE IF NOT EXISTS projects (
       id SERIAL PRIMARY KEY,
@@ -78,6 +62,7 @@ async function createTablesManually() {
     )
   `);
 
+  // Create contact_inquiries table
   await db.execute(sql`
     CREATE TABLE IF NOT EXISTS contact_inquiries (
       id SERIAL PRIMARY KEY,
@@ -90,6 +75,7 @@ async function createTablesManually() {
     )
   `);
 
+  // Create viewing_requests table
   await db.execute(sql`
     CREATE TABLE IF NOT EXISTS viewing_requests (
       id SERIAL PRIMARY KEY,
@@ -104,4 +90,3 @@ async function createTablesManually() {
     )
   `);
 }
-
