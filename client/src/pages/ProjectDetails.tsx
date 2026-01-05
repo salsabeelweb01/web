@@ -38,6 +38,19 @@ export default function ProjectDetails() {
   const [galleryCurrentIndex, setGalleryCurrentIndex] = useState(0);
   const galleryCarouselRef = useRef<HTMLDivElement>(null);
   const autoScrollIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  
+  // Create combined images array (gallery + feature images)
+  const allImages = project ? (() => {
+    const galleryImages = project.images || [];
+    const featureImages = (project.features || [])
+      .filter(feature => {
+        const isImageUrl = /^https?:\/\/.+\.(jpg|jpeg|png|gif|webp|svg)/i.test(feature) || 
+                          feature.startsWith('/') || 
+                          feature.startsWith('attached_assets/');
+        return isImageUrl && !galleryImages.includes(feature);
+      });
+    return [...galleryImages, ...featureImages];
+  })() : [];
 
   // Reset selected image when ID changes
   useEffect(() => {
@@ -77,12 +90,12 @@ export default function ProjectDetails() {
 
   // Navigate lightbox
   const navigateLightbox = (direction: 'prev' | 'next') => {
-    if (!project) return;
+    if (allImages.length === 0) return;
     setLightboxIndex((current) => {
       if (direction === 'next') {
-        return (current + 1) % project.images.length;
+        return (current + 1) % allImages.length;
       } else {
-        return current === 0 ? project.images.length - 1 : current - 1;
+        return current === 0 ? allImages.length - 1 : current - 1;
       }
     });
   };
@@ -105,6 +118,15 @@ export default function ProjectDetails() {
   const openLightbox = (imageIndex: number) => {
     setLightboxIndex(imageIndex);
     setLightboxOpen(true);
+  };
+
+  // Open lightbox with a specific image URL (for feature images)
+  const openLightboxWithImage = (imageUrl: string) => {
+    const imageIndex = allImages.findIndex(img => img === imageUrl);
+    if (imageIndex >= 0) {
+      setLightboxIndex(imageIndex);
+      setLightboxOpen(true);
+    }
   };
 
   const handleScheduleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -183,7 +205,7 @@ export default function ProjectDetails() {
       </div>
 
       {/* Lightbox Modal */}
-      {lightboxOpen && project && (
+      {lightboxOpen && allImages.length > 0 && (
         <div 
           className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
           onClick={() => setLightboxOpen(false)}
@@ -198,7 +220,7 @@ export default function ProjectDetails() {
 
           <div className="relative max-w-7xl max-h-[90vh] w-full mx-4 flex items-center">
             {/* Previous Button */}
-            {project.images.length > 1 && (
+            {allImages.length > 1 && (
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -217,14 +239,14 @@ export default function ProjectDetails() {
               onClick={(e) => e.stopPropagation()}
             >
               <img
-                src={project.images[lightboxIndex]}
-                alt={`${project.name} - Image ${lightboxIndex + 1}`}
+                src={allImages[lightboxIndex]}
+                alt={`${project?.name || 'Property'} - Image ${lightboxIndex + 1}`}
                 className="max-w-full max-h-[90vh] object-contain"
               />
             </div>
 
             {/* Next Button */}
-            {project.images.length > 1 && (
+            {allImages.length > 1 && (
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -239,16 +261,16 @@ export default function ProjectDetails() {
           </div>
 
           {/* Image Counter */}
-          {project.images.length > 1 && (
+          {allImages.length > 1 && (
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white bg-black/50 px-4 py-2 rounded-full text-sm">
-              {lightboxIndex + 1} / {project.images.length}
+              {lightboxIndex + 1} / {allImages.length}
             </div>
           )}
 
           {/* Thumbnail Strip in Lightbox */}
-          {project.images.length > 1 && (
+          {allImages.length > 1 && (
             <div className="absolute bottom-16 left-1/2 -translate-x-1/2 flex gap-2 max-w-[90vw] overflow-x-auto px-4 pb-2">
-              {project.images.map((img, idx) => (
+              {allImages.map((img, idx) => (
                 <button
                   key={idx}
                   onClick={(e) => {
@@ -475,24 +497,22 @@ export default function ProjectDetails() {
                                       feature.startsWith('/') || 
                                       feature.startsWith('attached_assets/');
                     
-                    if (isImageUrl) {
-                      // Find image index or use first image
-                      const imageIndex = project.images.findIndex(img => img === feature);
-                      return (
-                        <div 
-                          key={idx} 
-                          className="relative aspect-video rounded-lg overflow-hidden bg-secondary/20 group cursor-pointer"
-                          onClick={() => openLightbox(imageIndex >= 0 ? imageIndex : 0)}
-                        >
-                          <img 
-                            src={feature} 
-                            alt={`Feature ${idx + 1}`}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          />
-                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
-                        </div>
-                      );
-                    }
+                      if (isImageUrl) {
+                        return (
+                          <div 
+                            key={idx} 
+                            className="relative aspect-video rounded-lg overflow-hidden bg-secondary/20 group cursor-pointer"
+                            onClick={() => openLightboxWithImage(feature)}
+                          >
+                            <img 
+                              src={feature} 
+                              alt={`Feature ${idx + 1}`}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+                          </div>
+                        );
+                      }
                     
                     return (
                       <div key={idx} className="flex items-center gap-3 p-3 bg-secondary/20 rounded-lg">
