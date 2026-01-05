@@ -90,6 +90,16 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  // Check and run migrations if needed (only in production)
+  if (process.env.NODE_ENV === "production") {
+    try {
+      const { ensureMigrations } = await import("./migrate");
+      await ensureMigrations();
+    } catch (error) {
+      console.error("Migration check failed:", error);
+    }
+  }
+
   await registerRoutes(httpServer, app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
