@@ -6,6 +6,8 @@ import { getFeaturedProjects, Project } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, Star, Shield, Clock, CheckCircle2, Wallet, Banknote, Building, ChevronDown } from "lucide-react";
 import { Link } from "wouter";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { cn } from "@/lib/utils";
 import {
   Accordion,
   AccordionContent,
@@ -14,6 +16,7 @@ import {
 } from "@/components/ui/accordion";
 
 export default function Home() {
+  const { t, isRTL } = useLanguage();
   const { data: featuredProjects, isLoading } = useQuery({
     queryKey: ['featuredProjects'],
     queryFn: getFeaturedProjects
@@ -32,12 +35,12 @@ export default function Home() {
           <div className="absolute inset-0 bg-black/40" />
         </div>
         
-        <div className="relative z-10 container mx-auto px-4 text-center">
+        <div className={cn("relative z-10 container mx-auto px-4 text-center", isRTL && "text-right")}>
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold text-white mb-6 animate-in slide-in-from-bottom-4 duration-700">
-            You Will Get Your <br/> Future Home
+            {t.home.hero.title}
           </h1>
           <p className="text-lg md:text-xl text-white/90 mb-10 max-w-2xl mx-auto animate-in slide-in-from-bottom-6 duration-700 delay-100 font-light">
-            Luxury apartments in Ajman for investment and living. From Salsabeel Real Estate.
+            {t.home.hero.subtitle}
           </p>
           
           <div className="animate-in slide-in-from-bottom-8 duration-700 delay-200">
@@ -49,17 +52,26 @@ export default function Home() {
       {/* Featured Properties */}
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-12">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground mb-4">Featured Properties</h2>
+          <div className={cn(
+            "flex flex-col md:flex-row justify-between items-end mb-12",
+            isRTL && "flex-row-reverse"
+          )}>
+            <div className={cn(isRTL && "text-right")}>
+              <h2 className="text-3xl md:text-4xl font-heading font-bold text-foreground mb-4">{t.home.featured.title}</h2>
               <p className="text-muted-foreground max-w-xl">
-                Explore our hand-picked selection of premium properties available for sale and rent.
+                {t.home.featured.subtitle}
               </p>
             </div>
             <Link href="/projects">
-              <Button variant="ghost" className="hidden md:flex group mt-4 md:mt-0">
-                View All Properties 
-                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              <Button variant="ghost" className={cn(
+                "hidden md:flex group mt-4 md:mt-0",
+                isRTL && "flex-row-reverse"
+              )}>
+                {t.home.featured.viewAll}
+                <ArrowRight className={cn(
+                  "h-4 w-4 group-hover:translate-x-1 transition-transform",
+                  isRTL ? "mr-2 group-hover:-translate-x-1" : "ml-2"
+                )} />
               </Button>
             </Link>
           </div>

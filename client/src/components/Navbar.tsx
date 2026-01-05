@@ -4,29 +4,41 @@ import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import logo from "@assets/logo.png";
+import { useLanguage } from "@/contexts/LanguageContext";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 export default function Navbar() {
   const [location] = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { t, isRTL } = useLanguage();
 
   const links = [
-    { href: "/", label: "Home" },
-    { href: "/projects", label: "Properties" },
-    { href: "/about", label: "About Us" },
+    { href: "/", label: t.nav.home },
+    { href: "/projects", label: t.nav.properties },
+    { href: "/about", label: t.nav.about },
   ];
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 font-heading font-bold text-xl text-primary">
+      <div className={cn(
+        "container mx-auto px-4 h-16 flex items-center",
+        isRTL ? "flex-row-reverse" : "justify-between"
+      )}>
+        <Link href="/" className={cn(
+          "flex items-center gap-2 font-heading font-bold text-xl text-primary",
+          isRTL && "flex-row-reverse"
+        )}>
           <img src={logo} alt="Salsabeel Real Estate" className="h-12 w-auto brightness-0 invert" />
         </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className={cn(
+          "hidden md:flex items-center gap-8",
+          isRTL && "flex-row-reverse"
+        )}>
           {links.map((link) => (
             <Link
-              key={link.label}
+              key={link.href}
               href={link.href}
               className={cn(
                 "text-sm font-medium transition-colors hover:text-primary",
@@ -40,30 +52,40 @@ export default function Navbar() {
           ))}
           <Link href="/contact">
             <Button variant="outline" size="sm" className="bg-white text-black hover:bg-gray-100 border-white">
-              Contact Us
+              {t.nav.contact}
             </Button>
           </Link>
+          <LanguageSwitcher />
         </div>
 
         {/* Mobile Menu Toggle */}
-        <button
-          className="md:hidden p-2"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          {isMobileMenuOpen ? (
-            <X className="h-6 w-6" />
-          ) : (
-            <Menu className="h-6 w-6" />
-          )}
-        </button>
+        <div className={cn(
+          "md:hidden flex items-center gap-2",
+          isRTL && "flex-row-reverse"
+        )}>
+          <LanguageSwitcher />
+          <button
+            className="p-2"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden border-t bg-background p-4 flex flex-col gap-4 absolute w-full shadow-lg animate-in slide-in-from-top-2">
+        <div className={cn(
+          "md:hidden border-t bg-background p-4 flex flex-col gap-4 absolute w-full shadow-lg animate-in slide-in-from-top-2",
+          isRTL && "text-right"
+        )}>
           {links.map((link) => (
             <Link
-              key={link.label}
+              key={link.href}
               href={link.href}
               className="text-sm font-medium p-2 hover:bg-muted rounded-md"
               onClick={() => setIsMobileMenuOpen(false)}
@@ -71,6 +93,13 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
+          <Link
+            href="/contact"
+            className="text-sm font-medium p-2 hover:bg-muted rounded-md"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            {t.nav.contact}
+          </Link>
         </div>
       )}
     </nav>

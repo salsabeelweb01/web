@@ -4,12 +4,15 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { BedDouble, Maximize, MapPin, ArrowRight } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { cn } from "@/lib/utils";
 
 interface ProjectCardProps {
   project: Project;
 }
 
 export default function ProjectCard({ project }: ProjectCardProps) {
+  const { t, isRTL } = useLanguage();
   return (
     <Link 
       href={`/projects/${project.id}`} 
@@ -30,7 +33,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
               {project.status}
             </Badge>
             <Badge className="bg-primary/90 text-primary-foreground shadow-sm backdrop-blur-sm">
-              {project.type === "rent" ? "For Rent" : "For Sale"}
+              {project.type === "rent" ? t.projects.forRent : t.projects.forSale}
             </Badge>
           </div>
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4 pt-12">
@@ -51,22 +54,37 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 mt-6 py-4 border-t border-border/50">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <div className={cn(
+            "grid grid-cols-2 gap-4 mt-6 py-4 border-t border-border/50",
+            isRTL && "text-right"
+          )}>
+            <div className={cn(
+              "flex items-center gap-2 text-sm text-muted-foreground",
+              isRTL && "flex-row-reverse"
+            )}>
               <BedDouble className="h-4 w-4 text-primary/70" />
-              <span>{project.bedrooms} Beds</span>
+              <span>{project.bedrooms} {t.projects.beds}</span>
             </div>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <div className={cn(
+              "flex items-center gap-2 text-sm text-muted-foreground",
+              isRTL && "flex-row-reverse"
+            )}>
               <Maximize className="h-4 w-4 text-primary/70" />
-              <span>{project.sizeSqft} sqft</span>
+              <span>{project.sizeSqft} {t.projects.sqft}</span>
             </div>
           </div>
         </CardContent>
 
         <CardFooter className="p-6 pt-0">
-          <Button className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors pointer-events-none" variant="outline">
-            View Details
-            <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+          <Button className={cn(
+            "w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors pointer-events-none",
+            isRTL && "flex-row-reverse"
+          )} variant="outline">
+            {t.projects.viewDetails}
+            <ArrowRight className={cn(
+              "h-4 w-4 group-hover:translate-x-1 transition-transform",
+              isRTL ? "mr-2 group-hover:-translate-x-1" : "ml-2"
+            )} />
           </Button>
         </CardFooter>
       </Card>
