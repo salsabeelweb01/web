@@ -35,7 +35,8 @@ export default function ProjectDetails() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
-  const carouselRef = useRef<HTMLDivElement>(null);
+  const [galleryCurrentIndex, setGalleryCurrentIndex] = useState(0);
+  const galleryCarouselRef = useRef<HTMLDivElement>(null);
   const autoScrollIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Reset selected image when ID changes
@@ -43,6 +44,7 @@ export default function ProjectDetails() {
     setSelectedImage(null);
     setLightboxOpen(false);
     setLightboxIndex(0);
+    setGalleryCurrentIndex(0);
   }, [id]);
 
   // Update selected image when project loads or changes
@@ -52,17 +54,14 @@ export default function ProjectDetails() {
     }
   }, [project, selectedImage]);
 
-  // Auto-scroll carousel
+  // Auto-scroll gallery carousel
   useEffect(() => {
     if (!project || project.images.length <= 1) return;
 
     const startAutoScroll = () => {
       autoScrollIntervalRef.current = setInterval(() => {
-        setSelectedImage((current) => {
-          if (!current || !project.images.length) return current;
-          const currentIndex = project.images.indexOf(current);
-          const nextIndex = (currentIndex + 1) % project.images.length;
-          return project.images[nextIndex];
+        setGalleryCurrentIndex((current) => {
+          return (current + 1) % project.images.length;
         });
       }, 4000); // Change image every 4 seconds
     };
@@ -152,16 +151,12 @@ export default function ProjectDetails() {
 
   return (
     <Layout>
-      {/* Hero Gallery with Horizontal Carousel */}
-      <div className="relative h-[60vh] bg-black group overflow-hidden">
+      {/* Hero Gallery */}
+      <div className="relative h-[60vh] bg-black group">
         <img
           src={selectedImage || project.images[0]}
           alt={project.name}
-          className="w-full h-full object-cover opacity-90 transition-all duration-500 ease-in-out cursor-pointer"
-          onClick={() => {
-            const index = project.images.indexOf(selectedImage || project.images[0]);
-            openLightbox(index);
-          }}
+          className="w-full h-full object-cover opacity-90 transition-all duration-500 ease-in-out"
         />
         <div className="absolute top-4 left-4 z-10">
           <Link href="/projects">
@@ -171,32 +166,19 @@ export default function ProjectDetails() {
           </Link>
         </div>
         
-        {/* Horizontal Carousel Strip */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 w-full max-w-[90vw]">
-          <div 
-            ref={carouselRef}
-            className="flex gap-3 overflow-x-auto scrollbar-hide pb-2 px-4"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            {project.images.map((img, idx) => (
-              <button
-                key={idx}
-                onClick={() => {
-                  setSelectedImage(img);
-                  // Scroll thumbnail into view
-                  const thumb = carouselRef.current?.children[idx] as HTMLElement;
-                  if (thumb) {
-                    thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                  }
-                }}
-                className={`relative flex-shrink-0 w-20 h-14 rounded-lg overflow-hidden transition-all duration-300 ${
-                  selectedImage === img ? "ring-2 ring-primary scale-110" : "opacity-70 hover:opacity-100 hover:scale-105"
-                }`}
-              >
-                <img src={img} alt={`Gallery ${idx}`} className="w-full h-full object-cover" />
-              </button>
-            ))}
-          </div>
+        {/* Gallery Strip Overlay */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 p-2 bg-black/50 backdrop-blur-md rounded-full overflow-x-auto max-w-[90vw] z-20">
+          {project.images.map((img, idx) => (
+            <button
+              key={idx}
+              onClick={() => setSelectedImage(img)}
+              className={`relative w-16 h-12 rounded-lg overflow-hidden transition-all duration-300 ${
+                selectedImage === img ? "ring-2 ring-primary scale-105" : "opacity-70 hover:opacity-100"
+              }`}
+            >
+              <img src={img} alt={`Gallery ${idx}`} className="w-full h-full object-cover" />
+            </button>
+          ))}
         </div>
       </div>
 
@@ -424,20 +406,78 @@ export default function ProjectDetails() {
                 </div>
               </div>
 
-              {/* Sidebar / Horizontal Gallery */}
+              {/* Sidebar / Horizontal Gallery with Auto-loop */}
               <div className="space-y-6">
                 <h3 className="text-xl font-bold mb-4">Gallery</h3>
-                <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-2" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                
+                {/* Main Gallery Image with Auto-loop */}
+                <div className="relative aspect-video rounded-lg overflow-hidden mb-4 bg-black group">
+                  <img
+                    src={project.images[galleryCurrentIndex]}
+                    alt={`${project.name} - Image ${galleryCurrentIndex + 1}`}
+                    className="w-full h-full object-cover cursor-pointer transition-opacity duration-500"
+                    onClick={() => openLightbox(galleryCurrentIndex)}
+                  />
+                  {/* Navigation Arrows */}
+                  {project.images.length > 1 && (
+                    <>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setGalleryCurrentIndex((current) => 
+                            current === 0 ? project.images.length - 1 : current - 1
+                          );
+                        }}
+                        className="absolute left-2 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-black/50 hover:bg-black/70 text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                        aria-label="Previous image"
+                      >
+                        <ChevronLeft className="h-5 w-5" />
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setGalleryCurrentIndex((current) => 
+                            (current + 1) % project.images.length
+                          );
+                        }}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-black/50 hover:bg-black/70 text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                        aria-label="Next image"
+                      >
+                        <ChevronRight className="h-5 w-5" />
+                      </button>
+                    </>
+                  )}
+                  {/* Image Counter */}
+                  {project.images.length > 1 && (
+                    <div className="absolute bottom-2 right-2 px-3 py-1 rounded-full bg-black/50 text-white text-sm">
+                      {galleryCurrentIndex + 1} / {project.images.length}
+                    </div>
+                  )}
+                </div>
+
+                {/* Horizontal Thumbnail Strip */}
+                <div 
+                  ref={galleryCarouselRef}
+                  className="flex gap-3 overflow-x-auto scrollbar-hide pb-2"
+                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                >
                   {project.images.map((img, idx) => (
-                    <div 
-                      key={idx} 
-                      onClick={() => openLightbox(idx)}
-                      className={`flex-shrink-0 w-48 h-32 rounded-lg overflow-hidden cursor-pointer transition-all duration-300 hover:scale-105 ${
-                        selectedImage === img ? "ring-2 ring-primary" : "hover:opacity-90"
+                    <button
+                      key={idx}
+                      onClick={() => {
+                        setGalleryCurrentIndex(idx);
+                        // Scroll thumbnail into view
+                        const thumb = galleryCarouselRef.current?.children[idx] as HTMLElement;
+                        if (thumb) {
+                          thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                        }
+                      }}
+                      className={`relative flex-shrink-0 w-24 h-16 rounded-lg overflow-hidden transition-all duration-300 ${
+                        galleryCurrentIndex === idx ? "ring-2 ring-primary scale-110" : "opacity-70 hover:opacity-100 hover:scale-105"
                       }`}
                     >
-                      <img src={img} alt={`Gallery ${idx}`} className="w-full h-full object-cover" />
-                    </div>
+                      <img src={img} alt={`Thumbnail ${idx}`} className="w-full h-full object-cover" />
+                    </button>
                   ))}
                 </div>
               </div>
